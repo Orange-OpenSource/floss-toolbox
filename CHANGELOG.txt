@@ -1,0 +1,11 @@
+-------------
+Version 1.0.0
+-------------
+
+FEATURES:
+    - Find contributors in files using a base of words and producing logs
+    - Find contributors in git logs
+    - Find credentials in files
+    - Find missing signed-off in commits
+    - Find notices
+
