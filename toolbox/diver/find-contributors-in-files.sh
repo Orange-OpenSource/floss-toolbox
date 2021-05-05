@@ -1,24 +1,17 @@
 #!/bin/bash
-
-# Copyright (C) 2020 Orange
-# 
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-# 
-# http://www.apache.org/licenses/LICENSE-2.0
-# 
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-# Version.............: 1.0.0
-# Since...............: 11/05/2020
-# Description.........: Looks for credentials in a project's files
+# Software Name: floss-toolbox
+# SPDX-FileCopyrightText: Copyright (c) 2020-2021 Orange
+# SPDX-License-Identifier: Apache-2.0
 #
-# Usage: bash find-credentials-in-files.sh --project path/to/project
+# This software is distributed under the Apache 2.0 license.
+#
+# Author: Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com> et al.
+
+# Version.............: 1.1.0
+# Since...............: 11/05/2020
+# Description.........: Looks for contributors details (defined in dedicated file) in a project
+#
+# Usage: bash find-contributors-in-files.sh --target path/to/project
 #
 # Exit codes:
 #       0 - normal exit
@@ -26,8 +19,8 @@
 #       2 - problem with preconditions (e.g. files to use by the script)
 #
 
-VERSION="1.0.0"
-SCRIPT_NAME="find-credentials-in-files"
+VERSION="1.1.0"
+SCRIPT_NAME="find-contributors-in-files"
 
 # -------------
 # Configuration
@@ -47,7 +40,7 @@ BAD_PRECONDITION_EXIT_CODE=2
 FIND_SCRIPT="./utils/find-hotwords-in-files.sh"
 
 # File listing words like contributors names, emails, commpanies... seperated by ; and line breaks
-CREDENTIALS_FILE="./data/credentials-entries.txt"
+CONTRIBUTORS_FILE="./data/contributors-entries.txt"
 
 # ---------
 # Functions
@@ -61,7 +54,7 @@ DisplayUsages(){
     echo "******************************************"
     echo "USAGE:"
     echo "bash $SCRIPT_NAME.sh --target PROJECT"
-    echo -e "\t - This command will run the program to look for credentials in files ($FIND_SCRIPT) using words defined in file '$CREDENTIALS_FILE'"
+    echo -e "\t - This command will run the program to look contributors in files ($FIND_SCRIPT) using words defined in file '$CONTRIBUTORS_FILE'"
     echo -e "\t - PROJECT must point to a directory whith the files to analyse"
 }
 
@@ -111,13 +104,13 @@ echo "$SCRIPT_NAME - Version $VERSION"
 echo "******************************************"
 
 # Test if words file, find script and project to analyse exist and are readable
-if [ ! -f "$CREDENTIALS_FILE" ]; then
-    echo "💥 Error: $SCRIPT_NAME - $CREDENTIALS_FILE is not a file to process"
+if [ ! -f "$CONTRIBUTORS_FILE" ]; then
+    echo "💥 Error: $SCRIPT_NAME - $CONTRIBUTORS_FILE is not a file to process"
     BadPreconditionsExit
 fi
 
-if [ ! -r "$CREDENTIALS_FILE" ]; then
-    echo "⛔ Error: $SCRIPT_NAME - $CREDENTIALS_FILE file cannot be read"
+if [ ! -r "$CONTRIBUTORS_FILE" ]; then
+    echo "⛔ Error: $SCRIPT_NAME - $CONTRIBUTORS_FILE file cannot be read"
     BadPreconditionsExit
 fi
 
@@ -135,7 +128,7 @@ fi
 # Step 1 - Start the script
 # -------------------------
 
-./$FIND_SCRIPT --words "$CREDENTIALS_FILE" --directory "$project_folder"
+./$FIND_SCRIPT --words "$CONTRIBUTORS_FILE" --directory "$project_folder"
 
 # The end!
 

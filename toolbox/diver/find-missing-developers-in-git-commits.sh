@@ -1,24 +1,18 @@
 #!/bin/bash
-
-# Copyright (C) 2020 Orange
-# 
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-# 
-# http://www.apache.org/licenses/LICENSE-2.0
-# 
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-# Version.............: 1.2.0
-# Since...............: 11/05/2020
-# Description.........: Looks for words (defined in dedicated file) in git logs
+# Software Name: floss-toolbox
+# SPDX-FileCopyrightText: Copyright (c) 2020-2021 Orange
+# SPDX-License-Identifier: Apache-2.0
 #
-# Usage: bash find-contributors-in-git-logs.sh --words WORDS --project path/to/project --loglimit LIMIT
+# This software is distributed under the Apache 2.0 license.
+#
+# Author: Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com> et al.
+
+# Version.............: 1.1.0
+# Since...............: 12/05/2020
+# Description.........: Looks in git commits in the DCO has been used, i.e. if commits have been signed off.
+# Checks also if commits authors are defined.
+#
+# Usage: bash find-missing-developers-in-git-commits.sh --project path/to/project --loglimit LIMIT
 #
 # Exit codes:
 #       0 - normal exit
@@ -27,9 +21,8 @@
 #       3 - problem with a command
 #
 
-
-VERSION="1.2.0"
-SCRIPT_NAME="find-contributors-in-git-logs"
+VERSION="1.1.0"
+SCRIPT_NAME="find-missing-developers-in-git-commits"
 
 # -------------
 # Configuration
@@ -43,14 +36,14 @@ set -euo pipefail
 
 NORMAL_EXIT_CODE=0
 BAD_ARGUMENTS_EXIT_CODE=1
-BAD_PARAMETERS_EXIT_CODE=2
+BAD_PRECONDITION_EXIT_CODE=2
 UNEXPECTED_RESULT_EXIT_CODE=3
-
-# Prefix for generated files
-GENERATED_FILES_PREFIX="$$-contributors"
 
 # Folder fo generated files
 TEMP_FOLDER="./data"
+
+# Prefix for generated files
+GENERATED_FILES_PREFIX="$$-missing-developers"
 
 # File listing the commits which have words hits
 HITS_FILE="$TEMP_FOLDER/$GENERATED_FILES_PREFIX-commits-hits.txt"
@@ -62,8 +55,8 @@ REPORT_METRIC_FILE="$TEMP_FOLDER/$GENERATED_FILES_PREFIX-report.txt"
 # Assuming this file is handled in a subfolder (project to analyse) and filled by the "git log" command
 GIT_LOG_TEMP_FILE="$GENERATED_FILES_PREFIX-git-log.temp.txt"
 
-# Path to Ruby-written script which will deal fastly in few lines woith the git log file
-GIT_LOG_RUBY_PARSER="./utils/find-contributors-in-git-logs.rb"
+# Path to Ruby-written script which will deal fastly in few lines with the git commits messages file
+GIT_LOG_RUBY_PARSER="./utils/find-missing-developers-in-git-commits.rb"
 
 # ---------
 # Functions
@@ -72,14 +65,12 @@ GIT_LOG_RUBY_PARSER="./utils/find-contributors-in-git-logs.rb"
 # \fn DisplayUsages
 # \brief Displays an help message and exists
 DisplayUsages(){
-    echo "*********************************************"
+    echo "***********************************************"
     echo "$SCRIPT_NAME - Version $VERSION"
-    echo "*********************************************"
+    echo "***********************************************"
     echo "USAGE:"
-    echo "bash $SCRIPT_NAME.sh --help"
-    echo "bash $SCRIPT_NAME.sh --words WORDS --project path/to/project --loglimit LIMIT"
-    echo -e "\t --words..........: Path to file containing words seperated by ; and line break"
-    echo -e "\t --project........: Path to git-versionned folder of project to analyse"
+    echo "bash $SCRIPT_NAME.sh --project PROJECT --loglimit LIMIT"
+    echo -e "\t --project........: PROJECT must point to a git-based directory whith the csommits to analyse"
     echo -e "\t --loglimit.......: [git log] option to define the LIMIT for commit searches, e.g. 2.weeks or 3.years"
 }
 
@@ -95,24 +86,16 @@ BadArgumentsExit(){
     exit $BAD_ARGUMENTS_EXIT_CODE
 }
 
-# \fn BadParametersExit
-# \brief Exits with BAD_PARAMETERS_EXIT_CODE code
-BadParametersExit(){
-    exit $BAD_PARAMETERS_EXIT_CODE
+# \fn BadPreconditionsExit
+# \brief Exits with BAD_PRECONDITION_EXIT_CODE code
+BadPreconditionsExit() {
+    exit $BAD_PRECONDITION_EXIT_CODE
 }
 
 # \fn UnexpectedResultExit
 # \brief Exist with UNEXPECTED_RESULT_EXIT_CODE code
 UnexpectedResultExit(){
     exit $UNEXPECTED_RESULT_EXIT_CODE
-}
-
-# \fn ReadWordsFromFile
-# \brief Returns words separated by ; and \n in the given file assuming it's defined and readable
-# \param The path to the file to proces
-ReadWordsFromFile() {
-    words_file=$1
-    tr ';' '\n' < $words_file
 }
 
 # \fn PrepareFiles
@@ -133,19 +116,15 @@ PrepareFiles() {
 # ----------------
 
 # Check the args numbers and display usage if needed
-if [ "$#" -ne 6 ]; then
-	DisplayUsages
-    NormalExit
-# Need some help?
-elif [ "$1" = "--help" ]; then
-	DisplayUsages
+if [ "$#" -ne 4 ]; then
+    DisplayUsages
     NormalExit
 fi
 
-# Get words file
-if [ "$1" = "--words"  ]; then
+# Get target folder
+if [ "$1" = "--project"  ]; then
     if [ "$2" ]; then
-	    words_file=$2
+	    git_based_project=$2
     else
         DisplayUsages
         BadArgumentsExit
@@ -155,10 +134,10 @@ else
     BadArgumentsExit
 fi
 
-# Get project folder
-if [ "$3" = "--project"  ]; then
+# Get git limit
+if [ "$3" = "--loglimit"  ]; then
     if [ "$4" ]; then
-	    git_based_project=$4
+	    git_log_limit=$4
     else
         DisplayUsages
         BadArgumentsExit
@@ -168,27 +147,16 @@ else
     BadArgumentsExit
 fi
 
-# Get git log limit
-if [ "$5" = "--loglimit"  ]; then
-    if [ "$6" ]; then
-	    git_log_limit=$6
-    else
-        DisplayUsages
-        BadArgumentsExit
-    fi
-else
-    DisplayUsages
-    BadArgumentsExit
+# Test if find script and project to analyse exist and are readable
+
+if [ ! -f "$GIT_LOG_RUBY_PARSER" ]; then
+    echo "💥 Error: $SCRIPT_NAME - $GIT_LOG_RUBY_PARSER is not a script to trigger"
+    BadPreconditionsExit
 fi
 
-# Test if words file and project to analyse exist and are readable
-if [ ! -f "$words_file" ]; then
-    echo "💥 Error: $words_file is not a file to process"
-    BadArgumentsExit
-fi
-if [ ! -r "$words_file" ]; then
-    echo "⛔ Error: $words_file file cannot be read"
-    BadArgumentsExit
+if [ ! -r "$GIT_LOG_RUBY_PARSER" ]; then
+    echo "⛔ Error: $SCRIPT_NAME - $GIT_LOG_RUBY_PARSER script cannot be read"
+    BadPreconditionsExit
 fi
 
 if [ ! -d "$git_based_project" ]; then
@@ -203,13 +171,12 @@ fi
 # Run!
 SECONDS=0
 
-echo "*********************************************"
+echo "**************************************************"
 echo "$SCRIPT_NAME - Version $VERSION"
-echo "*********************************************"
+echo "**************************************************"
 
 echo -e "\n"
 
-echo "📋 File of words is $words_file"
 echo "📋 Project to analyse is $git_based_project"
 echo "📋 Limit for git logs is $git_log_limit"
 
@@ -218,17 +185,8 @@ PrepareFiles
 
 echo -e "\n"
 
-# ------------------------------------
-# Step 1 - Read data file to get words
-# ------------------------------------
-
-echo "🍥 Reading words in $words_file..."
-
-words=$( ReadWordsFromFile $words_file )
-words_count=`echo $words | wc -w`
-
 # --------------------------------------------
-# Step 2 - Get git log until the defined limit
+# Step 1 - Get git log until the defined limit
 # --------------------------------------------
 
 echo "🍥 Retrieving git logs in temporary file named $GIT_LOG_TEMP_FILE..."
@@ -259,7 +217,7 @@ echo -e "🍥 Running Ruby script to look in log file for words named $GIT_LOG_R
 
 # Ruby tool is in toolbox/utils
 # Git log file is in toolbox/data
-ruby $GIT_LOG_RUBY_PARSER $words_file "data/$GIT_LOG_TEMP_FILE" > $HITS_FILE
+ruby $GIT_LOG_RUBY_PARSER "data/$GIT_LOG_TEMP_FILE" > $HITS_FILE
 
 echo -e "\n👌 Git log has been processed with words\n"
 
@@ -267,16 +225,32 @@ echo -e "\n👌 Git log has been processed with words\n"
 # Step 5 - Metrics (words and files counts, hits, duration...)
 # ------------------------------------------------------------
 
-echo "📈 Count of words to look for.......: $words_count" >> $REPORT_METRIC_FILE
-
 commits_count=`grep -o 'commit [0-9A-Za-z]*' "data/$GIT_LOG_TEMP_FILE" | wc -l`
-echo "📈 Count of commits to process......: $commits_count" >> $REPORT_METRIC_FILE
+echo "📈 Count of commits to process..............................: $commits_count" >> $REPORT_METRIC_FILE
 
-git_commit_hits_count=`cat $HITS_FILE | wc -l`
-echo "📈 Count of hits....................: $git_commit_hits_count" >> $REPORT_METRIC_FILE
+git_commit_total_hits_count=`cat $HITS_FILE | wc -l`
+echo "📈 Total count of hits......................................: $git_commit_total_hits_count" >> $REPORT_METRIC_FILE
+
+# FIXME: I like cats by 4 cats are too much
+
+# If we have hits for signed-off cases, grep and count
+if [[ `cat $HITS_FILE` == *"signed-off"* ]]; then                            # "signed-off" written by the Ruby script in output for each hit
+    git_commit_dco_hits_count=`cat $HITS_FILE | grep signed-off | wc -l`
+else
+    git_commit_dco_hits_count=0
+fi
+echo "📈 Count of hits for missing/undefined signed-off...........: $git_commit_dco_hits_count" >> $REPORT_METRIC_FILE
+
+# If we have hits for authors, grep and count
+if [[ `cat $HITS_FILE` == *"author"* ]]; then                            # "author" written by the Ruby script in output for each hit
+    git_commit_author_hits_count=`cat $HITS_FILE | grep author | wc -l`
+else
+    git_commit_author_hits_count=0
+fi
+echo "📈 Count of hits for missing/undefined author...............: $git_commit_author_hits_count" >> $REPORT_METRIC_FILE
 
 script_duration=$SECONDS
-echo "📈 Elapsed time.....................: $(($script_duration / 60))' $(($script_duration % 60))''" >> $REPORT_METRIC_FILE
+echo "📈 Elapsed time.............................................: $(($script_duration / 60))' $(($script_duration % 60))''" >> $REPORT_METRIC_FILE
 
 # The end!
 
