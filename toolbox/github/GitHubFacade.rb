@@ -86,10 +86,12 @@ if feature_to_run == "get-members-2fa-disabled"
     Log.log "Getting members of organizations with 2FA disabled..."
     raw_members = GitHubWrapper.get_organization_members_with_2fa_disabled
     Log.debug "Found #{raw_members.length} members!"
+    cpt = 1
     raw_members.each { |light_member| 
-    Log.debug "Getting more details for #{light_member.login}"
+        Log.debug "Getting more details for #{light_member.login} (#{cpt} / #{raw_members.length})"
         member = GitHubWrapper.get_user(client, light_member.login)
         members << member
+        cpt += 1
     }
     Log.debug "Writting in log file #{$FILENAME_MEMBERS_2FA_DISABLED}..."
     FileManager.write_members_in_permanent_file(members, $FILENAME_MEMBERS_2FA_DISABLED)
