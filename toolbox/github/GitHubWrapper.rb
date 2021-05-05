@@ -441,10 +441,11 @@ module GitHubWrapper
             repository_ssh_url = repository.ssh_url
             current_repo = {"name" => "#{repository_name}", "url" => "#{repository_url}"}
             Log.debug "Will clone repository %s out of %s" % [cpt, repositories_count]
-            GitWrapper.clone_git_repository(repository_ssh_url, repository_name)
-            Log.debug "Checking content of #{repository_name}"
+            full_name="data/#{repository_name}"
+            GitWrapper.clone_git_repository(repository_ssh_url, full_name)
+            Log.debug "Checking content of '#{repository_name}' in folder '#{full_name}'"
             expected_files_name.each do |expected_file_name|
-                path_name = "#{repository_name}/#{expected_file_name}"
+                path_name = "#{full_name}/#{expected_file_name}"
                 if !File.exist?(path_name) && !File.exist?("#{path_name}.txt") && !File.exist?("#{path_name}.md")
                     current_repo[expected_file_name] = "0"
                 else
@@ -452,7 +453,7 @@ module GitHubWrapper
                 end
             end
             unconform_repositories << current_repo
-            FileUtils.rm_rf(repository_name)
+            FileUtils.rm_rf(full_name)
             cpt += 1
         end
         return unconform_repositories
@@ -482,13 +483,14 @@ module GitHubWrapper
             repository_url = repository.html_url
             repository_ssh_url = repository.ssh_url
             Log.debug "Will clone repository %s out of %s" % [cpt, repositories_count]
-            GitWrapper.clone_git_repository(repository_ssh_url, repository_name)
-            Log.debug "Checking content of #{repository_name}"
-            count = Dir.glob(File.join(repository_name, '**', '*')).select { |file| File.file?(file) }.count
+            full_name="data/#{repository_name}"
+            GitWrapper.clone_git_repository(repository_ssh_url, full_name)
+            Log.debug "Checking content of '#{repository_name}' in foler '#{full_name}'"
+            count = Dir.glob(File.join(full_name, '**', '*')).select { |file| File.file?(file) }.count
             if count <= limit
                 empty_repositories << {"name" => "#{repository_name}", "url" => "#{repository_url}"}
             end
-            FileUtils.rm_rf(repository_name)
+            FileUtils.rm_rf(full_name)
             cpt += 1
         end
         return empty_repositories
