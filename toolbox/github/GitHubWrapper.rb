@@ -306,8 +306,6 @@ module GitHubWrapper
         repositories_without_team = []
         index = 1
         all_repositories.each { |repo|
-            puts repo.owner.login
-            exit
             Log.debug "Checking for repository '%s' (%s / %s)" % [repo.name, index, count]
             index += 1
             teams_url = repo.teams_url

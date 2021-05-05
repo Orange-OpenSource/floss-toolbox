@@ -127,7 +127,7 @@ if feature_to_run == "get-members-without-company"
         exit $EXIT_BAD_SETUP
     end
     members = []
-    puts "Getting members of organization without company..."
+    Log.log "Getting members of organization without company..."
     raw_members = GitHubWrapper.get_all_organization_members
     raw_members.each { |light_member| 
         Log.debug "Checking company for #{light_member.login}"
