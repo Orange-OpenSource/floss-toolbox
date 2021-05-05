@@ -1,11 +1,27 @@
 -------------
+Version 2.0.0
+-------------
+
+FEATURES (github):
+    - Get all members of GitHub organization
+    - Get members who don't have 2FA enabled
+    - Get members of organization with "company" field undefined
+    - Get projects which don't have any assigned GitHub team
+    - Get users which have undefined or hidden email
+    - Get users which may have not suitable fullname
+    - Get repositories with undefined licenses
+    - Get repositories which seems to be unconform (i.e. missing files)
+    - Get repositories which seems to be empty or have not enough files
+    - Define permissions (push / write) for all contributors of all projects (except teams and organization owners)
+    - Define permissions (push / write) for all teams of all projects
+
+-------------
 Version 1.0.0
 -------------
 
-FEATURES:
+FEATURES (diver):
     - Find contributors in files using a base of words and producing logs
     - Find contributors in git logs
     - Find credentials in files
     - Find missing signed-off in commits
     - Find notices
-

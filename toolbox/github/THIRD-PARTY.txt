@@ -1,0 +1,13 @@
+================================================================================
+MIT License
+================================================================================
+
+Component: Git 
+Copyright: 2008 Scott Chacon
+License Text URL: licenses/LICENSE-Git.md
+Source Code: https://github.com/ruby-git/ruby-git
+
+Component: Octokit 
+Copyright: 2009-2017 Wynn Netherland, Adam Stacoviak, Erik Michaels-Ober
+License Text URL: licenses/LICENSE-Octokit.md
+Source Code: https://github.com/octokit/octokit.rb
