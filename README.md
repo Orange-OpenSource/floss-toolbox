@@ -7,7 +7,7 @@ Toolbox is mainly written in Shell because this language is very efficient for f
 ## Environment
 
 You must have a _BASH_ ready environment and also _Ruby_.
-For example, _Bash_ version here is _3.2.5_7.
+For example, _Bash_ version here is _3.2.5_.
 
 ## Project tree
 
@@ -225,8 +225,8 @@ bash GitHubWizard.sh get-projects-conformity
 ```
 SSH will be used to clone repositories, thus you must have your SSH configuration ready:
 
-1 - Create an SSH key on your GitHub account [settings](https://github.com/settings/keys)
-2 - Add the SSH key in your environment
+1. Create an SSH key on your GitHub account [settings](https://github.com/settings/keys)
+2. Add the SSH key in your environment
 
 ```shell
 ssh-add .ssh/id_rsa
@@ -240,8 +240,8 @@ bash GitHubWizard.sh get-empty-projects
 ```
 SSH will be used to clone repositories, thus you must have your SSH configuration ready:
 
-1 - Create an SSH key on your GitHub account [settings](https://github.com/settings/keys)
-2 - Add the SSH key in your environment
+1. Create an SSH key on your GitHub account [settings](https://github.com/settings/keys)
+2. Add the SSH key in your environment
 
 ```shell
 ssh-add .ssh/id_rsa

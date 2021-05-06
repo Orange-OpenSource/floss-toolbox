@@ -110,10 +110,12 @@ if feature_to_run == "get-all-members"
     Log.log "Getting all members of organization..."
     raw_members = GitHubWrapper.get_all_organization_members
     Log.debug "Found #{raw_members.length} members!"
+    cpt = 1
     raw_members.each { |light_member| 
-        Log.debug "Getting more details for #{light_member.login}"
+        Log.debug "Getting more details for #{light_member.login} (#{cpt} / #{raw_members.length})"
         member = GitHubWrapper.get_user(client, light_member.login)
         members << member
+        cpt += 1
     }
     Log.debug "Writting in log file #{$FILENAME_MEMBERS}..."
     FileManager.write_members_in_permanent_file(members, $FILENAME_MEMBERS)
@@ -131,15 +133,18 @@ if feature_to_run == "get-members-without-company"
     members = []
     Log.log "Getting members of organization without company..."
     raw_members = GitHubWrapper.get_all_organization_members
+    Log.debug "Found #{raw_members.length} members in organization."
+    cpt = 1
     raw_members.each { |light_member| 
-        Log.debug "Checking company for #{light_member.login}"
+        Log.debug "Checking company for #{light_member.login} (#{cpt} / #{raw_members.length})"
         member = GitHubWrapper.get_user(client, light_member.login)
         company = "#{member.company}"
         unless company.length > 0
             members << member
         end
+        cpt += 1
     }
-    Log.debug "Found #{members.length} members!"
+    Log.debug "Found #{members.length} members without defined company!"
     Log.debug "Writting in log file #{$FILENAME_MEMBERS_UNDEFINED_COMPANY}..."
     FileManager.write_members_in_permanent_file(members, $FILENAME_MEMBERS_UNDEFINED_COMPANY)
     Log.log "Task completed! Exits now."
