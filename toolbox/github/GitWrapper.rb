@@ -32,7 +32,7 @@ module GitWrapper
         if folder_name.nil? || folder_name.empty?
             Log.error "Forlder for repository cloning is not defined, clone won't be done. Returns now." 
             return
-         end
+        end
         Log.log "Clone Git repository using SSH URL '%s' under name '%s'" % [ssh_url, folder_name]
         Git.clone(ssh_url, folder_name)
     end
