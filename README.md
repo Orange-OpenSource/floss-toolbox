@@ -1,4 +1,4 @@
-# floss-toolbox (version 2.0.0)
+# floss-toolbox (version 2.1.0)
 
 Toolbox to help developers and open source referents to have cleaner projects in GitHub organizations.
 
