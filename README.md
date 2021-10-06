@@ -136,6 +136,20 @@ credit
 created
 ```
 
+#### List contributors from Git history
+
+It is possible to make a list of contributors (first name, last name, email) using the remaining traces in the Git history.
+
+To run the feature:
+```shell
+bash list-contributors-in-history.sh --target path/to.git/project --loglimit git-log-limit
+```
+
+The log limit is the value to pass to the `git log` command, e.g. _2.weeks_ or _3.years_.
+_path/to/the/project_ points to the root of the project to analyse.
+
+_You may put the project to analyse in the toolbox/diver/data folder because relatives paths are still used in the script_
+
 ### Play with GitHub web API
 
 ### Prerequisites

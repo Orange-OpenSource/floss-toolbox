@@ -1,4 +1,11 @@
 -------------
+Version 2.1.0
+-------------
+
+FEATURES (diver):
+    - List all contributors of a Git repository using Git history
+
+-------------
 Version 2.0.0
 -------------
 
