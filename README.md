@@ -1,4 +1,4 @@
-# floss-toolbox (version 2.1.0)
+# floss-toolbox (version 2.2.0)
 
 Toolbox to help developers and open source referents to have cleaner projects in GitHub organizations.
 
@@ -159,7 +159,7 @@ _You may put the project to analyse in the toolbox/diver/data folder because rel
 - Ruby 2.7.1
 
 - Create a [GitHub personal token](https://github.com/settings/tokens) and define it in the _configuration.rb_ file for the `GITHUB_PERSONAL_ACCESS_TOKEN` variable.
-- Define the _GitHub_ organization name in the _configuration.rb_ file for the `GITHUB_ORGANIZATION_NAME`variable. It will allow to send requests to query and modify your organization.
+- Define the _GitHub_ organization name in the _configuration.rb_ file for the `GITHUB_ORGANIZATION_NAME` variable. It will allow to send requests to query and modify your organization.
 - Define also the logins of the GitHub adminsitrators of your organization so as to prevent to change their permisssion for example.
 
 ### Prepare project
@@ -277,4 +277,42 @@ Permissions will be set to "push", i.e. "write".
 
 ```shell
 bash GitHubWizard.sh set-teams-permissions-to-push
+```
+
+### Play with GitHub CLI (GH)
+
+### Prerequisites
+
+- GitHub CLI: version 1.3.1 (2021-09-30)
+- Ruby 2.7.1
+
+- Define the _GitHub_ organization name in the _configuration.rb_ file for the `GITHUB_ORGANIZATION_NAME` variable. It will allow to send requests to query and modify your organization.
+- Define if needed the location where data can be stored, e.g. clones of repositories and metadata files.
+
+### Prepare project
+
+```shell
+brew install gh
+```
+
+### Third-party elements
+
+This project uses [GitHub CLI](https://github.com/cli/cli), licensed under MIT license.
+
+### Features
+
+#### Display usage
+
+```shell
+bash GitHubWizard.sh
+```
+
+#### Make a backup for organization repositories
+
+This feature allows to clone all repositories of the defined GitHub organization and save them in a specific folder.
+A plain text file is also created with, for each repository, its commit number and a sha512 hash.
+
+Run the following command:
+```shell
+bash GitHubWizard.sh backup-all-repositories-from-org
 ```
