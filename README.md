@@ -41,6 +41,8 @@ login
 
 ### Find contributors in files
 
+_Keywords: #contributors #files #sources #hotwords_
+
 The tooblox can look in each file of a project for words.
 Such words may be developers' first names, last names, email addresses or whatever you want.
 A report is created with a curated list of found words in precise files.
@@ -58,6 +60,8 @@ Not so efficient, but it works and is suitable for first releases.
 
 ### Find contributors in git log
 
+_Keywords: #contributors #git #history #logs #hotwords_
+
 The toolbox provides a script which can check in git logs if some words (first name, last name, emails, whatever you wrote) are used.
 A report is created with a curated list of found words and associated commits.
 
@@ -71,6 +75,8 @@ The log limit is the value to pass to the `git log` command, e.g. _2.weeks_ or _
 _path/to/the/project_ points to the root of the project to analyse.
 
 ### Find credentials in sources
+
+_Keywords: #credentials #files #sources #hotwords_
 
 We assume the source code to analyse is not hosted on a git-based project, that is the reason why such tools like _git grep_ are not used.
 This feature will look in the files for some keywords like passwords or logins.
@@ -103,6 +109,8 @@ pass
 
 ### Find missing signed-off fields
 
+_Keywords: #git #commits #history #logs #signed #DCO_
+
 Depending to the project we may want to have signed-off commits so as to agree to the Developer Certificate of Origin (https://developercertificate.org/).
 Thus we may want to look in git commits messages if the signed-off field has been defined or not.
 We want also to ensure each commit has an author.
@@ -116,6 +124,8 @@ The log limit is the value to pass to the `git log` command, e.g. _2.weeks_ or _
 _path/to/the/project_ points to the root of the project to analyse.
 
 ### Find credits
+
+_Keywords: #contributors #authors #credits #copyrights #files #hotwords_
 
 We can also check in sources if some hotwords are used, mainly about credits or copyrights notices.
 For example, "credit", "created by" or "(C)" can refer to third-party components we missed to list.
@@ -141,6 +151,8 @@ created
 
 ### List contributors from Git history
 
+_Keywords: #contributors #git #history #logs_
+
 It is possible to make a list of contributors (first name, last name, email) using the remaining traces in the Git history.
 
 To run the feature:
@@ -153,6 +165,8 @@ _path/to/the/project_ points to the root of the project to analyse.
 
 
 ### Extract email address from Git history
+
+_Keywords: #contributors #git #logs #history #email_
 
 It is possible to make a list of contributors email addresses using the remaining traces in the Git history.
 
@@ -198,12 +212,16 @@ bash GitHubWizard.sh
 
 ### Get all members of organization
 
+_Keywords: #organisation #GitHub #members_
+
 Run the following command and check the file with the FILENAME_MEMBERS name (_configuration.rb_)
 ```shell
 bash GitHubWizard.sh get-all-members
 ```
 
 ### Get members of organization with 2FA disabled
+
+_Keywords: #organisation #GitHub #members #2FA #security_
 
 Run the following command and check the file with the FILENAME_MEMBERS_2FA_DISABLED name (_configuration.rb_)
 ```shell
@@ -212,12 +230,16 @@ bash GitHubWizard.sh get-members-2fa-disabled
 
 ### Get members of organization with "company" field undefined
 
+_Keywords: #organisation #GitHub #members #company_
+
 Run the following command and check the file with the FILENAME_MEMBERS_UNDEFINED_COMPANY name (_configuration.rb_)
 ```shell
 bash GitHubWizard.sh get-members-without-company
 ```
 
 ### Get projects which don't have any assigned team
+
+_Keywords: #organisation #GitHub #members #teams_
 
 Run the following command and check the file with the FILENAME_PROJECTS_WITHOUT_TEAM name (_configuration.rb_)
 ```shell
@@ -226,12 +248,16 @@ bash GitHubWizard.sh get-projects-without-team
 
 ### Get users which have undefined or hidden email
 
+_Keywords: #organisation #GitHub #members #email_
+
 Run the following command and check the file with the FILENAME_USERS_WITH_BAD_EMAILS name (_configuration.rb_)
 ```shell
 bash GitHubWizard.sh get-users-with-bad-email
 ```
 
 ### Get users which may have not suitable fullname
+
+_Keywords: #organisation #GitHub #members #fullname #name #handle_
 
 Run the following command and check the file with the FILENAME_USERS_WITH_BAD_FULLNAMES name (_configuration.rb_)
 ```shell
@@ -240,12 +266,17 @@ bash GitHubWizard.sh get-users-with-bad-fullname
 
 ### Get repositories with undefined licenses
 
+_Keywords: #organisation #GitHub #projects #licenses_
+
 Run the following command and check the file with the FILENAME_PROJECTS_WITHOUT_LICENSES (_configuration.rb_)
 ```shell
 bash GitHubWizard.sh get-projects-without-licenses
 ```
 
 ### Get repositories which seems to be unconform (i.e. missing files)
+
+_Keywords: #organisation #GitHub #projects #guidelines #files_
+
 
 Run the following command and check the file with the FILENAME_PROJECTS_WITH_UNCONFORM_REPOSITORIES name (_configuration.rb_)
 ```shell
@@ -262,6 +293,8 @@ ssh-add .ssh/id_rsa
 
 ### Get repositories which seems to be empty or have not enough files
 
+_Keywords: #organisation #GitHub #projects #repository_
+
 Run the following command and check the file with the FILENAME_EMPTY_PROJECTS name (_configuration.rb_)
 ```shell
 bash GitHubWizard.sh get-empty-projects
@@ -277,6 +310,8 @@ ssh-add .ssh/id_rsa
 
 ### Define users permissions for all projects to "push"
 
+_Keywords: #organisation #GitHub #permissions #members #push_
+
 Run the following command to update rights of all users except GitHub teams and GitHub administrators, for all projects.
 Permissions will be set to "push", i.e. "write".
 
@@ -285,6 +320,8 @@ bash GitHubWizard.sh set-users-permissions-to-push
 ```
 
 ### Define teams permissions for all projects to "push"
+
+_Keywords: #organisation #GitHub #permissions #teams #push_
 
 Run the following command to update rights of all teams, for all projects.
 Permissions will be set to "push", i.e. "write".
@@ -319,6 +356,8 @@ This project uses [GitHub CLI](https://github.com/cli/cli), licensed under MIT l
 ## Features
 
 ### Make a backup of organization repositories
+
+_Keywords: #organisation #GitHub #repositories #clones #dump_
 
 This feature allows to clone all repositories of the defined GitHub organization and save them in a specific folder.
 
