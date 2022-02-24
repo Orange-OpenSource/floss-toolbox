@@ -63,7 +63,7 @@ GIT_LOG_RUBY_PARSER="./utils/find-missing-developers-in-git-commits.rb"
 # ---------
 
 # \fn DisplayUsages
-# \brief Displays an help message and exists
+# \brief Displays an help message and exits
 DisplayUsages(){
     echo "***********************************************"
     echo "$SCRIPT_NAME - Version $VERSION"

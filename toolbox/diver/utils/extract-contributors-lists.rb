@@ -161,7 +161,6 @@ git_log_file_splits.each do |commit|
             if commit_author.length <= 0
                 debug "Undefined author value for commit '#{commit_hash}'"
             else
-                #log "@@@ FOUND: '#{commit_author}'"
                 unique_contributors << commit_author
             end
 
