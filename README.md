@@ -1,26 +1,29 @@
-# floss-toolbox (version 2.1.0)
+# floss-toolbox (version 2.2.0)
 
 Toolbox to help developers and open source referents to have cleaner projects in GitHub organizations.
 
-Toolbox is mainly written in Shell because this language is very efficient for files processing and provides a strong and rich standard API with cool primitives. Contains also Ruby scripts.
+Toolbox is mainly written in Shell because this language is very efficient for files processing and provides a strong and rich standard API with cool primitives. Contains also Ruby scripts. Ruby are shiny gems, I love them.
 
-## Environment
+# Environment
 
 You must have a _BASH_ ready environment and also _Ruby_.
-For example, _Bash_ version here is _3.2.5_.
+Environment:
+- _Bash_ version **3.2.5**
+- _Ruby_ version **2.7.1**
+- _Python_ version **3**
 
-## Project tree
+# Project tree
 
 _toolbox/diver_ contains several scripts you need. At the root of this folder are _Shell_ main scripts.
 _toolbox/diver/utils_ contains the programs called from the _Shell_ main scripts.
 _toolbox/diver/data_ contains some datasets and projects samples to work on.
 _toolbox/github_ contains _Ruby_ and _Shell_ scripts to use so as to deal with _GitHub_ REST API.
 
-**Please, note for this version you have to copy/paste your project in the _toolbox/diver/data_ folder because non-absolute paths and commands are used in the scripts**
+**Please, note for this version for some features you have to copy/paste your project in the _toolbox/diver/data_ folder because non-absolute paths and commands are used in the scripts**
 
-## The "diver" of source code and commits
+# The "diver" of source code and commits
 
-### File of words
+## File of words
 
 Some features parse a text file containing the words to look for in sources or git logs.
 Items in this file can be separated with ';' and line breaks.
@@ -34,9 +37,11 @@ password
 login
 ```
 
-### Features
+## Features
 
-#### Find contributors in files
+### Find contributors in files
+
+_Keywords: #contributors #files #sources #hotwords_
 
 The tooblox can look in each file of a project for words.
 Such words may be developers' first names, last names, email addresses or whatever you want.
@@ -53,7 +58,9 @@ Note this version provides a naive implementation for file processing which shou
 In fact this implementation is based on a three-levels-based loop: each line of each file is checked for each word.
 Not so efficient, but it works and is suitable for first releases.
 
-#### Find contributors in git log
+### Find contributors in git log
+
+_Keywords: #contributors #git #history #logs #hotwords_
 
 The toolbox provides a script which can check in git logs if some words (first name, last name, emails, whatever you wrote) are used.
 A report is created with a curated list of found words and associated commits.
@@ -67,7 +74,9 @@ For example, the words to find have to be listed in the _path/to/file-of-words_ 
 The log limit is the value to pass to the `git log` command, e.g. _2.weeks_ or _3.years_.
 _path/to/the/project_ points to the root of the project to analyse.
 
-#### Find credentials in sources
+### Find credentials in sources
+
+_Keywords: #credentials #files #sources #hotwords_
 
 We assume the source code to analyse is not hosted on a git-based project, that is the reason why such tools like _git grep_ are not used.
 This feature will look in the files for some keywords like passwords or logins.
@@ -98,7 +107,9 @@ port
 pass
 ```
 
-#### Find missing signed-off fields
+### Find missing signed-off fields
+
+_Keywords: #git #commits #history #logs #signed #DCO_
 
 Depending to the project we may want to have signed-off commits so as to agree to the Developer Certificate of Origin (https://developercertificate.org/).
 Thus we may want to look in git commits messages if the signed-off field has been defined or not.
@@ -112,7 +123,9 @@ bash find-missing-developers-in-git-commits.sh --project path/to/project --logli
 The log limit is the value to pass to the `git log` command, e.g. _2.weeks_ or _3.years_.
 _path/to/the/project_ points to the root of the project to analyse.
 
-#### Find credits
+### Find credits
+
+_Keywords: #contributors #authors #credits #copyrights #files #hotwords_
 
 We can also check in sources if some hotwords are used, mainly about credits or copyrights notices.
 For example, "credit", "created by" or "(C)" can refer to third-party components we missed to list.
@@ -136,81 +149,106 @@ credit
 created
 ```
 
-#### List contributors from Git history
+### List contributors from Git history
+
+_Keywords: #contributors #git #history #logs_
 
 It is possible to make a list of contributors (first name, last name, email) using the remaining traces in the Git history.
 
 To run the feature:
 ```shell
-bash list-contributors-in-history.sh --target path/to.git/project --loglimit git-log-limit
+bash list-contributors-in-history.sh --project path/to.git/project --loglimit git-log-limit
 ```
 
 The log limit is the value to pass to the `git log` command, e.g. _2.weeks_ or _3.years_.
 _path/to/the/project_ points to the root of the project to analyse.
 
-_You may put the project to analyse in the toolbox/diver/data folder because relatives paths are still used in the script_
 
-### Play with GitHub web API
+### Extract email address from Git history
 
-### Prerequisites
+_Keywords: #contributors #git #logs #history #email_
+
+It is possible to make a list of contributors email addresses using the remaining traces in the Git history.
+
+To run the feature:
+```
+bash extract-emails-from-history.sh  --project path/to.git/project --loglimit git-log-limit
+```
+
+The log limit is the value to pass to the `git log` command, e.g. _2.weeks_ or _3.years_.
+_path/to/the/project_ points to the root of the project to analyse.
+
+# Play with GitHub web API
+
+## Prerequisites
 
 - Ruby Gem: `octokit 4.20.0`
 - Ruby Gem: `git 1.8.1`
 - Ruby 2.7.1
 
 - Create a [GitHub personal token](https://github.com/settings/tokens) and define it in the _configuration.rb_ file for the `GITHUB_PERSONAL_ACCESS_TOKEN` variable.
-- Define the _GitHub_ organization name in the _configuration.rb_ file for the `GITHUB_ORGANIZATION_NAME`variable. It will allow to send requests to query and modify your organization.
+- Define the _GitHub_ organization name in the _configuration.rb_ file for the `GITHUB_ORGANIZATION_NAME` variable. It will allow to send requests to query and modify your organization.
 - Define also the logins of the GitHub adminsitrators of your organization so as to prevent to change their permisssion for example.
 
-### Prepare project
+## Prepare project
 
 ```ruby
 gem install octokit
 gem intall git
 ```
 
-### Third-party elements
+## Third-party elements
 
 This project uses [Octokit](https://github.com/octokit/octokit.rb) Ruby client, licensed under MIT license.
 It also uses [Git](https://github.com/ruby-git/ruby-git) Ruby gem, under MIT license.
 
-### Features
+## Features
 
-#### Display usage
+### Display usage
 
 ```shell
 bash GitHubWizard.sh
 ```
 
-#### Get all members of organization
+### Get all members of organization
+
+_Keywords: #organisation #GitHub #members_
 
 Run the following command and check the file with the FILENAME_MEMBERS name (_configuration.rb_)
 ```shell
 bash GitHubWizard.sh get-all-members
 ```
 
-#### Get members of organization with 2FA disabled
+### Get members of organization with 2FA disabled
+
+_Keywords: #organisation #GitHub #members #2FA #security_
 
 Run the following command and check the file with the FILENAME_MEMBERS_2FA_DISABLED name (_configuration.rb_)
 ```shell
 bash GitHubWizard.sh get-members-2fa-disabled
 ```
 
-#### Get members of organization with "company" field undefined
+### Get members of organization with "company" field undefined
+
+_Keywords: #organisation #GitHub #members #company_
 
 Run the following command and check the file with the FILENAME_MEMBERS_UNDEFINED_COMPANY name (_configuration.rb_)
 ```shell
 bash GitHubWizard.sh get-members-without-company
 ```
 
-#### Get projects which don't have any assigned team
+### Get projects which don't have any assigned team
+
+_Keywords: #organisation #GitHub #members #teams_
 
 Run the following command and check the file with the FILENAME_PROJECTS_WITHOUT_TEAM name (_configuration.rb_)
 ```shell
 bash GitHubWizard.sh get-projects-without-team
 ```
 
-#### Get users which have undefined or hidden email
+### Get users which have undefined or hidden email
+
+_Keywords: #organisation #GitHub #members #email_
 
 Run the following command and check the file with the FILENAME_USERS_WITH_BAD_EMAILS name (_configuration.rb_)
 ```shell
@@ -219,6 +257,8 @@ bash GitHubWizard.sh get-users-with-bad-email
 
 ### Get users which may have not suitable fullname
 
+_Keywords: #organisation #GitHub #members #fullname #name #handle_
+
 Run the following command and check the file with the FILENAME_USERS_WITH_BAD_FULLNAMES name (_configuration.rb_)
 ```shell
 bash GitHubWizard.sh get-users-with-bad-fullname
@@ -226,12 +266,17 @@ bash GitHubWizard.sh get-users-with-bad-fullname
 
 ### Get repositories with undefined licenses
 
+_Keywords: #organisation #GitHub #projects #licenses_
+
 Run the following command and check the file with the FILENAME_PROJECTS_WITHOUT_LICENSES (_configuration.rb_)
 ```shell
 bash GitHubWizard.sh get-projects-without-licenses
 ```
 
 ### Get repositories which seems to be unconform (i.e. missing files)
+
+_Keywords: #organisation #GitHub #projects #guidelines #files_
+
 
 Run the following command and check the file with the FILENAME_PROJECTS_WITH_UNCONFORM_REPOSITORIES name (_configuration.rb_)
 ```shell
@@ -248,6 +293,8 @@ ssh-add .ssh/id_rsa
 
 ### Get repositories which seems to be empty or have not enough files
 
+_Keywords: #organisation #GitHub #projects #repository_
+
 Run the following command and check the file with the FILENAME_EMPTY_PROJECTS name (_configuration.rb_)
 ```shell
 bash GitHubWizard.sh get-empty-projects
@@ -263,6 +310,8 @@ ssh-add .ssh/id_rsa
 
 ### Define users permissions for all projects to "push"
 
+_Keywords: #organisation #GitHub #permissions #members #push_
+
 Run the following command to update rights of all users except GitHub teams and GitHub administrators, for all projects.
 Permissions will be set to "push", i.e. "write".
 
@@ -272,9 +321,56 @@ bash GitHubWizard.sh set-users-permissions-to-push
 
 ### Define teams permissions for all projects to "push"
 
+_Keywords: #organisation #GitHub #permissions #teams #push_
+
 Run the following command to update rights of all teams, for all projects.
 Permissions will be set to "push", i.e. "write".
 
 ```shell
 bash GitHubWizard.sh set-teams-permissions-to-push
 ```
+
+# Play with GitHub CLI (GH)
+
+## Prerequisites
+
+- GitHub CLI: version 1.3.1 (2021-09-30)
+- Ruby 2.7.1
+- Python 3
+
+Some configuration details must be defined (in _configuration.rb), like:
+1. `GITHUB_ORGANIZATION_NAME` to store the name of the organization
+2. `REPOSITORIES_CLONE_LOCATION_PATH` location of the clone sif you want to make a dump of the organisation repositories
+3. `REPOSITORIES_CLONE_URL_JSON_KEY` to choose the JSON key to get the repository URL from GitHub API
+
+## Prepare project
+
+```shell
+brew install gh
+```
+
+## Third-party elements
+
+This project uses [GitHub CLI](https://github.com/cli/cli), licensed under MIT license.
+
+## Features
+
+### Make a backup of organization repositories
+
+_Keywords: #organisation #GitHub #repositories #clones #dump_
+
+This feature allows to clone all repositories of the defined GitHub organization and save them in a specific folder.
+
+Run the following command:
+```shell
+bash GitHubWizard.sh backup-all-repositories-from-org
+```
+
+This script will trigger the _gh_ client which may ask you to athenticate to the GitHub API.
+Then the Shell script will pick configuration details from the Ruby configuration file; and triggers another Shell script for the data process. A Python code will be called too. Yep, I like scripting. And both Python, Ruby and Shell.
+_So imagine a python eating ruby gems in a shell. Gorgeous isn't it?_
+
+You need to define in the _configuration.rb_ files the Github organisation at **GITHUB_ORGANIZATION_NAME**.
+You have to also define the location to store clones at **REPOSITORIES_CLONE_LOCATION_PATH**
+
+**You should also have your _git_ environment ready, i.e. add your SSH private key if you clone by SSH for example.**

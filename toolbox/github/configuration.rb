@@ -6,8 +6,11 @@
 #
 # Author: Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com> et al.
 
-# Configuration to fill
-# ---------------------
+# Allow debug message or not
+$LOG_DEBUG = false
+
+# API, tokens, GitHub organization
+# --------------------------------
 
 # You have to create a personal access token on: https://github.com/settings/tokens
 $GITHUB_PERSONAL_ACCESS_TOKEN = ""
@@ -18,11 +21,11 @@ $GITHUB_ORGANIZATION_NAME = ""
 # Accurate list of users which are admins (i.e. GitHub organization owners), with login separated by ;
 $GITHUB_ORGANIZATION_ADMINS = ""
 
+# Repositories' content
+# ---------------------
+
 # Accurate list of file names without extensions each project should have, separated by ;
 $GIT_PROJECT_MANDATORY_FILES = ""
-
-# Allow debug message or not
-$LOG_DEBUG = false
 
 # Static configuration
 # --------------------
@@ -35,6 +38,9 @@ $RESULTS_PER_PAGE = 100
 
 # Expected numer of pages to use to load all elements (i.e. if 250 projects, we need 3 pages with 100 items per page)
 $EXPECTED_PAGE_COUNT = 3
+
+# Result files
+# ------------
 
 # Directory name for output files
 $OUTPUT_DIRECTORY_NAME = "data"
@@ -65,3 +71,12 @@ $FILENAME_PROJECTS_WITHOUT_LICENSES = "organization-projects-without-licenses.cs
 
 # File name to store empty repositories
 $FILENAME_EMPTY_PROJECTS = "organization-empty-projects.csv"
+
+# Repositories
+# ------------
+
+# Location to store all clones of repositories
+$REPOSITORIES_CLONE_LOCATION_PATH = ""
+
+# Field for URL to use for repositories cloning (within clone_url for HTTP and SSH_URL for SSH)
+$REPOSITORIES_CLONE_URL_JSON_KEY = "ssh_url"

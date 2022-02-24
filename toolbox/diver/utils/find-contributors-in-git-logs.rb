@@ -88,7 +88,7 @@ git_log_file = ARGV[1]
 # Check arguments
 # ---------------
 
-debug "Should process words of file '#{words_file}' for log file '#{git_log_file}' with delimiter  '#{COMMIT_DELIMITER}'"
+debug "Should process words of file '#{words_file}' for log file '#{git_log_file}' with delimiter '#{COMMIT_DELIMITER}'"
 
 if words_file.to_s.empty?
     error "The file to use '#{words_file}' is not defined"
@@ -120,11 +120,11 @@ if !File.file?(git_log_file)
     exit
 end
 
-debug "Will process words of file '#{words_file}' for log file '#{git_log_file}' with delimiter  '#{COMMIT_DELIMITER}'"
+debug "Will process words of file '#{words_file}' for log file '#{git_log_file}' with delimiter '#{COMMIT_DELIMITER}'"
 
-# ---------------
-# Processes files
-# -----------
+# -------------
+# Process files
+# -------------
 
 git_log_file_splits = File.read(git_log_file).split(COMMIT_DELIMITER)
 

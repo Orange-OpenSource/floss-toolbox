@@ -8,10 +8,10 @@
 # Author: Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com> et al.
 
 # Version.............: 1.0.0
-# Since...............: 24/02/2022
-# Description.........: Using the Git history, provide a list of contributors' email addresses
+# Since...............: 06/10/2021
+# Description.........: Using the Git history, provide a list of contributors
 #
-# Usage: bash extract-emails-from-history.sh --project path/to/project --loglimit LIMIT
+# Usage: bash list-contributors-in-history.sh --project path/to/project --loglimit LIMIT
 #
 # Exit codes:
 #       0 - normal exit
@@ -22,8 +22,8 @@
 
 set -euo pipefail
 
-VERSION="1.0.1"
-SCRIPT_NAME="list-contributors-in-history"
+VERSION="1.0.0"
+SCRIPT_NAME="extract-emails-from-history"
 
 # -------------
 # Configuration
@@ -52,6 +52,10 @@ GIT_LOG_TEMP_FILE="$GENERATED_FILES_PREFIX-git-log.temp.txt"
 
 # Path to Ruby-written script which will deal fastly in few lines with the git commits messages file
 GIT_LOG_RUBY_PARSER="./utils/extract-contributors-lists.rb"
+
+# Files to store the extracted email addresses
+EXTRACTED_EMAILS_FILE="$TEMP_FOLDER/$$-extracted-emails.txt"
+EXTRACTED_EMAILS_FILE_TEMP="$TEMP_FOLDER/$$-extracted-emails.temp.txt"
 
 # ---------
 # Functions
@@ -88,22 +92,37 @@ BadPreconditionsExit() {
 }
 
 # \fn UnexpectedResultExit
-# \brief Exist with UNEXPECTED_RESULT_EXIT_CODE code
+# \brief Exist with UNEXPECTED_RESULT_EXIT_CODE code after removal of work files
 UnexpectedResultExit(){
+    CleanFiles
     exit $UNEXPECTED_RESULT_EXIT_CODE
+}
+
+# \fn CleanFiles
+# \brief If existing removes the work files
+CleanFiles() {
+    if [ -f $HITS_FILE ]; then
+        rm $HITS_FILE
+    fi
+    if [ -f $REPORT_METRIC_FILE ]; then
+        rm $REPORT_METRIC_FILE
+    fi
+    if [ -f $GIT_LOG_TEMP_FILE ]; then
+        rm $GIT_LOG_TEMP_FILE
+    fi
+    if [ -f $EXTRACTED_EMAILS_FILE_TEMP ]; then
+        rm $EXTRACTED_EMAILS_FILE_TEMP
+    fi
 }
 
 # \fn PrepareFiles
 # \brief If existing removes the work files and then creates them
 PrepareFiles() {
-    if [ -f $HITS_FILE ]; then
-        rm $HITS_FILE
-    fi
+    CleanFiles
     touch $HITS_FILE
-    if [ -f $REPORT_METRIC_FILE ]; then
-        rm $REPORT_METRIC_FILE
-    fi
     touch $REPORT_METRIC_FILE
+    touch $EXTRACTED_EMAILS_FILE
+    touch $EXTRACTED_EMAILS_FILE_TEMP
 }
 
 # ----------------
@@ -208,7 +227,7 @@ fi
 cd "$current_folder"
 
 # -------------------------
-# Step 3 - Process the logs
+# Step 2 - Process the logs
 # -------------------------
 
 echo -e "🍥 Running Ruby script (named $GIT_LOG_RUBY_PARSER) to look in log file for contributors...\n"
@@ -217,10 +236,26 @@ echo -e "🍥 Running Ruby script (named $GIT_LOG_RUBY_PARSER) to look in log fi
 # Git log file is in toolbox/diver/data
 ruby $GIT_LOG_RUBY_PARSER "data/$GIT_LOG_TEMP_FILE" > $HITS_FILE
 
-echo -e "\n👌 Git log has been processed\n"
+echo -e "👌 Git log has been processed\n"
+
+# ----------------------
+# Step 3 - Extract email
+# ----------------------
+
+# We suppose contributors picked from Git history are written like:
+# jane doe <jane.doe@foo.bar>
+# So we extract and keep text between the <>
+
+echo -e "Extract emails from file '$HITS_FILE' and store them in '$EXTRACTED_EMAILS_FILE'\n"
+while IFS= read -r line
+do
+  email=`echo "$line" | sed -e 's/.*\<\(.*\)\>/\1/'`
+  echo "$email" >> "$EXTRACTED_EMAILS_FILE_TEMP"
+done < "$HITS_FILE"
+sort -t@ -k2 "$EXTRACTED_EMAILS_FILE_TEMP" | sort -u > "$EXTRACTED_EMAILS_FILE"
 
 # ------------------------------------------------------------
-# Step 5 - Metrics (words and files counts, hits, duration...)
+# Step 4 - Metrics (words and files counts, hits, duration...)
 # ------------------------------------------------------------
 
 commits_count=`grep -o 'commit [0-9A-Za-z]*' "data/$GIT_LOG_TEMP_FILE" | wc -l`
@@ -232,11 +267,13 @@ echo "📈 Count of contributors to process.........................: $contribut
 script_duration=$SECONDS
 echo "📈 Elapsed time.............................................: $(($script_duration / 60))' $(($script_duration % 60))''" >> $REPORT_METRIC_FILE
 
+
 # The end!
 
 rm $git_log_file
-echo "Reports available in $REPORT_METRIC_FILE:"
+echo -e "\nReports available in $REPORT_METRIC_FILE:"
 cat $REPORT_METRIC_FILE
 
 echo -e "\nEnd of $SCRIPT_NAME\n"
+CleanFiles
 NormalExit
