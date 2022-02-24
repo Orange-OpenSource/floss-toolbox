@@ -252,7 +252,7 @@ do
   email=`echo "$line" | sed -e 's/.*\<\(.*\)\>/\1/'`
   echo "$email" >> "$EXTRACTED_EMAILS_FILE_TEMP"
 done < "$HITS_FILE"
-sort -t@ -k2 "$EXTRACTED_EMAILS_FILE_TEMP" > "$EXTRACTED_EMAILS_FILE"
+sort -t@ -k2 "$EXTRACTED_EMAILS_FILE_TEMP" | sort -u > "$EXTRACTED_EMAILS_FILE"
 
 # ------------------------------------------------------------
 # Step 4 - Metrics (words and files counts, hits, duration...)
