@@ -144,7 +144,7 @@ It is possible to make a list of contributors (first name, last name, email) usi
 
 To run the feature:
 ```shell
-bash list-contributors-in-history.sh --target path/to.git/project --loglimit git-log-limit
+bash list-contributors-in-history.sh --project path/to.git/project --loglimit git-log-limit
 ```
 
 The log limit is the value to pass to the `git log` command, e.g. _2.weeks_ or _3.years_.
