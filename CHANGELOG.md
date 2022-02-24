@@ -13,6 +13,10 @@
 - [#19](https://github.com/Orange-OpenSource/floss-toolbox/issues/19) Backup of repositories
 - [#27](https://github.com/Orange-OpenSource/floss-toolbox/issues/27) Extract email addresses
 
+### Features (diver)
+
+- [#27](https://github.com/Orange-OpenSource/floss-toolbox/issues/27) Extract email addresses
+
 ## Version 2.1.0
 
 ### Features
