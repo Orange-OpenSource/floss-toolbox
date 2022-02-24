@@ -2,12 +2,14 @@
 
 Toolbox to help developers and open source referents to have cleaner projects in GitHub organizations.
 
-Toolbox is mainly written in Shell because this language is very efficient for files processing and provides a strong and rich standard API with cool primitives. Contains also Ruby scripts.
+Toolbox is mainly written in Shell because this language is very efficient for files processing and provides a strong and rich standard API with cool primitives. Contains also Ruby scripts. Ruby are shiny gems, I love them.
 
 ## Environment
 
 You must have a _BASH_ ready environment and also _Ruby_.
-For example, _Bash_ version here is _3.2.5_.
+Environment:
+- _Bash_ version is _3.2.5_
+- _Ruby_ version is 2.7.1
 
 ## Project tree
 
@@ -16,7 +18,7 @@ _toolbox/diver/utils_ contains the programs called from the _Shell_ main scripts
 _toolbox/diver/data_ contains some datasets and projects samples to work on.
 _toolbox/github_ contains _Ruby_ and _Shell_ scripts to use so as to deal with _GitHub_ REST API.
 
-**Please, note for this version you have to copy/paste your project in the _toolbox/diver/data_ folder because non-absolute paths and commands are used in the scripts**
+**Please, note for this version for some features you have to copy/paste your project in the _toolbox/diver/data_ folder because non-absolute paths and commands are used in the scripts**
 
 ## The "diver" of source code and commits
 
