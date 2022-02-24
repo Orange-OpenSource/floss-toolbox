@@ -329,6 +329,9 @@ bash GitHubWizard.sh backup-all-repositories-from-org
 
 This script will trigger the _gh_ client which may ask you to athenticate to the GitHub API.
 Then the Shell script will pick configuration details from the Ruby configuration file; and triggers another Shell script for the data process. A Python code will be called too. Yep, I like scripting. And both Python, Ruby and Shell.
-So imagine a python eating ruby gems in a shell. Gorgeous isn't it,
+_So imagine a python eating ruby gems in a shell. Gorgeous isn't it?_
+
+You need to define in the _configuration.rb_ files the Github organisation at **GITHUB_ORGANIZATION_NAME**.
+You have to also define the location to store clones at **REPOSITORIES_CLONE_LOCATION_PATH**
 
 **You should also have your _git_ environment ready, i.e. add your SSH private key if you clone by SSH for example.**
