@@ -383,7 +383,7 @@ This feature allows to check in all repositories of the GitHub organisation if t
 
 Run the following command:
 ```shell
-bash GitHubWizard.shvulnerabilities-alerts-for-all-repositories
+bash GitHubWizard.sh vulnerabilities-alerts-for-all-repositories
 ```
 
 This script will trigger the _gh_ client which may ask you to athenticate to the GitHub API.
