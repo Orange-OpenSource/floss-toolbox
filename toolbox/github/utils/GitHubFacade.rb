@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 # Software Name: floss-toolbox
-# SPDX-FileCopyrightText: Copyright (c) 2021 Orange
+# SPDX-FileCopyrightText: Copyright (c) 2021-2022 Orange
 # SPDX-License-Identifier: Apache-2.0
 #
 # This software is distributed under the Apache 2.0 license.
 #
 # Author: Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com> et al.
 
-# Version.............: 1.0.0
+# Version.............: 1.1.0
 # Since...............: 26/04/2021
 # Description.........: Received from arguments a feature to launch using GitHub API.
 # Loads configuration elements from configuration.rb, writes outputs using FileManager.rb and calls GitHubWrapper.rb for requests
@@ -51,7 +51,7 @@ if ARGV.length <= 0
 end
 feature_to_run=ARGV[0]
 
-if feature_to_run != "get-members-2fa-disabled" && feature_to_run != "get-all-members" && feature_to_run != "get-members-without-company" && feature_to_run != "get-projects-without-team" && feature_to_run != "get-users-with-bad-email" && feature_to_run != "get-users-with-bad-fullname" && feature_to_run != "get-projects-conformity" && feature_to_run != "get-projects-without-licenses" && feature_to_run != "get-empty-projects" && feature_to_run != "set-users-permissions-to-push" && feature_to_run != "set-teams-permissions-to-push"
+if feature_to_run != "get-members-2fa-disabled" && feature_to_run != "get-all-members" && feature_to_run != "get-members-without-company" && feature_to_run != "get-projects-without-team" && feature_to_run != "get-users-with-bad-email" && feature_to_run != "get-users-with-bad-fullname" && feature_to_run != "get-projects-conformity" && feature_to_run != "get-projects-without-licenses" && feature_to_run != "get-empty-projects" && feature_to_run != "set-users-permissions-to-push" && feature_to_run != "set-teams-permissions-to-push" 
     Log.error "Unknown feature. Exit now."
     exit $EXIT_UNKNOWN_FEATURE
 end

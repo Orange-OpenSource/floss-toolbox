@@ -1,24 +1,27 @@
 # CHANGELOG
 
+## Version 2.3.0
+
+### Features
+
+- [#20](https://github.com/Orange-OpenSource/floss-toolbox/issues/20) Find repositories with vulnerabilities (Dependabot)
+
 ## Version 2.2.0
 
-### Features (github)
+### Features
 
 - [#19](https://github.com/Orange-OpenSource/floss-toolbox/issues/19) Backup of repositories
-
-### Features (diver)
-
 - [#27](https://github.com/Orange-OpenSource/floss-toolbox/issues/27) Extract email addresses
 
 ## Version 2.1.0
 
-### Features (diver):
+### Features
 
 - [#13](https://github.com/Orange-OpenSource/floss-toolbox/issues/13) List all contributors of a Git repository using Git history
 
 ## Version 2.0.0
 
-### Features (github):
+### Features
 
 - [#4](https://github.com/Orange-OpenSource/floss-toolbox/issues/4) Get all members of GitHub organization
 - [#4](https://github.com/Orange-OpenSource/floss-toolbox/issues/4) Get members who don't have 2FA enabled
@@ -34,7 +37,7 @@
 
 ## Version 1.0.0
 
-### Features (diver):
+### Features
 
 - Find contributors in files using a base of words and producing logs
 - Find contributors in git logs
