@@ -1,4 +1,4 @@
-# floss-toolbox (version 2.2.0)
+# floss-toolbox (version 2.3.0)
 
 Toolbox to help developers and open source referents to have cleaner projects in GitHub organizations.
 
@@ -369,6 +369,27 @@ bash GitHubWizard.sh backup-all-repositories-from-org
 This script will trigger the _gh_ client which may ask you to athenticate to the GitHub API.
 Then the Shell script will pick configuration details from the Ruby configuration file; and triggers another Shell script for the data process. A Python code will be called too. Yep, I like scripting. And both Python, Ruby and Shell.
 _So imagine a python eating ruby gems in a shell. Gorgeous isn't it?_
+
+You need to define in the _configuration.rb_ files the Github organisation at **GITHUB_ORGANIZATION_NAME**.
+You have to also define the location to store clones at **REPOSITORIES_CLONE_LOCATION_PATH**
+
+**You should also have your _git_ environment ready, i.e. add your SSH private key if you clone by SSH for example.**
+
+### Check if there are vulnerabilities alerts in organisation repositories
+
+_Keywords: #organisation #GitHub #repositories #Dependabot #vulnerabilities_
+
+This feature allows to check in all repositories of the GitHub organisation if there are projects witch vulnerabilities alerts.
+
+Run the following command:
+```shell
+bash GitHubWizard.shvulnerabilities-alerts-for-all-repositories
+```
+
+This script will trigger the _gh_ client which may ask you to athenticate to the GitHub API.
+Then the Shell script will pick configuration details from the Ruby configuration file; and triggers another Shell script for the data process. A Python code will be called too.
+
+The Python code will process JSON data, the Sheel script will make a CURL request to to GraphQL API.
 
 You need to define in the _configuration.rb_ files the Github organisation at **GITHUB_ORGANIZATION_NAME**.
 You have to also define the location to store clones at **REPOSITORIES_CLONE_LOCATION_PATH**
