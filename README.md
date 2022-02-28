@@ -1,4 +1,4 @@
-# floss-toolbox (version 2.3.0)
+# floss-toolbox (version 2.4.0)
 
 Toolbox to help developers and open source referents to have cleaner projects in GitHub organizations.
 
@@ -386,12 +386,11 @@ Run the following command:
 bash GitHubWizard.sh vulnerabilities-alerts-for-all-repositories
 ```
 
-This script will trigger the _gh_ client which may ask you to athenticate to the GitHub API.
-Then the Shell script will pick configuration details from the Ruby configuration file; and triggers another Shell script for the data process. A Python code will be called too.
+This script will trigger the _gh_ client which may ask you to authenticate to the GitHub API.
+Then the Shell script will pick configuration details from the Ruby configuration file; and triggers another Shell script for the data process. A Python code will be called too to process JSON sent by GitHub API.
 
-The Python code will process JSON data, the Sheel script will make a CURL request to to GraphQL API.
+The Python code will process JSON data, the Shell script will previously make a CURL request to to GraphQL API.
 
-You need to define in the _configuration.rb_ files the Github organisation at **GITHUB_ORGANIZATION_NAME**.
-You have to also define the location to store clones at **REPOSITORIES_CLONE_LOCATION_PATH**
+You need to define in the _configuration.rb_ files the Github organisation at **GITHUB_ORGANIZATION_NAME** and also your GitHub personal token at ** GITHUB_PERSONAL_ACCESS_TOKEN**.
 
-**You should also have your _git_ environment ready, i.e. add your SSH private key if you clone by SSH for example.**
+**You should also have your _git_ environment ready i.e. add your SSH private key if you clone by SSH for example. _gh_ must be installed, and python3 be ready.**
