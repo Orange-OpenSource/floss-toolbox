@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version 2.4.0
+
+### Refactoring
+
+- [#37](https://github.com/Orange-OpenSource/floss-toolbox/issues/37) Refactor - Check of vulnerabilities #37
+
 ## Version 2.3.0
 
 ### Features
