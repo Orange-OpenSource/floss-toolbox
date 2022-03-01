@@ -72,7 +72,7 @@ DisplayUsages(){
     echo "bash $SCRIPT_NAME.sh --help"
     echo "bash $SCRIPT_NAME.sh --words WORDS --project path/to/project --loglimit LIMIT"
     echo -e "\t --words..........: Path to file containing words seperated by ; and line break"
-    echo -e "\t --project........: Path to git-versionned folder of project to analyse"
+    echo -e "\t --project........: Path to git-versioned folder of project to analyse"
     echo -e "\t --loglimit.......: [git log] option to define the LIMIT for commit searches, e.g. 2.weeks or 3.years"
 }
 
