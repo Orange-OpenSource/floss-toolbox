@@ -7,11 +7,11 @@
 #
 # Author: Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com> et al.
 
-# Version.............: 1.0.0
+# Version.............: 1.0.1
 # Since...............: 06/10/2021
 # Description.........: Using the Git history, provide a list of contributors
 #
-# Usage: bash list-contributors-in-history.sh --project path/to/project --loglimit LIMIT
+# Usage: bash extract-emails-from-history.sh --project path/to/project --loglimit LIMIT
 #
 # Exit codes:
 #       0 - normal exit
@@ -22,7 +22,7 @@
 
 set -euo pipefail
 
-VERSION="1.0.0"
+VERSION="1.0.1"
 SCRIPT_NAME="extract-emails-from-history"
 
 # -------------

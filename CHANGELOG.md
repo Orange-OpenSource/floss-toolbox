@@ -4,7 +4,8 @@
 
 ### Refactoring
 
-- [#37](https://github.com/Orange-OpenSource/floss-toolbox/issues/37) Refactor - Check of vulnerabilities #37
+- [#37](https://github.com/Orange-OpenSource/floss-toolbox/issues/37) Check of vulnerabilities #37
+- [#40](https://github.com/Orange-OpenSource/floss-toolbox/issues/40) Fix typo in doc and files
 
 ## Version 2.3.0
 
