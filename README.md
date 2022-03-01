@@ -19,7 +19,7 @@ _toolbox/diver/utils_ contains the programs called from the _Shell_ main scripts
 _toolbox/diver/data_ contains some datasets and projects samples to work on.
 _toolbox/github_ contains _Ruby_ and _Shell_ scripts to use so as to deal with _GitHub_ REST API.
 
-**Please, note for this version for some features you have to copy/paste your project in the _toolbox/diver/data_ folder because non-absolute paths and commands are used in the scripts**
+**Please, note for this version for some features you might have to copy/paste your project in the _toolbox/diver/data_ folder because non-absolute paths and commands are used in the scripts**
 
 # The "diver" of source code and commits
 
@@ -43,7 +43,7 @@ login
 
 _Keywords: #contributors #files #sources #hotwords_
 
-The tooblox can look in each file of a project for words.
+The toolbox can look in each file of a project for words.
 Such words may be developers' first names, last names, email addresses or whatever you want.
 A report is created with a curated list of found words in precise files.
 
@@ -52,7 +52,7 @@ To run the feature:
 bash find-contributor-in-files.sh --target path/to/project
 ```
 
-This script uses another _Shell_ script in _utils_ folder (_find-hotwords-files.sh_) and expects to have a defined and readable file in _data_ folder (named _contributors-entries.txt_). Thus only the project to scan can be given in parameter of the script, and the file of contributors to look for can be versionned or statically defined.
+This script uses another _Shell_ script in _utils_ folder (_find-hotwords-files.sh_) and expects to have a defined and readable file in _data_ folder (named _contributors-entries.txt_). Thus only the project to scan can be given in parameter of the script, and the file of contributors to look for can be versioned or statically defined.
 
 Note this version provides a naive implementation for file processing which should be improved to reduce the computation time.
 In fact this implementation is based on a three-levels-based loop: each line of each file is checked for each word.
@@ -86,7 +86,7 @@ To run the feature:
 bash find-credentials-in-files.sh --project path/to/project
 ```
 
-This script uses another _Shell_ script in _utils_ folder (_find-hotwords-files.sh_) and expect to have a defined and readable file in _data_ folder (named _contributors-entries.txt_). Thus only the project to scan can be given in parameter of the script, and the file of credentials to look for can be versionned or statically defined.
+This script uses another _Shell_ script in _utils_ folder (_find-hotwords-files.sh_) and expect to have a defined and readable file in _data_ folder (named _contributors-entries.txt_). Thus only the project to scan can be given in parameter of the script, and the file of credentials to look for can be versioned or statically defined.
 
 Note this version provides a naive implementation for file processing which should be improved to reduce the computation time.
 In fact this implementation is based on a three-levels-based loop: each line of each file is checked for each word.
@@ -135,7 +135,7 @@ To run the feature:
 bash find-credits-in-files.sh --target path/to/project
 ```
 
-This script uses another _Shell_ script in _utils_ folder (_find-hotwords-files.sh_) and expect to have a defined and readable file in _data_ folder (named _notices-entries.txt_). Thus only the project to scan can be given in parameter of the script, and the file of contributors to look for can be versionned or statically defined.
+This script uses another _Shell_ script in _utils_ folder (_find-hotwords-files.sh_) and expect to have a defined and readable file in _data_ folder (named _notices-entries.txt_). Thus only the project to scan can be given in parameter of the script, and the file of contributors to look for can be versioned or statically defined.
 
 Note this version provides a naive implementation for file processing which should be improved to reduce the computation time.
 In fact this implementation is based on a three-levels-based loop: each line of each file is checked for each word.
