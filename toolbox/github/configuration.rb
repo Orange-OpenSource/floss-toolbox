@@ -42,7 +42,7 @@ $EXPECTED_PAGE_COUNT = 3
 # Result files
 # ------------
 
-# Directory name for output files
+# Directory name for output files (not used in every scripts yet, beware)
 $OUTPUT_DIRECTORY_NAME = "data"
 
 # File name to store all memmbers of the organization
@@ -75,7 +75,7 @@ $FILENAME_EMPTY_PROJECTS = "organization-empty-projects.csv"
 # Repositories
 # ------------
 
-# Location to store all clones of repositories
+# Location to store all clones of repositories (absolute paths, no interpretation with ~ etc)
 $REPOSITORIES_CLONE_LOCATION_PATH = ""
 
 # Field for URL to use for repositories cloning (within clone_url for HTTP and SSH_URL for SSH)

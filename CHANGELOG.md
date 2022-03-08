@@ -2,6 +2,10 @@
 
 ## Version 2.4.0
 
+### Features
+
+- [#44](https://github.com/Orange-OpenSource/floss-toolbox/issues/44) Look for leaks
+
 ### Refactoring
 
 - [#37](https://github.com/Orange-OpenSource/floss-toolbox/issues/37) Check of vulnerabilities #37
