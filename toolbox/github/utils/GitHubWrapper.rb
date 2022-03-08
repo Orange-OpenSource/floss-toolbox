@@ -6,7 +6,7 @@
 #
 # Author: Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com> et al.
 
-require_relative 'configuration.rb'
+require_relative '../configuration.rb'
 require 'fileutils'
 require_relative 'GitWrapper.rb'
 require_relative 'IO.rb'
@@ -18,7 +18,7 @@ require 'uri'
 ##
 # Ruby module providing a quite small and simple wrapper for the GitHub API, here using only the Octokit library.
 # Allows to request the GitHub project to help projects and teams management.
-# Version: 1.0.0
+# Version: 1.1.0
 #
 # Written with Octokit version 4.20.0
 #

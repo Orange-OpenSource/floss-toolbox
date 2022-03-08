@@ -12,7 +12,7 @@
 # Parses the RUBY_CONFIGURATION_FILE to get the GitHub personal acces token to set as Ruby env. variable (OCTOKIT_ACCESS_TOKEN).
 
 #set -euxo pipefail
-VERSION="1.2.0"
+VERSION="1.3.0"
 
 # Common files
 # ------------
@@ -21,6 +21,7 @@ RUBY_CONFIGURATION_FILE="./configuration.rb"
 RUBY_MAIN_FILE="./utils/GitHubFacade.rb"
 SHELL_REPOSITORIES_DUMPER="./utils/dump-git-repositories-from-github.sh"
 SHELL_REPOSITORIES_VULN_CHECKER="./utils/check-vulnerabilities-from-github.sh"
+SHELL_REPOSITORIES_LEAKS_SCANNER="./utils/check-leaks-from-github.sh"
 
 # Exit codes
 # ----------
@@ -52,6 +53,7 @@ UsageAndExit(){
     echo -e "\t set-teams-permissions-to-push..................: For all projects update each team permission to 'push'"
     echo -e "\t backup-all-repositories-from-org...............: Dump all repositories in GitHub to a specific location in the disk"
     echo -e "\t vulnerabilities-alerts-for-all-repositories....: Check if there are vulnerabilities alerts in repositories of the defined organisation"
+    echo -e "\t look-for-leaks.................................: Checks with gitleaks if there are leaks in all repositories"
     echo "About exit codes:"
     echo -e "\t 0................: Normal exit"
     echo -e "\t 1................: Bad arguments given to the script"
@@ -83,7 +85,8 @@ if [ -z "$feature_to_run" ]; then
 	exit $EXIT_NO_FEATURE
 fi
 
-if [ $feature_to_run != "get-members-2fa-disabled" -a $feature_to_run != "get-all-members" -a $feature_to_run != "get-members-without-company" -a $feature_to_run != "get-projects-without-team" -a $feature_to_run != "get-users-with-bad-email" -a $feature_to_run != "get-users-with-bad-fullname" -a $feature_to_run != "get-projects-conformity" -a $feature_to_run != "get-projects-without-licenses" -a $feature_to_run != "get-empty-projects" -a $feature_to_run != "set-users-permissions-to-push" -a $feature_to_run != "set-teams-permissions-to-push" -a $feature_to_run != "backup-all-repositories-from-org" -a $feature_to_run != "vulnerabilities-alerts-for-all-repositories" ]; then
+# TODO: Refactor this line. Some day. I have a very big screen. Haven't you?
+if [ $feature_to_run != "get-members-2fa-disabled" -a $feature_to_run != "get-all-members" -a $feature_to_run != "get-members-without-company" -a $feature_to_run != "get-projects-without-team" -a $feature_to_run != "get-users-with-bad-email" -a $feature_to_run != "get-users-with-bad-fullname" -a $feature_to_run != "get-projects-conformity" -a $feature_to_run != "get-projects-without-licenses" -a $feature_to_run != "get-empty-projects" -a $feature_to_run != "set-users-permissions-to-push" -a $feature_to_run != "set-teams-permissions-to-push" -a $feature_to_run != "backup-all-repositories-from-org" -a $feature_to_run != "vulnerabilities-alerts-for-all-repositories" -a $feature_to_run != "look-for-leaks" ]; then
     echo "ERROR: '$feature_to_run' is unknown feature. Exit now"
     UsageAndExit
     exit $EXIT_UNKNOWN_FEATURE
@@ -132,12 +135,11 @@ if [ $feature_to_run == "backup-all-repositories-from-org" ]; then
 
     echo "Start Shell script ($SHELL_REPOSITORIES_DUMPER) for feature to dump repositories of '$GITHUB_ORGANIZATION_NAME' to '$REPOSITORIES_CLONE_LOCATION_PATH'"
     start_time_seconds=`date +%s`
-
     ./$SHELL_REPOSITORIES_DUMPER $CLONING_URL_JSON_KEY $GITHUB_ORGANIZATION_NAME $REPOSITORIES_CLONE_LOCATION_PATH
 
 # Need specific configuration and files for the specific features
 
-elif [ $feature_to_run == "vulnerabilities-alerts-for-all-repositories" ]; then
+elif [ $feature_to_run == "vulnerabilities-alerts-for-all-repositories" -o $feature_to_run == "look-for-leaks" ]; then
 
     if [ ! -f "$RUBY_MAIN_FILE" ]; then
         echo "ERROR: RUBY_MAIN_FILE does not exist. Exits now."
@@ -161,10 +163,21 @@ elif [ $feature_to_run == "vulnerabilities-alerts-for-all-repositories" ]; then
         exit $EXIT_BAD_SETUP
     fi
 
-    echo "Start Shell script ($SHELL_REPOSITORIES_VULN_CHECKER) to look for vulnerabilities in repositories of '$GITHUB_ORGANIZATION_NAME'"
+    OUTPUT_DIRECTORY_NAME=`cat $RUBY_CONFIGURATION_FILE | grep OUTPUT_DIRECTORY_NAME | cut -d= -f2 | tr -d '"'`
+    if [ -z "$OUTPUT_DIRECTORY_NAME" ]; then
+        echo "ERROR: Cannot define value for OUTPUT_DIRECTORY_NAME from RUBY_CONFIGURATION_FILE. Exits now."
+        exit $EXIT_BAD_SETUP
+    fi
+
     start_time_seconds=`date +%s`
     
-    ./$SHELL_REPOSITORIES_VULN_CHECKER $GITHUB_ORGANIZATION_NAME $CLONING_URL_JSON_KEY $GITHUB_PERSONAL_ACCES_TOKEN
+    if [ $feature_to_run == "vulnerabilities-alerts-for-all-repositories" ]; then
+        echo "Start Shell script ($SHELL_REPOSITORIES_VULN_CHECKER) to look for vulnerabilities in repositories of '$GITHUB_ORGANIZATION_NAME'"
+        ./$SHELL_REPOSITORIES_VULN_CHECKER $GITHUB_ORGANIZATION_NAME $CLONING_URL_JSON_KEY $GITHUB_PERSONAL_ACCES_TOKEN
+    else # $feature_to_run == "look-for-leaks"
+        echo "Start Shell script ($SHELL_REPOSITORIES_LEAKS_SCANNER) to look for leaks in repositories of '$GITHUB_ORGANIZATION_NAME'"
+        ./$SHELL_REPOSITORIES_LEAKS_SCANNER $GITHUB_ORGANIZATION_NAME $CLONING_URL_JSON_KEY $OUTPUT_DIRECTORY_NAME
+    fi
 
 # Need specific configuration and files for the other features
 
