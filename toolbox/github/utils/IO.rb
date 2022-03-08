@@ -6,12 +6,12 @@
 #
 # Author: Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com> et al.
 
-require_relative 'configuration.rb'
+require_relative '../configuration.rb'
 require 'fileutils'
 
 ##
 # Ruby module providing methods for reading and writing content from/to files.
-# Version: 1.0.0
+# Version: 1.1.0
 module FileManager
 
     ##

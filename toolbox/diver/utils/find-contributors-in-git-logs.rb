@@ -7,7 +7,7 @@
 #
 # Author: Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com> et al.
 
-# Version.............: 1.0.0
+# Version.............: 1.0.1
 # Since...............: 11/05/2020
 # Description.........: Checks if the LOG_FILE if words in WORDS_FILE exist or not.
 # Use the principle the LOG_FILE is a temporary file containg results of `git log` command.
@@ -17,7 +17,7 @@
 # Usage: ruby find-contributors-in-git-logs.rb WORDS_FILE LOGS_FILE"
 #
 
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 
 DEBUG = false
 COMMIT_DELIMITER = "commit" 
@@ -53,7 +53,7 @@ def debug(message)
     end
 end
 
-# Extractssfrom the commit bundle the hash.
+# Extracts from the commit bundle the hash.
 # Assumes the bundle is a whole commit log and the hash is in the first line.
 # @param commit The commit bundle to parse
 # @return The commit hash

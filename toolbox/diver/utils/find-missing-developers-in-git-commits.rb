@@ -7,7 +7,7 @@
 #
 # Author: Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com> et al.
 
-# Version.............: 1.0.0
+# Version.............: 1.0.1
 # Since...............: 11/05/2020
 # Description.........: Checks in the LOG_FILE if commits have been signed-off and if commits authors have been defined.
 # Use the principle the LOG_FILE is a temporary file containg results of `git log` command.
@@ -16,7 +16,7 @@
 # Usage: ruby find-missing-developers-in-git-commits.rb  LOGS_FILE
 #
 
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 
 DEBUG = false
 COMMIT_DELIMITER = "commit" 
@@ -29,7 +29,7 @@ AUTHOR_PATTERN = "Author:"
 
 # Displays the usage of the script
 def usage()
-    STDOUT.puts "USAGE: ruby find-missing-developers-in-git-commits.rb  LOGS_FILE"
+    STDOUT.puts "USAGE: ruby find-missing-developers-in-git-commits.rb LOGS_FILE"
 end
 
 # Logs a message in standard output

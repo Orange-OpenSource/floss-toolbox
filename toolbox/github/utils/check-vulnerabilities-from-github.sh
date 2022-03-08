@@ -11,7 +11,7 @@
 # Description.........: Received from arguments a GitHub organisation name and a GitHub personal token path to dump check if vulnerabilities alert exists
 
 #set -euxo pipefail
-VERSION="1.0.0"
+VERSION="1.0.1"
 
 # Config
 # ------
@@ -32,12 +32,12 @@ UsageAndExit(){
 	echo "USAGE:"
 	echo "bash check-vulnerabilities-from-github.sh ORGANISATION KEY TOKEN"
     echo "with ORGANISATION: GitHub organisation name"
-    echo "with KEY: JSON key to sue use cloning URL"
-    echo "with TOKEN: personal access token fir requests"
+    echo "with KEY: JSON key to use for cloning URL"
+    echo "with TOKEN: personal access token for requests"
     echo "About exit codes:"
 	echo -e "\t 0................: Normal exit"
 	echo -e "\t 1................: Bad arguments given to the script"
-    echo -e "\t 2................: File URL_EXTRACTER_FILE is not defined. Impossible to extract URL from API results."
+    echo -e "\t 2................: File URL_EXTRACTER_FILE or VULNERABILITY_PARSER is not defined. Impossible to extract URL from API results and parse them."
 	exit $EXIT_OK
 }
 
@@ -61,7 +61,7 @@ if [ ! -f "$URL_EXTRACTER_FILE" ]; then
     exit $EXIT_BAD_SETUP
 fi
 
-if [ -f "VULNERABILITY_PARSER" ]; then
+if [ ! -f "$VULNERABILITY_PARSER" ]; then
     echo "ERROR: Bad set up vulnerability parser. Exits now"
     UsageAndExit
     exit $EXIT_BAD_SETUP
@@ -137,7 +137,7 @@ echo "Dump directory created with name '$directory_name' at location `pwd`."
 
 number_of_url=`cat "$dir_before_dump/$url_for_cloning" | wc | awk {'print $1 '}`
 cpt=1
-echo "Dumping of $number_of_url repositories..."
+echo "Checking of $number_of_url repositories..."
 github_request_result_file_raw=".vulnerabilities-github.txt"
 github_request_result_file_json=".vulnerabilities-github.json"
 

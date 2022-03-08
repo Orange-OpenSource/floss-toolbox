@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## Version 2.4.0
+
+### Features
+
+- [#44](https://github.com/Orange-OpenSource/floss-toolbox/issues/44) Look for leaks
+- [#29](https://github.com/Orange-OpenSource/floss-toolbox/issues/29) Dry run
+
+### Refactoring
+
+- [#37](https://github.com/Orange-OpenSource/floss-toolbox/issues/37) Check of vulnerabilities #37
+- [#40](https://github.com/Orange-OpenSource/floss-toolbox/issues/40) Fix typo in doc and files
+
 ## Version 2.3.0
 
 ### Features
@@ -11,6 +23,10 @@
 ### Features
 
 - [#19](https://github.com/Orange-OpenSource/floss-toolbox/issues/19) Backup of repositories
+- [#27](https://github.com/Orange-OpenSource/floss-toolbox/issues/27) Extract email addresses
+
+### Features (diver)
+
 - [#27](https://github.com/Orange-OpenSource/floss-toolbox/issues/27) Extract email addresses
 
 ## Version 2.1.0

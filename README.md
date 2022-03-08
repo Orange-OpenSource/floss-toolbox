@@ -1,4 +1,4 @@
-# floss-toolbox (version 2.3.0)
+# floss-toolbox (version 2.4.0)
 
 Toolbox to help developers and open source referents to have cleaner projects in GitHub organizations.
 
@@ -19,7 +19,15 @@ _toolbox/diver/utils_ contains the programs called from the _Shell_ main scripts
 _toolbox/diver/data_ contains some datasets and projects samples to work on.
 _toolbox/github_ contains _Ruby_ and _Shell_ scripts to use so as to deal with _GitHub_ REST API.
 
-**Please, note for this version for some features you have to copy/paste your project in the _toolbox/diver/data_ folder because non-absolute paths and commands are used in the scripts**
+**Please, note for this version for some features you might have to copy/paste your project in the _toolbox/diver/data_ folder because non-absolute paths and commands are used in the scripts**
+
+# Dry run
+
+To be sure you have a ready-to-run project, you can run the dry-run command:
+
+```shell
+bash dry-run.sh
+```
 
 # The "diver" of source code and commits
 
@@ -43,7 +51,7 @@ login
 
 _Keywords: #contributors #files #sources #hotwords_
 
-The tooblox can look in each file of a project for words.
+The toolbox can look in each file of a project for words.
 Such words may be developers' first names, last names, email addresses or whatever you want.
 A report is created with a curated list of found words in precise files.
 
@@ -52,7 +60,7 @@ To run the feature:
 bash find-contributor-in-files.sh --target path/to/project
 ```
 
-This script uses another _Shell_ script in _utils_ folder (_find-hotwords-files.sh_) and expects to have a defined and readable file in _data_ folder (named _contributors-entries.txt_). Thus only the project to scan can be given in parameter of the script, and the file of contributors to look for can be versionned or statically defined.
+This script uses another _Shell_ script in _utils_ folder (_find-hotwords-files.sh_) and expects to have a defined and readable file in _data_ folder (named _contributors-entries.txt_). Thus only the project to scan can be given in parameter of the script, and the file of contributors to look for can be versioned or statically defined.
 
 Note this version provides a naive implementation for file processing which should be improved to reduce the computation time.
 In fact this implementation is based on a three-levels-based loop: each line of each file is checked for each word.
@@ -86,7 +94,7 @@ To run the feature:
 bash find-credentials-in-files.sh --project path/to/project
 ```
 
-This script uses another _Shell_ script in _utils_ folder (_find-hotwords-files.sh_) and expect to have a defined and readable file in _data_ folder (named _contributors-entries.txt_). Thus only the project to scan can be given in parameter of the script, and the file of credentials to look for can be versionned or statically defined.
+This script uses another _Shell_ script in _utils_ folder (_find-hotwords-files.sh_) and expect to have a defined and readable file in _data_ folder (named _contributors-entries.txt_). Thus only the project to scan can be given in parameter of the script, and the file of credentials to look for can be versioned or statically defined.
 
 Note this version provides a naive implementation for file processing which should be improved to reduce the computation time.
 In fact this implementation is based on a three-levels-based loop: each line of each file is checked for each word.
@@ -135,7 +143,7 @@ To run the feature:
 bash find-credits-in-files.sh --target path/to/project
 ```
 
-This script uses another _Shell_ script in _utils_ folder (_find-hotwords-files.sh_) and expect to have a defined and readable file in _data_ folder (named _notices-entries.txt_). Thus only the project to scan can be given in parameter of the script, and the file of contributors to look for can be versionned or statically defined.
+This script uses another _Shell_ script in _utils_ folder (_find-hotwords-files.sh_) and expect to have a defined and readable file in _data_ folder (named _notices-entries.txt_). Thus only the project to scan can be given in parameter of the script, and the file of contributors to look for can be versioned or statically defined.
 
 Note this version provides a naive implementation for file processing which should be improved to reduce the computation time.
 In fact this implementation is based on a three-levels-based loop: each line of each file is checked for each word.
@@ -386,12 +394,37 @@ Run the following command:
 bash GitHubWizard.sh vulnerabilities-alerts-for-all-repositories
 ```
 
-This script will trigger the _gh_ client which may ask you to athenticate to the GitHub API.
-Then the Shell script will pick configuration details from the Ruby configuration file; and triggers another Shell script for the data process. A Python code will be called too.
+This script will trigger the _gh_ client which may ask you to authenticate to the GitHub API.
+Then the Shell script will pick configuration details from the Ruby configuration file; and triggers another Shell script for the data process. A Python code will be called too to process JSON sent by GitHub API.
 
-The Python code will process JSON data, the Sheel script will make a CURL request to to GraphQL API.
+The Python code will process JSON data, the Shell script will previously make a CURL request to to GraphQL API.
 
-You need to define in the _configuration.rb_ files the Github organisation at **GITHUB_ORGANIZATION_NAME**.
-You have to also define the location to store clones at **REPOSITORIES_CLONE_LOCATION_PATH**
+You need to define in the _configuration.rb_ files the Github organisation at **GITHUB_ORGANIZATION_NAME** and also your GitHub personal token at ** GITHUB_PERSONAL_ACCESS_TOKEN**.
 
-**You should also have your _git_ environment ready, i.e. add your SSH private key if you clone by SSH for example.**
+**You should also have your _git_ environment ready i.e. add your SSH private key if you clone by SSH for example. _gh_ must be installed, and python3 be ready.**
+
+### Check if there are leaks in organisation repositories (using gitleaks)
+
+_Keywords: #organisation #GitHub #repositories #leaks #gitleaks_
+
+**Warning: This operation can take long time because of both Git histories and file trees parsing**
+
+This feature allows to check in all repositories of the GitHub organisation if there are leaks using the _gitleaks_ tool.
+
+Run the following command:
+```shell
+bash GitHubWizard.sh look-for-leaks
+```
+
+This script will trigger the _gh_ client which may ask you to authenticate to the GitHub API.
+Then the Shell script will pick configuration details from the Ruby configuration file ; and triggers another Shell script for the data process. A Python code will be called too to process JSON sent by GitHub API.
+
+The [gitleaks](https://github.com/zricethezav/gitleaks) tool will be used to look inside the repository. To install it:
+
+```shell
+brew install gitleaks
+```
+
+You need to define in the _configuration.rb_ files the Github organisation at **GITHUB_ORGANIZATION_NAME** and also your GitHub personal token at ** GITHUB_PERSONAL_ACCESS_TOKEN**.
+
+**You should also have your _git_ environment ready i.e. add your SSH private key if you clone by SSH for example. _gh_ must be installed, and _python3_ be ready. Obvisously _gitleaks_ must be installed**
