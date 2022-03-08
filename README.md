@@ -21,6 +21,14 @@ _toolbox/github_ contains _Ruby_ and _Shell_ scripts to use so as to deal with _
 
 **Please, note for this version for some features you might have to copy/paste your project in the _toolbox/diver/data_ folder because non-absolute paths and commands are used in the scripts**
 
+# Dry run
+
+To be sure you have a ready-to-run project, you can run the dry-run command:
+
+```shell
+bash dry-run.sh
+```
+
 # The "diver" of source code and commits
 
 ## File of words

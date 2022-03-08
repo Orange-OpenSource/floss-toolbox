@@ -5,6 +5,7 @@
 ### Features
 
 - [#44](https://github.com/Orange-OpenSource/floss-toolbox/issues/44) Look for leaks
+- [#29](https://github.com/Orange-OpenSource/floss-toolbox/issues/29) Dry run
 
 ### Refactoring
 
