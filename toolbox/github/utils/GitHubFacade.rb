@@ -7,7 +7,7 @@
 #
 # Author: Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com> et al.
 
-# Version.............: 1.1.0
+# Version.............: 1.2.0
 # Since...............: 26/04/2021
 # Description.........: Received from arguments a feature to launch using GitHub API.
 # Loads configuration elements from configuration.rb, writes outputs using FileManager.rb and calls GitHubWrapper.rb for requests
@@ -27,7 +27,7 @@
 #    6 = no feature started
 #    100 = bad prerequisites
 
-require_relative 'configuration.rb'
+require_relative '../configuration.rb'
 require_relative 'GitHubWrapper.rb'
 require_relative 'IO.rb'
 
