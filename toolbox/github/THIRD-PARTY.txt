@@ -12,6 +12,11 @@ Copyright: 2019 GitHub Inc.
 License Text URL: licenses/LICENSE-GitHubCLI.md
 Source Code: https://github.com/cli/cli
 
+Component: Gitleaks 
+Copyright: Copyright (c) 2019 Zachary Rice
+License Text URL: licenses/LICENSE-Gitleaks.txt
+Source Code: https://github.com/zricethezav/gitleaks
+
 Component: Octokit 
 Copyright: 2009-2017 Wynn Netherland, Adam Stacoviak, Erik Michaels-Ober
 License Text URL: licenses/LICENSE-Octokit.md
