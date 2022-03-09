@@ -5,6 +5,7 @@
 ### Features
 
 - [#32](https://github.com/Orange-OpenSource/floss-toolbox/issues/32) GitLab Auto Backup
+- [#49](https://github.com/Orange-OpenSource/floss-toolbox/issues/49) Look for leaks (GitLab)
 
 ### Bugs
 
@@ -14,7 +15,7 @@
 
 ### Features
 
-- [#44](https://github.com/Orange-OpenSource/floss-toolbox/issues/44) Look for leaks
+- [#44](https://github.com/Orange-OpenSource/floss-toolbox/issues/44) Look for leaks (GitHub)
 - [#29](https://github.com/Orange-OpenSource/floss-toolbox/issues/29) Dry run
 
 ### Refactoring

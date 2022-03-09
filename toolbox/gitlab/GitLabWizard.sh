@@ -18,6 +18,7 @@ VERSION="1.0.0"
 
 RUBY_CONFIGURATION_FILE="./configuration.rb"
 SHELL_REPOSITORIES_DUMPER="./utils/dump-git-repositories-from-gitlab.sh"
+SHELL_REPOSITORIES_LEAKS_SCANNER="./utils/check-leaks-from-gitlab.sh"
 
 # Exit codes
 # ----------
@@ -37,6 +38,7 @@ UsageAndExit(){
     echo "bash GitLabWizard.sh feature-to-launch"
     echo "with feature-to-launch:"
     echo -e "\t backup-all-repositories-from-org...............: Dump all repositories in GitHub to a specific location in the disk"
+    echo -e "\t look-for-leaks.................................: Checks with gitleaks if there are leaks in all repositories"
     echo "About exit codes:"
     echo -e "\t 0................: Normal exit"
     echo -e "\t 1................: Bad arguments given to the script"
@@ -68,7 +70,7 @@ if [ -z "$feature_to_run" ]; then
 	exit $EXIT_NO_FEATURE
 fi
 
-if [ $feature_to_run != "backup-all-repositories-from-org" ]; then
+if [ $feature_to_run != "backup-all-repositories-from-org" -a $feature_to_run != "look-for-leaks" ]; then
     echo "ERROR: '$feature_to_run' is unknown feature. Exit now"
     UsageAndExit
     exit $EXIT_UNKNOWN_FEATURE
@@ -88,7 +90,8 @@ if [ ! -f "$RUBY_CONFIGURATION_FILE" ]; then
     exit $EXIT_BAD_SETUP
 fi
 
-if [ $feature_to_run == "backup-all-repositories-from-org" ]; then
+# Features: backup-all-repositories-from-org, look-for-leaks
+if [ $feature_to_run == "backup-all-repositories-from-org" -o $feature_to_run == "look-for-leaks" ]; then
 
     if [ ! -f "$SHELL_REPOSITORIES_DUMPER" ]; then
         echo "ERROR: SHELL_REPOSITORIES_DUMPER does not exist. Exits now."
@@ -125,9 +128,17 @@ if [ $feature_to_run == "backup-all-repositories-from-org" ]; then
         exit $EXIT_BAD_SETUP
     fi
 
-    echo "Start Shell script ($SHELL_REPOSITORIES_DUMPER) for feature to dump repositories of '$GITLAB_ORGANIZATION_ID' to '$REPOSITORIES_CLONE_LOCATION_PATH'"
     start_time_seconds=`date +%s`
-    ./$SHELL_REPOSITORIES_DUMPER $CLONING_URL_JSON_KEY $GITLAB_ORGANIZATION_ID $RESULTS_PER_PAGE $REPOSITORIES_CLONE_LOCATION_PATH $GILAB_PERSONAL_ACCESS_TOKEN
+    
+    if [ $feature_to_run == "backup-all-repositories-from-org" ]; then
+        echo "Start Shell script ($SHELL_REPOSITORIES_DUMPER) for feature to dump repositories of '$GITLAB_ORGANIZATION_ID' to '$REPOSITORIES_CLONE_LOCATION_PATH'"
+        ./$SHELL_REPOSITORIES_DUMPER $CLONING_URL_JSON_KEY $GITLAB_ORGANIZATION_ID $RESULTS_PER_PAGE $REPOSITORIES_CLONE_LOCATION_PATH $GILAB_PERSONAL_ACCESS_TOKEN
+    fi
+
+    if [ $feature_to_run == "look-for-leaks" ]; then
+        echo "Start Shell script ($SHELL_REPOSITORIES_LEAKS_SCANNER) to look for leaks in repositories of '$GITLAB_ORGANIZATION_ID'"
+        ./$SHELL_REPOSITORIES_LEAKS_SCANNER $GITLAB_ORGANIZATION_ID $CLONING_URL_JSON_KEY $RESULTS_PER_PAGE $GILAB_PERSONAL_ACCESS_TOKEN
+    fi
 fi
 
 # Stats & bye
