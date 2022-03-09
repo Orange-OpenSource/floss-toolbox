@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version 2.5.0
+
+### Features
+
+- [#32](https://github.com/Orange-OpenSource/floss-toolbox/issues/32) GitLab Auto Backup
+
 ## Version 2.4.0
 
 ### Features

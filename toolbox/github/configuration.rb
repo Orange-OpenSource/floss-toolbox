@@ -9,8 +9,8 @@
 # Allow debug message or not
 $LOG_DEBUG = false
 
-# API, tokens, GitHub organization
-# --------------------------------
+# GitHub organization
+# -------------------
 
 # You have to create a personal access token on: https://github.com/settings/tokens
 $GITHUB_PERSONAL_ACCESS_TOKEN = ""
