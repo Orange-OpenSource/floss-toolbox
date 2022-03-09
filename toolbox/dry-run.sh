@@ -144,7 +144,8 @@ echo -e "\nCheck files..."
 CheckIfFileExists "gitlab/configuration.rb"
 CheckIfFileExists "gitlab/GitLabWizard.sh"
 CheckIfFileExists "gitlab/utils/dump-git-repositories-from-gitlab.sh"
-CheckIfFileExists "github/utils/extract-repos-field-from-json.py" # Stored in github folder but used by ump-git-repositories-from-gitlab.sh
+CheckIfFileExists "github/utils/extract-repos-field-from-json.py" # Stored in github folder but used by dump-git-repositories-from-gitlab.sh
+CheckIfFileExists "github/utils/count-leaks-nodes.py" # Stored in github folder but used by check-leaks-from-gitlab.sh
 
 # Runtimes and tools
 # ------------------

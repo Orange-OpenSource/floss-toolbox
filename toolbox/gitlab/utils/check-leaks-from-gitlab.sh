@@ -7,8 +7,8 @@
 #
 # Author: Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com> et al.
 
-# Since...............: 07/03/2022
-# Description.........: Received from arguments a GitHub organisation name, a cloning key and a target folder to dump repositories and check if there are leaks thanks to gitleaks
+# Since...............: 09/03/2022
+# Description.........: Check if there are leaks thanks to gitleaks in GitLab projects
 
 #set -euxo pipefail
 VERSION="1.0.0"
@@ -20,20 +20,21 @@ EXIT_OK=0
 EXIT_BAD_ARGUMENTS=1
 EXIT_BAD_SETUP=2
 
-URL_EXTRACTER_FILE="./utils/extract-repos-field-from-json.py"
-LEAKS_PARSER="./utils/count-leaks-nodes.py"
+URL_EXTRACTER_FILE="./../github/utils/extract-repos-field-from-json.py" # TODO: Extract this Python sript to common files
+LEAKS_PARSER="./../github/utils/count-leaks-nodes.py"                   # TODO: Extract this Python sript to common files
 GITLEAKS_FINAL_REPORT="$$_gitleaks-final_report-count.csv"
 
 # Functions
 # ---------
 
 UsageAndExit(){
-    echo "check-leaks-from-github.sh - Version $VERSION"
+    echo "check-leaks-from-gitlab.sh - Version $VERSION"
 	echo "USAGE:"
-	echo "bash check-leaks-from-github.sh ORGANISATION KEY TOKEN FOLDER_NAME"
-    echo "with ORGANISATION: GitHub organisation name"
+	echo "bash check-leaks-from-gitlab.sh ORGANISATION_ID KEY TOKEN FOLDER_NAME PAGINATION TOKEN"
+    echo "with ORGANISATION_ID: GitLab organisation ID"
     echo "with KEY: JSON key to use for cloning URL"
-    echo "with FOLDER_NAME: name of folder where repositories will be cloned"
+    echo "with PAGINATION: number if items per page"
+    echo "with TOKEN: GitLab access token"
     echo "About exit codes:"
 	echo -e "\t 0................: Normal exit"
 	echo -e "\t 1................: Bad arguments given to the script"
@@ -49,7 +50,7 @@ if [ "$#" -eq 0 ]; then
     exit $EXIT_OK
 fi
 
-if [ "$#" -ne 3 ]; then
+if [ "$#" -ne 4 ]; then
     echo "ERROR: Bad arguments number. Exits now"
     UsageAndExit
     exit $EXIT_BAD_ARGUMENTS
@@ -67,9 +68,9 @@ if [ ! -f "$LEAKS_PARSER" ]; then
     exit $EXIT_BAD_SETUP
 fi
 
-organisation_name=$1
-if [ -z "$organisation_name" -o "$organisation_name" == "" ]; then
-	echo "ERROR: No organisation name defined. Exits now."
+organisation_id=$1
+if [ -z "$organisation_id" -o "$organisation_id" == "" ]; then
+	echo "ERROR: No organisation ID defined. Exits now."
     UsageAndExit
 	exit $EXIT_BAD_ARGUMENTS
 fi
@@ -81,9 +82,16 @@ if [ -z "$cloning_url_key" -o "$cloning_url_key" == "" ]; then
 	exit $EXIT_BAD_ARGUMENTS
 fi
 
-dump_folder_name=$3
-if [ -z "$dump_folder_name" -o "$dump_folder_name" == "" ]; then
-	echo "ERROR: No dump folder name defined. Exits now."
+pagination=$3
+if [ -z "$pagination" ]; then
+	echo "ERROR: No pagination defined. Exits now."
+    UsageAndExit
+	exit $EXIT_BAD_ARGUMENTS
+fi
+
+access_token=$4
+if [ -z "$access_token" ]; then
+	echo "ERROR: No access token is defined. Exits now."
     UsageAndExit
 	exit $EXIT_BAD_ARGUMENTS
 fi
@@ -92,77 +100,69 @@ fi
 # ---
 
 echo "---------------------------------------------"
-echo "check-leaks-from-github.sh - Version $VERSION"
+echo "check-leaks-from-gitlab.sh - Version $VERSION"
 echo "---------------------------------------------"
 
-# Step 1 - Authenticate to GitHub using gh
+# Step 1 - Get all groups and subgroups projects
 
-echo "Authenticating to GitHub using gh client..."
-gh auth login
-echo "Authentication done."
+max_number_of_pages=10 # TODO: Remove magic number for max number of pages
+echo "Get all projects of groups and subgroups with $pagination items per page and arbitrary $max_number_of_pages pages max..."
 
-# Step 2 - Get repositories URL
+gitlab_projects_dump_file_raw="./data/.gitlab-projects-dump.raw.json"
+gitlab_projects_dump_file_clean="./data/.gitlab-projects-dump.clean.json"
+if [ -f "$gitlab_projects_dump_file_raw" ]; then
+    rm $gitlab_projects_dump_file_raw
+fi
 
-echo "Get repositories URL..."
-repositories_list_raw_temp_file=".repos-raw.json"
-repositories_list_clean_temp_file=".repos-clean.json"
-gh api -X GET "orgs/$organisation_name/repos" -F per_page=500 --paginate > $repositories_list_raw_temp_file 
-cat $repositories_list_raw_temp_file | sed -e "s/\]\[/,/g" > $repositories_list_clean_temp_file # Need to replace '][' by ',' because of pagination
-rm -f $repositories_list_raw_temp_file
-echo "All repositories URL got."
+for page in `seq 1 $max_number_of_pages`
+do
+    curl --silent --header "Authorization: Bearer $access_token" --location --request GET "https://gitlab.com/api/v4/groups/$organisation_id/projects?include_subgroups=true&per_page=$pagination&page=$page" >> $gitlab_projects_dump_file_raw
+done
 
-# Step 3 - Extract cloning URL
+# Step 2 - Extract repositories URL
 
-url_for_cloning=".url-for-cloning.txt"
+# Because of pagination (max 100 items par ages, arbitrary 10 pages here, raw pages are concatenated in one file.
+# So with have pasted JSON array in one file.
+# We see arrays with pattern ][. Merge all arrays be replacing cumulated JSON arrays, so replacing ][ by ,
+# By for empty pages we have the empty arrays ][ replaced by cumulated , so with remove them.
+# Then it remains the final array with a useless , with pattern },] replaced by }]
+cat $gitlab_projects_dump_file_raw | sed -e "s/\]\[/,/g" | tr -s ',' | sed -e "s/\}\,\]/\}\]/g" > $gitlab_projects_dump_file_clean 
+
+url_for_cloning="./data/.url-for-cloning.txt"
 echo "Extract cloning from results (using '$cloning_url_key' as JSON key)..."
-python3 "$URL_EXTRACTER_FILE" --field $cloning_url_key --source $repositories_list_clean_temp_file > $url_for_cloning
-rm -f $repositories_list_clean_temp_file
-echo "Extraction done."
+python3 "$URL_EXTRACTER_FILE" --field $cloning_url_key --source $gitlab_projects_dump_file_clean > $url_for_cloning
+repo_count=`cat $url_for_cloning | wc -l | sed 's/ //g'`
+echo "Extraction done. Found '$repo_count' items."
 
-# Step 4 - Create workspace directory
+# Step 3 - Clone repositories
 
 dir_before_dump=`pwd`
-echo "Creating workspace directory..."
-if [ -d "$dump_folder_name" ]; then
-    echo "Removing old directory"
-    rm -rf "$dump_folder_name"
-fi
-mkdir "$dump_folder_name"
+echo "Creating dump directory..."
 directory_name=$(date '+%Y-%m-%d')
-mkdir "$dump_folder_name/$directory_name"
-cd "$dump_folder_name/$directory_name"
-echo "Dump directory created with name '$dump_folder_name/$directory_name' at location `pwd`"
+cd "$repositories_location"
+if [ -d "$directory_name" ]; then
+    echo "Removing old directory with the same name"
+    rm -rf $directory_name
+fi
+mkdir $directory_name
+cd $directory_name
+echo "Dump directory created with name '$directory_name' at location `pwd`."
 
-# Step 5 - For each repository, clone it and look for leaks
-
-echo "status;project name;count of leaks" > $GITLEAKS_FINAL_REPORT
+# Step 4 - For each repository, clone it and make a scan
 
 number_of_url=`cat "$dir_before_dump/$url_for_cloning" | wc | awk {'print $1 '}`
-echo "WARNING: This operation can take a long time, because repositories must be cloned and gitleaks will analyze both files and git histories!"
-echo "Dumping of $number_of_url repositories..."
-
-# gitleaks may also throw following errors:
-# "ERR warning: inexact rename detection was skipped due to too many files."
-# "WRN warning: you may want to set your diff.renameLimit variable to at least 535 and retry the command."
-# TODO: Refactor this point
-previous_git_diff_rename_limit=$(git config --global diff.renameLimit) || true
-echo "Previous value for git configuration key diff.renameLimit: '$previous_git_diff_rename_limit'"
-git config --global diff.renameLimit 999999
-echo "New value for git configuration key diff.renameLimit: '$(git config --global diff.renameLimit)'"
-
 cpt=1
-cpt_clean_repo=0
-cpt_dirty_repo=0
-
+echo "Dumping of $number_of_url repositories..."
 while read url_line; do
 
-    # Step 5.1 - Clone
+    # Step 4.1 - Clone
     # WARNING: gitleaks looks inside files and git histories, so for old and big projects it will take too many time!
 
     echo "Cloning ($cpt / $number_of_url) '$url_line'..."
     git clone "$url_line"
 
-    # Step 5.2 - Extract new folder name
+    # Step 4.2 - Extract new folder name
+    
     target_folder_name=`basename -s .git $(echo "$url_line")`
     echo "Cloned in folder '$target_folder_name'"
 
@@ -174,7 +174,8 @@ while read url_line; do
     # In JSON report, a project as no leak if the result file containsan empty JSON array, i.e. only the line
     # []
     if [ -f "$gitleaks_file_name" ]; then
-        count=`python3 "../../$LEAKS_PARSER" --file "$gitleaks_file_name"`
+        pwd
+        count=`python3 "../$LEAKS_PARSER" --file "$gitleaks_file_name"`
 
         if [ "$count" -eq "0" ]; then
             echo "✅ ;$target_folder_name;$count" >> $GITLEAKS_FINAL_REPORT
@@ -189,10 +190,10 @@ while read url_line; do
         echo "💥 ERROR: The file '$gitleaks_file_name' does not exist, something has failed with gitleaks!"
     fi
 
+    rm -rf "$target_folder_name"
+
     cpt=$((cpt+1))
 
-    rm -rf "$target_folder_name"
-    
 done < "$dir_before_dump/$url_for_cloning"
 
 echo "Scanning done!"
@@ -202,7 +203,7 @@ echo "Scanning done!"
 git config --global diff.renameLimit $previous_git_diff_rename_limit # (default seems to be 0)
 
 mv $GITLEAKS_FINAL_REPORT "$dir_before_dump"
-echo "GitHub organisation name.............: '$organisation_name'"
+echo "GitLab organisation ID...............: '$organisation_id'"
 echo "Total number of projects.............: '$number_of_url'"
 echo "Number of projects with alerts.......: '$cpt_dirty_repo'"
 echo "Number of projects without alerts....: '$cpt_clean_repo'"

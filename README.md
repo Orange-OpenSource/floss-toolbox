@@ -427,7 +427,7 @@ brew install gitleaks
 
 You need to define in the _configuration.rb_ files the Github organisation at **GITHUB_ORGANIZATION_NAME** and also your GitHub personal token at ** GITHUB_PERSONAL_ACCESS_TOKEN**.
 
-**You should also have your _git_ environment ready i.e. add your SSH private key if you clone by SSH for example. _gh_ must be installed, and _python3_ be ready. Obvisously _gitleaks_ must be installed**
+**You should also have your _git_ environment ready i.e. add your SSH private key if you clone by SSH for example. _gh_ must be installed, and _python3_ be ready. Obviously _gitleaks_ must be installed**
 
 # Play with GitLab web API
 
@@ -464,3 +464,30 @@ You need to define in the _configuration.rb_ files the GitLab organisation ID at
 You have to also define the location to store clones at **REPOSITORIES_CLONE_LOCATION_PATH** and the access token at **GILAB_PERSONAL_ACCESS_TOKEN**.
 
 **You should also have your _git_ environment ready, i.e. add your SSH private key if you clone by SSH for example.**
+
+### Check if there are leaks in organisation repositories (using gitleaks)
+
+_Keywords: #organisation #GitLab #repositories #leaks #gitleaks_
+
+**Warning: This operation can take long time because of both Git histories and file trees parsing**
+
+This feature allows to check in all repositories of the GitHub organisation if there are leaks using the _gitleaks_ tool.
+
+Run the following command:
+```shell
+bash GitLabWizard.sh look-for-leaks
+```
+
+This script needs a GitLab personal access otken to make requests to GitLab API and also the GitLab group ID to use to get projects under it.
+The wizard Shell script will pick configuration details from the Ruby configuration file ; and triggers another Shell script for the data process. A Python code will be called too to process JSON sent by GItLab API..
+
+The [gitleaks](https://github.com/zricethezav/gitleaks) tool will be used to look inside the repository. To install it:
+
+```shell
+brew install gitleaks
+```
+
+You need to define in the _configuration.rb_ files the GitLab organisation ID at **GITLAB_ORGANIZATION_ID**.
+You have to also define the location to store clones at **REPOSITORIES_CLONE_LOCATION_PATH** and the access token at **GILAB_PERSONAL_ACCESS_TOKEN**.
+
+**You should also have your _git_ environment ready i.e. add your SSH private key if you clone by SSH for example. _gh_ must be installed, and _python3_ be ready. Obviously _gitleaks_ must be installed**
