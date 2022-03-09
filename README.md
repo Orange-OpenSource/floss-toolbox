@@ -1,4 +1,4 @@
-# floss-toolbox (version 2.4.0)
+# floss-toolbox (version 2.5.0)
 
 Toolbox to help developers and open source referents to have cleaner projects in GitHub organizations.
 
@@ -428,3 +428,39 @@ brew install gitleaks
 You need to define in the _configuration.rb_ files the Github organisation at **GITHUB_ORGANIZATION_NAME** and also your GitHub personal token at ** GITHUB_PERSONAL_ACCESS_TOKEN**.
 
 **You should also have your _git_ environment ready i.e. add your SSH private key if you clone by SSH for example. _gh_ must be installed, and _python3_ be ready. Obvisously _gitleaks_ must be installed**
+
+# Play with GitLab web API
+
+## Prerequisites
+
+- Ruby Gem: `git 1.8.1`
+- Python3
+
+- Create a [GitLab personal token](https://gitlab.com/-/profile/personal_access_tokens) and define it in the _configuration.rb_ file for the `GILAB_PERSONAL_ACCESS_TOKEN` variable.
+- Define the GitLab organization id in the _configuration.rb_ file for the `GITLAB_ORGANIZATION_ID` variable. It will allow to send requests to query and modify your organization.
+
+## Prepare project
+
+```ruby
+gem install git
+```
+
+## Features
+
+### Make a backup of organization repositories
+
+_Keywords: #organisation #GitLab #repositories #clones #dump_
+
+This feature allows to clone all repositories of the defined GitLab organization (groups and subgroups incldued) and save them in a specific folder.
+
+Run the following command:
+```shell
+bash GitLabWizard.sh backup-all-repositories-from-org
+```
+
+This script will get configuation details picked from the Ruby configuration file; and triggers another Shell script to make a CURL request to the GitLab endpoint. A Python code will be called so as to extract repositories URLbefoire the cloning operation.
+
+You need to define in the _configuration.rb_ files the GitLab organisation ID at **GITLAB_ORGANIZATION_ID**.
+You have to also define the location to store clones at **REPOSITORIES_CLONE_LOCATION_PATH** and the access token at **GILAB_PERSONAL_ACCESS_TOKEN**.
+
+**You should also have your _git_ environment ready, i.e. add your SSH private key if you clone by SSH for example.**
