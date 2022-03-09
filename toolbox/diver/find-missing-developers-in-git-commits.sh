@@ -7,7 +7,7 @@
 #
 # Author: Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com> et al.
 
-# Version.............: 1.1.0
+# Version.............: 1.1.1
 # Since...............: 12/05/2020
 # Description.........: Looks in git commits in the DCO has been used, i.e. if commits have been signed off.
 # Checks also if commits authors are defined.
@@ -21,7 +21,7 @@
 #       3 - problem with a command
 #
 
-VERSION="1.1.0"
+VERSION="1.1.1"
 SCRIPT_NAME="find-missing-developers-in-git-commits"
 
 # -------------
@@ -197,6 +197,11 @@ cd "$git_based_project"
 git_log_file="../$GIT_LOG_TEMP_FILE"
 if [ -f $git_log_file ]; then
     rm $git_log_file
+fi
+
+if [ "$( git log --oneline -5 2>/dev/null | wc -l )" -eq 0 ]; then
+    echo "Warning: Project '$git_based_project' is a git repository without any commit, that's weird"
+    NormalExit
 fi
 
 git log --since=$git_log_limit > $git_log_file

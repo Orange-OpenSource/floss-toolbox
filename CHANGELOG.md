@@ -6,6 +6,10 @@
 
 - [#32](https://github.com/Orange-OpenSource/floss-toolbox/issues/32) GitLab Auto Backup
 
+### Bugs
+
+- [#52](https://github.com/Orange-OpenSource/floss-toolbox/issues/52) Failure of git log if no commits
+
 ## Version 2.4.0
 
 ### Features
