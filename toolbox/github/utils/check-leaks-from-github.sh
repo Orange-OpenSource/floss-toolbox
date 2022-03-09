@@ -75,14 +75,14 @@ if [ -z "$organisation_name" -o "$organisation_name" == "" ]; then
 fi
 
 cloning_url_key=$2
-if [ -z "$cloning_url_key" -o "$organisation_name" == "" ]; then
+if [ -z "$cloning_url_key" -o "$cloning_url_key" == "" ]; then
 	echo "ERROR: No JSON key for URL. Exits now."
     UsageAndExit
 	exit $EXIT_BAD_ARGUMENTS
 fi
 
 dump_folder_name=$3
-if [ -z "$dump_folder_name" -o "$organisation_name" == "" ]; then
+if [ -z "$dump_folder_name" -o "$dump_folder_name" == "" ]; then
 	echo "ERROR: No dump folder name defined. Exits now."
     UsageAndExit
 	exit $EXIT_BAD_ARGUMENTS
@@ -195,7 +195,7 @@ while read url_line; do
     
 done < "$dir_before_dump/$url_for_cloning"
 
-echo "Looking done!"
+echo "Scanning done!"
 
 # Step 6 - Clean up
 
