@@ -9,6 +9,7 @@
 
 # Since...............: 08/03/2021
 # Description.........:  Make a dry-run of the project to check if everything is ready to use
+# Version.............: 1.1.0
 
 # Couts
 # -----
@@ -128,6 +129,24 @@ CheckIfFileExists "github/utils/GitHubWrapper.rb"
 CheckIfFileExists "github/utils/GitWrapper.rb"
 CheckIfFileExists "github/utils/IO.rb"
 
+# GitLab features
+# ---------------
+
+echo -e "\n----------------------------------"
+echo "Assertions for the GITLAB features"
+echo "----------------------------------"
+
+echo -e "\nCheck if main folder exists..."
+CheckIfDirectoryExists "gitlab"
+CheckIfDirectoryExists "gitlab/data"
+
+echo -e "\nCheck files..."
+CheckIfFileExists "gitlab/configuration.rb"
+CheckIfFileExists "gitlab/GitLabWizard.sh"
+CheckIfFileExists "gitlab/utils/dump-git-repositories-from-gitlab.sh"
+CheckIfFileExists "github/utils/extract-repos-field-from-json.py" # Stored in github folder but used by dump-git-repositories-from-gitlab.sh
+CheckIfFileExists "github/utils/count-leaks-nodes.py" # Stored in github folder but used by check-leaks-from-gitlab.sh
+
 # Runtimes and tools
 # ------------------
 
@@ -164,6 +183,7 @@ echo "Assertions for configuration file"
 echo "---------------------------------"
 
 echo -e "\nCheck for entries in configuration file..."
+
 CheckIfConfigurationKeyDefined "github/configuration.rb" "GITHUB_PERSONAL_ACCESS_TOKEN"
 CheckIfConfigurationKeyDefined "github/configuration.rb" "GITHUB_ORGANIZATION_NAME"
 CheckIfConfigurationKeyDefined "github/configuration.rb" "GITHUB_ORGANIZATION_ADMINS"
@@ -183,6 +203,13 @@ CheckIfConfigurationKeyDefined "github/configuration.rb" "FILENAME_PROJECTS_WITH
 CheckIfConfigurationKeyDefined "github/configuration.rb" "FILENAME_EMPTY_PROJECTS"
 CheckIfConfigurationKeyDefined "github/configuration.rb" "REPOSITORIES_CLONE_LOCATION_PATH"
 CheckIfConfigurationKeyDefined "github/configuration.rb" "REPOSITORIES_CLONE_URL_JSON_KEY"
+
+CheckIfConfigurationKeyDefined "gitlab/configuration.rb" "GILAB_PERSONAL_ACCESS_TOKEN"
+CheckIfConfigurationKeyDefined "gitlab/configuration.rb" "GITLAB_ORGANIZATION_ID"
+CheckIfConfigurationKeyDefined "gitlab/configuration.rb" "RESULTS_PER_PAGE"
+CheckIfConfigurationKeyDefined "gitlab/configuration.rb" "REPOSITORIES_CLONE_LOCATION_PATH"
+CheckIfConfigurationKeyDefined "gitlab/configuration.rb" "REPOSITORIES_CLONE_URL_JSON_KEY"
+
 echo -e "🔎  I hope configuration entries are - well - defined, be sure of that"
 
 # Conclusion

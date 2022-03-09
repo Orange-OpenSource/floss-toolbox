@@ -1,10 +1,21 @@
 # CHANGELOG
 
+## Version 2.5.0
+
+### Features
+
+- [#32](https://github.com/Orange-OpenSource/floss-toolbox/issues/32) GitLab Auto Backup
+- [#49](https://github.com/Orange-OpenSource/floss-toolbox/issues/49) Look for leaks (GitLab)
+
+### Bugs
+
+- [#52](https://github.com/Orange-OpenSource/floss-toolbox/issues/52) Failure of git log if no commits
+
 ## Version 2.4.0
 
 ### Features
 
-- [#44](https://github.com/Orange-OpenSource/floss-toolbox/issues/44) Look for leaks
+- [#44](https://github.com/Orange-OpenSource/floss-toolbox/issues/44) Look for leaks (GitHub)
 - [#29](https://github.com/Orange-OpenSource/floss-toolbox/issues/29) Dry run
 
 ### Refactoring

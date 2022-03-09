@@ -7,7 +7,7 @@
 #
 # Author: Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com> et al.
 
-# Version.............: 1.0.0
+# Version.............: 1.0.2
 # Since...............: 24/02/2022
 # Description.........: Using the Git history, provide a list of contributors' email addresses
 #
@@ -22,7 +22,7 @@
 
 set -euo pipefail
 
-VERSION="1.0.1"
+VERSION="1.0.2"
 SCRIPT_NAME="list-contributors-in-history"
 
 # -------------
@@ -196,6 +196,11 @@ if [ -f $git_log_file ]; then
 fi
 
 touch "$git_log_file"
+
+if [ "$( git log --oneline -5 2>/dev/null | wc -l )" -eq 0 ]; then
+    echo "Warning: Project '$git_based_project' is a git repository without any commit, that's weird"
+    NormalExit
+fi
 
 git log --since=$git_log_limit > $git_log_file
 
