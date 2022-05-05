@@ -81,5 +81,5 @@ $REPOSITORIES_CLONE_LOCATION_PATH = ""
 # Field for URL to use for repositories cloning (within clone_url for HTTP and SSH_URL for SSH) - GitHub API response
 $REPOSITORIES_CLONE_URL_JSON_KEY = "ssh_url"
 
-# Flag to rise if GitHub archived projects must not be scanned for leaks or vulnerabilities
+# Flag to rise if GitHub archived projects must not be scanned for leaks or vulnerabilities ('true' or 'false')
 $EXCLUDE_GITHUB_ARCHIVED_PROJECTS_FOR_SCANS = true

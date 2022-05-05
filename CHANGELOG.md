@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version 2.6.0
+
+### Features
+
+- [#57](https://github.com/Orange-OpenSource/floss-toolbox/issues/57)  Look for leaks and vulnerabilities with exclusion of projects
+
 ## Version 2.5.0
 
 ### Features
