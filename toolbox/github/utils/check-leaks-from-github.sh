@@ -11,7 +11,7 @@
 # Description.........: Received from arguments a GitHub organisation name, a cloning key and a target folder to dump repositories and check if there are leaks thanks to gitleaks
 
 #set -euxo pipefail
-VERSION="1.0.0"
+VERSION="2.0.0"
 
 # Config
 # ------
@@ -20,7 +20,7 @@ EXIT_OK=0
 EXIT_BAD_ARGUMENTS=1
 EXIT_BAD_SETUP=2
 
-URL_EXTRACTER_FILE="./utils/extract-repos-field-from-json.py"
+FIELD_EXTRACTER_FILE="./utils/extract-repos-field-from-json.py"
 LEAKS_PARSER="./utils/count-leaks-nodes.py"
 GITLEAKS_FINAL_REPORT="$$_gitleaks-final_report-count.csv"
 
@@ -30,10 +30,11 @@ GITLEAKS_FINAL_REPORT="$$_gitleaks-final_report-count.csv"
 UsageAndExit(){
     echo "check-leaks-from-github.sh - Version $VERSION"
 	echo "USAGE:"
-	echo "bash check-leaks-from-github.sh ORGANISATION KEY TOKEN FOLDER_NAME"
+	echo "bash check-leaks-from-github.sh ORGANISATION KEY TOKEN FOLDER_NAME EXCLUDE_ARCHIVED"
     echo "with ORGANISATION: GitHub organisation name"
     echo "with KEY: JSON key to use for cloning URL"
     echo "with FOLDER_NAME: name of folder where repositories will be cloned"
+    echo "with EXCLUDE_ARCHIVED: true to exlude archived projects from scans, false to scan them"
     echo "About exit codes:"
 	echo -e "\t 0................: Normal exit"
 	echo -e "\t 1................: Bad arguments given to the script"
@@ -49,13 +50,13 @@ if [ "$#" -eq 0 ]; then
     exit $EXIT_OK
 fi
 
-if [ "$#" -ne 3 ]; then
+if [ "$#" -ne 4 ]; then
     echo "ERROR: Bad arguments number. Exits now"
     UsageAndExit
     exit $EXIT_BAD_ARGUMENTS
 fi
 
-if [ ! -f "$URL_EXTRACTER_FILE" ]; then
+if [ ! -f "$FIELD_EXTRACTER_FILE" ]; then
     echo "ERROR: Bad set up for URL extracter. Exits now"
     UsageAndExit
     exit $EXIT_BAD_SETUP
@@ -88,6 +89,13 @@ if [ -z "$dump_folder_name" -o "$dump_folder_name" == "" ]; then
 	exit $EXIT_BAD_ARGUMENTS
 fi
 
+exclude_archived=$4
+if [ -z "$exclude_archived" -o "$exclude_archived" == "" ]; then
+	echo "ERROR: No flag defined about archived projects exclusions. Exits now."
+    UsageAndExit
+	exit $EXIT_BAD_ARGUMENTS
+fi
+
 # Run
 # ---
 
@@ -114,12 +122,23 @@ echo "All repositories URL got."
 # Step 3 - Extract cloning URL
 
 url_for_cloning=".url-for-cloning.txt"
-echo "Extract cloning from results (using '$cloning_url_key' as JSON key)..."
-python3 "$URL_EXTRACTER_FILE" --field $cloning_url_key --source $repositories_list_clean_temp_file > $url_for_cloning
-rm -f $repositories_list_clean_temp_file
-echo "Extraction done."
+echo "Extract cloning URL from results (using '$cloning_url_key' as JSON key)..."
+python3 "$FIELD_EXTRACTER_FILE" --field $cloning_url_key --source $repositories_list_clean_temp_file > $url_for_cloning
+echo "Extraction of URL done."
 
-# Step 4 - Create workspace directory
+# Step 4 - Extract repo archived state
+
+# WARNING: We assume the two runs of FIELD_EXTRACTER_FILE script will be made on the same JSON file and with exactly the same iteration order.
+# Thus the project with previous run having its URL at Nth position will have is archived status at that same Nth position.
+# If the process of JSON file cannot confirm the iteration order is the same between runs or if another request is made with several JSON files,
+# the following code block may be quite crappy.
+repos_archived_state=".repos-archived-state.txt"
+echo "Extract archived status from results (using 'archived' as JSON key)..."
+python3 "$FIELD_EXTRACTER_FILE" --field 'archived' --source $repositories_list_clean_temp_file > $repos_archived_state
+rm -f $repositories_list_clean_temp_file
+echo "Extraction of archived status done."
+
+# Step 5 - Create workspace directory
 
 dir_before_dump=`pwd`
 echo "Creating workspace directory..."
@@ -133,7 +152,7 @@ mkdir "$dump_folder_name/$directory_name"
 cd "$dump_folder_name/$directory_name"
 echo "Dump directory created with name '$dump_folder_name/$directory_name' at location `pwd`"
 
-# Step 5 - For each repository, clone it and look for leaks
+# Step 6 - For each repository, clone it and look for leaks
 
 echo "status;project name;count of leaks" > $GITLEAKS_FINAL_REPORT
 
@@ -152,41 +171,64 @@ echo "New value for git configuration key diff.renameLimit: '$(git config --glob
 
 cpt=1
 cpt_clean_repo=0
+cpt_archived_repo=0
+cpt_archived_repo_ignored=0
 cpt_dirty_repo=0
 
 while read url_line; do
+   
+    # Step 6.1 - Get repo archived status
+    # We assume the line N has 'True' or 'False' value syntax and matches the project with URL at line N
+    repo_archived_status=`awk "NR==$cpt" "../../$repos_archived_state"`
+    if [ "$repo_archived_status" == "True" ]; then
+        cpt_archived_repo=$((cpt_archived_repo+1))
+    fi
 
-    # Step 5.1 - Clone
-    # WARNING: gitleaks looks inside files and git histories, so for old and big projects it will take too many time!
+    # We assume URL are like "git@github.com:org/repo.js.git"
+    repo_name=`echo "$url_line" | cut -d"/" -f 2 | awk -F".git" '{print $1}'`
+    echo "Checking ($cpt / $number_of_url) '$repo_name'. Is archived? $repo_archived_status"
+    
+    # Step 6.2 - Clone
+    
+    # Clone if archived projects not excluded (i.e. keep all) or if the archived proejcts are excluded and the current repo is not archived
+    if [[ ( "$exclude_archived" == "false" ) || ( "$exclude_archived" != "false" && "$repo_archived_status" != "True" ) ]]; then
+        
+        # WARNING: gitleaks looks inside files and git histories, so for old and big projects it will take too many time!
 
-    echo "Cloning ($cpt / $number_of_url) '$url_line'..."
-    git clone "$url_line"
+        echo "Cloning ($cpt / $number_of_url) '$url_line'..."
+        git clone "$url_line"
 
-    # Step 5.2 - Extract new folder name
-    target_folder_name=`basename -s .git $(echo "$url_line")`
-    echo "Cloned in folder '$target_folder_name'"
+        # Step 5.2 - Extract new folder name
+        target_folder_name=`basename -s .git $(echo "$url_line")`
+        echo "Cloned in folder '$target_folder_name'"
 
-    # Step 5.3 - Look for leaks
+        # Step 5.3 - Look for leaks
 
-    gitleaks_file_name="$target_folder_name".gitleaks.json
-    gitleaks detect --report-format json --report-path "$gitleaks_file_name" --source "$target_folder_name" || true # gitleaks returns 1 if leaks found
+        gitleaks_file_name="$target_folder_name".gitleaks.json
+        gitleaks detect --report-format json --report-path "$gitleaks_file_name" --source "$target_folder_name" || true # gitleaks returns 1 if leaks found
 
-    # In JSON report, a project as no leak if the result file containsan empty JSON array, i.e. only the line
-    # []
-    if [ -f "$gitleaks_file_name" ]; then
-        count=`python3 "../../$LEAKS_PARSER" --file "$gitleaks_file_name"`
+        # In JSON report, a project has no leak if the result file contains an empty JSON array, i.e. only the line
+        # []
+        if [ -f "$gitleaks_file_name" ]; then
+            count=`python3 "../../$LEAKS_PARSER" --file "$gitleaks_file_name"`
 
-        if [ "$count" -eq "0" ]; then
-            echo "✅ ;$target_folder_name;$count" >> $GITLEAKS_FINAL_REPORT
-            echo "✅ Gitleaks did not find leaks for '$target_folder_name'"
-            cpt_clean_repo=$((cpt_clean_repo+1))
+            if [ "$count" -eq "0" ]; then
+                echo "✅ ;$target_folder_name;$count" >> $GITLEAKS_FINAL_REPORT
+                echo "✅ Gitleaks did not find leaks for '$target_folder_name'"
+                cpt_clean_repo=$((cpt_clean_repo+1))
+            else
+                echo "🚨;$target_folder_name;$count" >> $GITLEAKS_FINAL_REPORT
+                echo "🚨 WARNING! gitleaks may have found '$count' leaks for '$target_folder_name'"
+                cpt_dirty_repo=$((cpt_dirty_repo+1))
+            fi
         else
-            echo "🚨;$target_folder_name;$count" >> $GITLEAKS_FINAL_REPORT
-            echo "🚨 WARNING! gitleaks may have found '$count' leaks for '$target_folder_name'"
-            cpt_dirty_repo=$((cpt_dirty_repo+1))
+            echo "💥 ERROR: The file '$gitleaks_file_name' does not exist, something has failed with gitleaks!"
         fi
-    else
-        echo "💥 ERROR: The file '$gitleaks_file_name' does not exist, something has failed with gitleaks!"
+    
+    else # Excluded archived projects
+        echo "🔒;$target_folder_name;-1" >> $GITLEAKS_FINAL_REPORT
+        echo "🔒 NOTE: Archived project, not cloned nor scanned for leaks"
+        cpt_archived_repo_ignored=$((cpt_archived_repo_ignored+1))
     fi
 
     cpt=$((cpt+1))
@@ -202,15 +244,20 @@ echo "Scanning done!"
 git config --global diff.renameLimit $previous_git_diff_rename_limit # (default seems to be 0)
 
 mv $GITLEAKS_FINAL_REPORT "$dir_before_dump"
-echo "GitHub organisation name.............: '$organisation_name'"
-echo "Total number of projects.............: '$number_of_url'"
-echo "Number of projects with alerts.......: '$cpt_dirty_repo'"
-echo "Number of projects without alerts....: '$cpt_clean_repo'"
-echo "Final report is......................: '$GITLEAKS_FINAL_REPORT'"
+
+echo "------------------------------------------------"
+echo "GitHub organisation name .......................: '$organisation_name'"
+echo "Total number of projects .......................: '$number_of_url'"
+echo "Number of projects with alerts 🚨...............: '$cpt_dirty_repo'"
+echo "Number of projects without alerts 😊............: '$cpt_clean_repo'"
+echo "Number of archived projects not scanned 🔒......: '$cpt_archived_repo_ignored'"
+echo "Number of archived projects ....................: '$cpt_archived_repo'"
+echo "------------------------------------------------"
 
 rm -rf "$target_folder_name"
 rm -rf "$dir_before_dump/$url_for_cloning"
 cd "$dir_before_dump"
 rm -f $url_for_cloning
+rm -f $repos_archived_state
 
 echo "Check done!"
