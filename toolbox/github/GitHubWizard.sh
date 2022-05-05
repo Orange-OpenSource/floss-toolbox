@@ -12,7 +12,7 @@
 # Parses the RUBY_CONFIGURATION_FILE to get the GitHub personal acces token to set as Ruby env. variable (OCTOKIT_ACCESS_TOKEN).
 
 #set -euxo pipefail
-VERSION="1.3.0"
+VERSION="1.4.0"
 
 # Common files
 # ------------
@@ -169,14 +169,20 @@ elif [ $feature_to_run == "vulnerabilities-alerts-for-all-repositories" -o $feat
         exit $EXIT_BAD_SETUP
     fi
 
+    EXCLUDE_GITHUB_ARCHIVED_PROJECTS_FOR_SCANS=`cat $RUBY_CONFIGURATION_FILE | grep EXCLUDE_GITHUB_ARCHIVED_PROJECTS_FOR_SCANS | cut -d= -f2 | tr -d '"'`
+    if [ -z "$EXCLUDE_GITHUB_ARCHIVED_PROJECTS_FOR_SCANS" ]; then
+        echo "ERROR: Cannot define value for EXCLUDE_GITHUB_ARCHIVED_PROJECTS_FOR_SCANS from RUBY_CONFIGURATION_FILE. Exits now."
+        exit $EXIT_BAD_SETUP
+    fi
+
     start_time_seconds=`date +%s`
     
     if [ $feature_to_run == "vulnerabilities-alerts-for-all-repositories" ]; then
-        echo "Start Shell script ($SHELL_REPOSITORIES_VULN_CHECKER) to look for vulnerabilities in repositories of '$GITHUB_ORGANIZATION_NAME'"
-        ./$SHELL_REPOSITORIES_VULN_CHECKER $GITHUB_ORGANIZATION_NAME $CLONING_URL_JSON_KEY $GITHUB_PERSONAL_ACCES_TOKEN
+        echo "Start Shell script ($SHELL_REPOSITORIES_VULN_CHECKER) to look for vulnerabilities in repositories of '$GITHUB_ORGANIZATION_NAME' (excluding archived projects: '$EXCLUDE_GITHUB_ARCHIVED_PROJECTS_FOR_SCANS')"
+        ./$SHELL_REPOSITORIES_VULN_CHECKER $GITHUB_ORGANIZATION_NAME $CLONING_URL_JSON_KEY $GITHUB_PERSONAL_ACCES_TOKEN $EXCLUDE_GITHUB_ARCHIVED_PROJECTS_FOR_SCANS
     else # $feature_to_run == "look-for-leaks"
-        echo "Start Shell script ($SHELL_REPOSITORIES_LEAKS_SCANNER) to look for leaks in repositories of '$GITHUB_ORGANIZATION_NAME'"
-        ./$SHELL_REPOSITORIES_LEAKS_SCANNER $GITHUB_ORGANIZATION_NAME $CLONING_URL_JSON_KEY $OUTPUT_DIRECTORY_NAME
+        echo "Start Shell script ($SHELL_REPOSITORIES_LEAKS_SCANNER) to look for leaks in repositories of '$GITHUB_ORGANIZATION_NAME' (excluding archived projects: '$EXCLUDE_GITHUB_ARCHIVED_PROJECTS_FOR_SCANS')"
+        ./$SHELL_REPOSITORIES_LEAKS_SCANNER $GITHUB_ORGANIZATION_NAME $CLONING_URL_JSON_KEY $OUTPUT_DIRECTORY_NAME $EXCLUDE_GITHUB_ARCHIVED_PROJECTS_FOR_SCANS
     fi
 
 # Need specific configuration and files for the other features

@@ -9,7 +9,7 @@
 
 # Since...............: 08/03/2021
 # Description.........:  Make a dry-run of the project to check if everything is ready to use
-# Version.............: 1.1.0
+# Version.............: 1.2.0
 
 # Couts
 # -----
@@ -203,6 +203,7 @@ CheckIfConfigurationKeyDefined "github/configuration.rb" "FILENAME_PROJECTS_WITH
 CheckIfConfigurationKeyDefined "github/configuration.rb" "FILENAME_EMPTY_PROJECTS"
 CheckIfConfigurationKeyDefined "github/configuration.rb" "REPOSITORIES_CLONE_LOCATION_PATH"
 CheckIfConfigurationKeyDefined "github/configuration.rb" "REPOSITORIES_CLONE_URL_JSON_KEY"
+CheckIfConfigurationKeyDefined "github/configuration.rb" "EXCLUDE_GITHUB_ARCHIVED_PROJECTS_FOR_SCANS"
 
 CheckIfConfigurationKeyDefined "gitlab/configuration.rb" "GILAB_PERSONAL_ACCESS_TOKEN"
 CheckIfConfigurationKeyDefined "gitlab/configuration.rb" "GITLAB_ORGANIZATION_ID"
