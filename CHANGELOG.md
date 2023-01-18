@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version 2.7.0
+
+### Features
+
+- [#2](https://github.com/Orange-OpenSource/floss-toolbox/issues/2)  Package manager - Extract from files downloaded dependencies
+
 ## Version 2.6.0
 
 ### Features

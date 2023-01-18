@@ -1,8 +1,8 @@
-# floss-toolbox (version 2.6.0)
+# floss-toolbox
 
-Toolbox to help developers and open source referents to have cleaner projects in GitHub organizations.
+Toolbox to help developers and open source referents to have cleaner projects in _GitHub_ organizations, and more.
 
-Toolbox is mainly written in Shell because this language is very efficient for files processing and provides a strong and rich standard API with cool primitives. Contains also Ruby scripts. Ruby are shiny gems, I love them.
+Toolbox is mainly written in _Shell_ because this language is very efficient for files processing and provides a strong and rich standard API with cool primitives. Contains also _Ruby_ scripts. _Ruby_ are shiny gems, I love them. _Python_ is also used.
 
 # Environment
 
@@ -10,7 +10,7 @@ You must have a _BASH_ ready environment and also _Ruby_.
 Environment:
 - _Bash_ version **3.2.5**
 - _Ruby_ version **2.7.1**
-- _Python_ version **3**
+- _Python_ version **3.7**
 
 # Project tree
 
@@ -491,3 +491,148 @@ You need to define in the _configuration.rb_ files the GitLab organisation ID at
 You have to also define the location to store clones at **REPOSITORIES_CLONE_LOCATION_PATH** and the access token at **GILAB_PERSONAL_ACCESS_TOKEN**.
 
 **You should also have your _git_ environment ready i.e. add your SSH private key if you clone by SSH for example. _gh_ must be installed, and _python3_ be ready. Obviously _gitleaks_ must be installed**
+
+# Licenses inventory
+
+_Keywords: #licenses #SPM #Gradle #Maven #NPMJS #package_
+
+## Disclaimer
+
+*This is quite experimental feature, with results which must be verified by a human.*
+*You must deal with platforms and APIs policies and fullfil them.*
+
+*This is software is distributed on "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.*
+
+## Prerequisites
+
+- _Python_ version **3.7**
+- _Python_ modules like _requests_, _xmltodict_ and _pytest-6.2.5_
+
+```shell
+pip install requests
+pip install xmltodict
+pip install pytest
+```
+
+## Fill the configuration file
+
+Before to use the tools, the file 'config.ini' is at the root of the project, you have to personalize this file.
+
+For example:
+```text
+[dependencies]
+# Where to find the package manager file above
+path to parse = /absolute/path/to/project_to_test
+# The name of the package manager file to process store above
+the filenames = go.mod
+# For outputs
+path to store the licenses = /absolute/path/to/project_to_test-licences
+```
+
+where:
+- `path to parse` contains the dependencies manager files
+- `the filenames` contains the names of the dependencies manager files to process
+- `path to store the licenses` points to a folder containing the result files
+
+## Run the tool
+
+```shell
+python3 sources/main.py
+```
+
+## Run the tests
+ 
+To run integration tests:
+
+```shell
+ python3 -m pytest tests/integrationtests/test_search.py
+```
+
+To run unit tests:
+
+```shell
+ python3 -m pytest tests/unittests/test_config.py
+ python3 -m pytest tests/unittests/test_dependency.py
+ python3 -m pytest tests/unittests/test_files_check_the_directory.py
+ python3 -m pytest tests/unittests/test_files_get_the_filenames_by_name.py
+ python3 -m pytest tests/unittests/test_files_write_and_read.py
+ python3 -m pytest tests/unittests/test_filter.py
+ python3 -m pytest tests/unittests/test_parsing.py
+ python3 -m pytest tests/unittests/test_parsing_download.py
+```
+
+or just
+
+```shell
+ python3 -m pytest tests/unittests/*.py
+```
+
+## Managed platforms
+
+### Go language
+
+`go.mod` files are managed.
+Depending to the `go.mod` definitions implementation, some cases can be applied:
+
+1. github.com will be requested if dependency starts by _github.com_
+2. pkg.go.dev will be requested for other cases
+
+For example:
+
+```text
+module ...
+
+go 1.15
+
+require (
+	emperror.dev/errors v0.4.2                                          // <--- Request pkg.go.dev
+	github.com/antihax/optional v1.0.0                                  // <--- Request github.com
+	golang.org/x/tools v0.0.0-20201014231627-1610a49f37af // indirect   // <--- Not managed
+	k8s.io/api v0.20.2                                                  // <--- Request pkg.go.dev
+	sigs.k8s.io/controller-runtime v0.7.2                               // <--- Request pkg.go.dev
+)
+```
+
+### Gradle environment
+
+`build.gradle` and `build.gradle.kts` files are managed.
+Some platforms are requests like _Maven Central_ (search.maven.org) and _GitHub_ (through api.github.com).
+
+**Warning: unstable feature with maybe _Maven Central_ troubles.*
+
+### Rust environment
+
+`Cargo.lock` files are also managed.
+The _crates.io_ platform will be requested for each dependency found.
+
+### JavaScript/Node.js environment
+
+`package.json` files can be parsed too.
+The platform _npmjs.org_ wll be requested for each dependency found.
+
+### Swift / SPM environment
+
+If you use _Swift Package Manager_, you can parse `Package.swift` file.
+The tool will extract the dependency URLs and request some forges, e.g. _github.com_.
+
+### Dart / Flutter environment
+
+The `pubspec.yaml` files can also be processed.
+For each dependency found, the _pub.dev_ platform will be requested.
+
+### Python
+
+_Coming soon_
+
+### CocoaPods
+
+_Coming soon_
+
+## Notes
+
+The tool downloads a file for each dependency it found in the dependency manager file.
+These files containing the licenses are in directory like 'licenses/sub_folder', where 'sub_folder' is created for each platform: Gradle, Rust, etc.
+
+A file 'licenses.txt' is created in the folder 'licenses'. 
+This file contains the list of the licenses for each dependency.
+To personalize this folder, use 'config.ini'.
