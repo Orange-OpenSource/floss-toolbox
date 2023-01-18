@@ -1,3 +1,4 @@
 # Authors
 
-* Pierre-Yves Lapersonne <pierreyves(dot)lapersonne(at)orange(dot)com>
+* Laurent BODY <laurent(dot)body(at)orange(dot)com>
+* Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com>

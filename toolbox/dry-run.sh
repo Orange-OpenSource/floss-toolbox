@@ -9,7 +9,7 @@
 
 # Since...............: 08/03/2021
 # Description.........:  Make a dry-run of the project to check if everything is ready to use
-# Version.............: 1.2.0
+# Version.............: 2.00
 
 # Couts
 # -----
@@ -72,6 +72,25 @@ CheckIfConfigurationKeyDefined(){
     else
         echo "✅  Cool! '$2' is defined"
         NUMBER_OF_SUCCESS=$((NUMBER_OF_SUCCESS+1))
+    fi
+    NUMBER_OF_CHECKS=$((NUMBER_OF_CHECKS+1))
+}
+
+# $1 - The name of the Python module to test
+CheckIfPythonModuleInstalled(){
+    if [ "$#" -ne 1 ]; then
+        echo "❌  WARNING: It seems '$1' is not ready"
+        NUMBER_OF_ERRORS=$((NUMBER_OF_ERRORS+1))  
+    else
+        python3 -c "import $1"
+        result=$?
+        if [ $result == "0" ]; then
+            echo "✅  Cool! Python module '$1' is available"
+            NUMBER_OF_SUCCESS=$((NUMBER_OF_SUCCESS+1))
+        else
+            echo "❌  WARNING: It seems Python modyle '$1' is not installed"
+            NUMBER_OF_ERRORS=$((NUMBER_OF_ERRORS+1))  
+        fi
     fi
     NUMBER_OF_CHECKS=$((NUMBER_OF_CHECKS+1))
 }
@@ -147,6 +166,72 @@ CheckIfFileExists "gitlab/utils/dump-git-repositories-from-gitlab.sh"
 CheckIfFileExists "github/utils/extract-repos-field-from-json.py" # Stored in github folder but used by dump-git-repositories-from-gitlab.sh
 CheckIfFileExists "github/utils/count-leaks-nodes.py" # Stored in github folder but used by check-leaks-from-gitlab.sh
 
+# Licenses Inventory tool
+# -----------------------
+
+echo -e "\n------------------------------------------"
+echo "Assertions for the Licenses Inventory tool"
+echo "------------------------------------------"
+
+echo -e "\nCheck if main foldesr exists..."
+CheckIfDirectoryExists "LicensesInventory"
+CheckIfDirectoryExists "LicensesInventory/sources"
+CheckIfDirectoryExists "LicensesInventory/tests"
+
+echo -e "\nCheck sources files..."
+CheckIfFileExists "LicensesInventory/sources/common/__init__.py"
+CheckIfFileExists "LicensesInventory/sources/common/datas.py"
+CheckIfFileExists "LicensesInventory/sources/common/files.py"
+CheckIfFileExists "LicensesInventory/sources/common/filters.py"
+CheckIfFileExists "LicensesInventory/sources/common/names.py"
+CheckIfFileExists "LicensesInventory/sources/configuration/__init__.py"
+CheckIfFileExists "LicensesInventory/sources/configuration/config.py"
+CheckIfFileExists "LicensesInventory/sources/dependencies/__init__.py"
+CheckIfFileExists "LicensesInventory/sources/dependencies/dependencies.py"
+CheckIfFileExists "LicensesInventory/sources/dependencies/parsings.py"
+CheckIfFileExists "LicensesInventory/sources/search/__init__.py"
+CheckIfFileExists "LicensesInventory/sources/search/downloads.py"
+CheckIfFileExists "LicensesInventory/sources/search/parsings.py"
+CheckIfFileExists "LicensesInventory/sources/search/search.py"
+CheckIfFileExists "LicensesInventory/sources/__init__.py"
+CheckIfFileExists "LicensesInventory/sources/main.py"
+CheckIfFileExists "LicensesInventory/config.ini"
+
+echo -e "\nCheck integration test files..."
+CheckIfFileExists "LicensesInventory/tests/integrationtests/data/gradle/dependency_github.gradle"
+CheckIfFileExists "LicensesInventory/tests/integrationtests/data/gradle/dependency_maven_central.gradle"
+CheckIfFileExists "LicensesInventory/tests/integrationtests/data/gradle/license_github.json"
+CheckIfFileExists "LicensesInventory/tests/integrationtests/data/gradle/license_maven_central.pom"
+CheckIfFileExists "LicensesInventory/tests/integrationtests/data/gradle/version_maven_central.json"
+CheckIfFileExists "LicensesInventory/tests/integrationtests/data/package_json/license_package_json.html"
+CheckIfFileExists "LicensesInventory/tests/integrationtests/data/package_json/package.json"
+CheckIfFileExists "LicensesInventory/tests/integrationtests/data/roast/Cargo.lock"
+CheckIfFileExists "LicensesInventory/tests/integrationtests/data/config.ini"
+CheckIfFileExists "LicensesInventory/tests/integrationtests/test_search.py"
+
+echo -e "\nCheck unit test files..."
+CheckIfFileExists "LicensesInventory/tests/unittests/data/config/config_no_data.ini"
+CheckIfFileExists "LicensesInventory/tests/unittests/data/config/config.ini"
+CheckIfFileExists "LicensesInventory/tests/unittests/data/get_content_by_name/my_gradle_file.txt"
+CheckIfFileExists "LicensesInventory/tests/unittests/data/get_content_by_name/package.json"
+CheckIfFileExists "LicensesInventory/tests/unittests/data/gradle/license_github.json"
+CheckIfFileExists "LicensesInventory/tests/unittests/data/gradle/license_maven_central.pom"
+CheckIfFileExists "LicensesInventory/tests/unittests/data/gradle/version.json"
+CheckIfFileExists "LicensesInventory/tests/unittests/data/package_json/license_package_json.html"
+CheckIfFileExists "LicensesInventory/tests/unittests/data/roast/license_roast.json"
+CheckIfFileExists "LicensesInventory/tests/unittests/data/dependency_a.txt"
+CheckIfFileExists "LicensesInventory/tests/unittests/data/dependency_b.txt"
+CheckIfFileExists "LicensesInventory/tests/unittests/data/filename_by_name.test"
+CheckIfFileExists "LicensesInventory/tests/unittests/data/files_read.txt"
+CheckIfFileExists "LicensesInventory/tests/unittests/test_config.py"
+CheckIfFileExists "LicensesInventory/tests/unittests/test_dependency.py"
+CheckIfFileExists "LicensesInventory/tests/unittests/test_files_check_the_directory.py"
+CheckIfFileExists "LicensesInventory/tests/unittests/test_files_get_the_filenames_by_name.py"
+CheckIfFileExists "LicensesInventory/tests/unittests/test_files_write_and_read.py"
+CheckIfFileExists "LicensesInventory/tests/unittests/test_filter.py"
+CheckIfFileExists "LicensesInventory/tests/unittests/test_parsing_download.py"
+CheckIfFileExists "LicensesInventory/tests/unittests/test_parsing.py"
+
 # Runtimes and tools
 # ------------------
 
@@ -174,6 +259,11 @@ CheckIfRuntimeExists "Gitleaks" "gitleaks version" "8.3.0"
 
 echo -e "\nCheck for Octokit..."
 CheckIfRuntimeExists "Octokit (Ruby gem)" "gem list | grep octokit" "4.20.0"
+
+echo -e "\nCheck for Python modules"
+CheckIfPythonModuleInstalled "requests"
+CheckIfPythonModuleInstalled "xmltodict"
+CheckIfPythonModuleInstalled "pytest"
 
 # Configuration file
 # ------------------
@@ -212,6 +302,23 @@ CheckIfConfigurationKeyDefined "gitlab/configuration.rb" "REPOSITORIES_CLONE_LOC
 CheckIfConfigurationKeyDefined "gitlab/configuration.rb" "REPOSITORIES_CLONE_URL_JSON_KEY"
 
 echo -e "🔎  I hope configuration entries are - well - defined, be sure of that"
+
+# Units tests
+# -----------
+
+echo -e "\n----------------------------------"
+echo "Run of LicensesInventory unit test"
+echo "----------------------------------"
+
+cd "LicensesInventory/"
+
+echo -e "\nRunning integration tests..."
+python3 -m pytest tests/integrationtests/*.py
+
+echo -e "\nRunning unit tests..."
+python3 -m pytest tests/unittests/*.py
+
+cd ".."
 
 # Conclusion
 # ----------
