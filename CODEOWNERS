@@ -1,0 +1,19 @@
+# Just to help to find people able to deal with pull requests
+
+# Top-level files
+
+.gitignore @pylapp
+AUTHORS @pylapp
+CHANGELOG.md @pylapp
+CITATION.cff @pylapp
+CONTRIBUTORS @pylapp
+LICENSE.txt @pylapp
+README.md @pylapp
+
+# Toolbox
+
+/toolbox/LicensesInventory/ @pylapp laurent.body@orange.com
+/toolbox/diver/ @pylapp
+/toolbox/github/ @pylapp
+/toolbox/gitlab/ @pylapp
+/toolbox/dry-run.sh @pylapp
