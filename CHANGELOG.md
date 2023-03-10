@@ -9,6 +9,7 @@
 ### Changes
 
 - [#70](https://github.com/Orange-OpenSource/floss-toolbox/issues/70) Project - Update copyright
+- [#69](https://github.com/Orange-OpenSource/floss-toolbox/issues/69) Project - Improve README
 
 ## Version 2.7.1
 

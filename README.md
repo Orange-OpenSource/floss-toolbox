@@ -38,6 +38,64 @@ To be sure you have a ready-to-run project, you can run the dry-run command:
 bash dry-run.sh
 ```
 
+Table of Contents
+=================
+   * [The diver of source code and commits](#the-diver-of-source-code-and-commits)
+      * [Input file](#file-of-words)
+      * [Features](#features)
+         * [Find contributors in files](#find-contributors-in-files)
+         * [Find contributors in Git log](#find-contributors-in-git-log)
+         * [Find credentials in sources](#find-credentials-in-sources)
+         * [Find missing signed-off fields](#find-credentials-in-sources)
+         * [Find credits](#find-credits)
+         * [List conributors from Git history](#list-contributors-from-git-history)
+		 * [Extract email adress from Git history](#extract-email-address-from-git-history)
+    * [Play with GitHub web API](#play-with-github-web-api)
+      * [Prerequisites](#prerequisites)
+      * [Prepare project](#prepare-project)
+      * [Third party elements](#third-party-elements)
+      * [Features](#features-1)
+         * [Display usages](#display-usage)
+         * [Get all members of organization](#get-all-members-of-organization)
+         * [Get members of organization with 2FA disabled](#get-members-of-organization-with-2fa-disabled)
+         * [Get members of organization with "company" field undefined](#get-members-of-organization-with-company-field-undefined)
+         * [Get projects which don't have any assigned team](#get-projects-which-dont-have-any-assigned-team)
+         * [Get users which have undefined or hidden email](#get-users-which-have-undefined-or-hidden-email)
+         * [Get users which may have not suitable fullname](#get-users-which-maye-have-not-suitable-fullname)
+         * [Get repositories with undefined licenses](#get-repositories-with-undefined-licenses)
+         * [Get repositories which seems to be unconform (i.e. missing files)](#get-repositories-which-seems-to-be-unconform-ie-missing-files)
+         * [Get repositories which seems to be empty or have not enough files](#get-repositories-which-seems-to-be-empty-or-have-not-enough-files)
+         * [Define users permissions for all projects to "push"](#define-users-permissions-for-all-projects-to-push)
+         * [Define teams permissions for all projects to "push"](#define-teams-permissions-for-all-projects-to-push)
+    * [Play with GitHub CLI (GH)](#play-with-github-cli-gh)
+      * [Prerequisites](#prerequisites-1)
+      * [Prepare project](#prepare-project-1)
+      * [Third party elements](#third-party-elements-1)
+      * [Features](#features-2)
+         * [Make a backup of organization repositories](#make-a-backup-of-organization-repositories)
+         * [Check if there are vulnerabilities alerts in organisation repositories](#check-if-there-are-vulnerabilities-alerts-in-organisation-repositories)
+         * [Check if there are leaks in organisation repositories (using gitleaks)](#check-if-there-are-leaks-in-organisation-repositories-using-gitleaks)			
+    * [Play with GitLab web API](#play-with-gitlab-web-api)
+      * [Prerequisites](#prerequisites-2)
+      * [Prepare projects](#prepare-project-2)									
+      * [Features](#features-3)			
+	     * [Make a backup of organization repositories](#make-a-backup-of-organization-repositories-1)			
+	     * [Check if there are leaks in organisation repositories (using gitleaks)](#check-if-there-are-leaks-in-organisation-repositories-using-gitleaks-1)			
+    * [Licenses inventory](#licenses-inventory)			
+	  * [Disclaimer](#disclaimer)			
+	  * [Prerequisites](#prerequisites-3)			
+	  * [Fill the configuration file](#fill-the-configuration-file)			
+	  * [Run the tool](#run-the-tool)
+	  * [Run the tests](#run-the-tests)
+	  * [Managed platforms and environments](#managed-platforms)
+	     * [Go with go.mod](#go-language)
+	     * [Gradle with build.gradle(.kts)](#gradle-environment)
+	     * [Rust with Cargo.lock](#rust-environment)		 
+	     * [JavaScript / Node.js with package.json](#javascriptnodejs-environment)
+	     * [Swift with Package.swift](#swift--spm-environment)
+	     * [Dart / Flutter with pubspec.yaml](#dart--flutter-environment)		 		 		 
+   * [Notes](#notes)
+
 # The "diver" of source code and commits
 
 ## File of words
@@ -408,7 +466,7 @@ Then the Shell script will pick configuration details from the Ruby configuratio
 
 The Python code will process JSON data, the Shell script will previously make a CURL request to to GraphQL API.
 
-You need to define in the _configuration.rb_ files the Github organisation at **GITHUB_ORGANIZATION_NAME** and also your GitHub personal token at ** GITHUB_PERSONAL_ACCESS_TOKEN**.
+You need to define in the _configuration.rb_ files the Github organisation at **GITHUB_ORGANIZATION_NAME** and also your GitHub personal token at **GITHUB_PERSONAL_ACCESS_TOKEN**.
 
 **You should also have your _git_ environment ready i.e. add your SSH private key if you clone by SSH for example. _gh_ must be installed, and python3 be ready.**
 
@@ -434,7 +492,7 @@ The [gitleaks](https://github.com/zricethezav/gitleaks) tool will be used to loo
 brew install gitleaks
 ```
 
-You need to define in the _configuration.rb_ files the Github organisation at **GITHUB_ORGANIZATION_NAME** and also your GitHub personal token at ** GITHUB_PERSONAL_ACCESS_TOKEN**.
+You need to define in the _configuration.rb_ files the Github organisation at **GITHUB_ORGANIZATION_NAME** and also your GitHub personal token at **GITHUB_PERSONAL_ACCESS_TOKEN**.
 
 **You should also have your _git_ environment ready i.e. add your SSH private key if you clone by SSH for example. _gh_ must be installed, and _python3_ be ready. Obviously _gitleaks_ must be installed**
 
