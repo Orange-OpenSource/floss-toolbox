@@ -6,6 +6,10 @@
 
 - [#68](https://github.com/Orange-OpenSource/floss-toolbox/issues/68) Project - Split dry run
 
+### Changes
+
+- [#70](https://github.com/Orange-OpenSource/floss-toolbox/issues/70) Project - Update copyright
+
 ## Version 2.7.1
 
 ### Changes
