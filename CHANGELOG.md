@@ -1,16 +1,28 @@
 # CHANGELOG
 
+## Version 2.8.0
+
+### Features
+
+- [#68](https://github.com/Orange-OpenSource/floss-toolbox/issues/68) Project - Split dry run
+
+## Version 2.7.1
+
+### Changes
+
+- [#63](https://github.com/Orange-OpenSource/floss-toolbox/issues/63) Add missing files
+
 ## Version 2.7.0
 
 ### Features
 
-- [#2](https://github.com/Orange-OpenSource/floss-toolbox/issues/2)  Package manager - Extract from files downloaded dependencies
+- [#2](https://github.com/Orange-OpenSource/floss-toolbox/issues/2) Package manager - Extract from files downloaded dependencies
 
 ## Version 2.6.0
 
 ### Features
 
-- [#57](https://github.com/Orange-OpenSource/floss-toolbox/issues/57)  Look for leaks and vulnerabilities with exclusion of projects
+- [#57](https://github.com/Orange-OpenSource/floss-toolbox/issues/57) Look for leaks and vulnerabilities with exclusion of projects
 
 ## Version 2.5.0
 
