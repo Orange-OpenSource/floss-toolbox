@@ -3,18 +3,18 @@
 # Top-level files
 
 .gitignore @pylapp
-AUTHORS @pylapp
+AUTHORS.txt @pylapp
 CHANGELOG.md @pylapp
 CITATION.cff @pylapp
-CODE_OF_CONDUCT @pylapp
-CODE_OF_CONFLICT @pylapp
-CONTRIBUTORS @pylapp
+CODE_OF_CONDUCT.md @pylapp
+CODE_OF_CONFLICT.md @pylapp
+CONTRIBUTORS.txt @pylapp
 LICENSE.txt @pylapp
 README.md @pylapp
 
 # Toolbox
 
-/toolbox/LicensesInventory/ @pylapp laurent.body@orange.com
+/toolbox/LicensesInventory/ @pylapp @laurentora
 /toolbox/diver/ @pylapp
 /toolbox/github/ @pylapp
 /toolbox/gitlab/ @pylapp
