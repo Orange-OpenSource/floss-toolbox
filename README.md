@@ -3,6 +3,8 @@
 [![Versions](https://img.shields.io/github/v/release/Orange-OpenSource/floss-toolbox?label=Last%20version&style=for-the-badge)](https://github.com/Orange-OpenSource/floss-toolbox/releases)
 [![Still maintained](https://img.shields.io/maintenance/yes/2023?style=for-the-badge)](https://github.com/Orange-OpenSource/floss-toolbox/issues?q=is%3Aissue+is%3Aclosed)
 
+[![Code size](https://img.shields.io/github/languages/code-size/Orange-OpenSource/floss-toolbox?style=for-the-badge)](https://github.com/Orange-OpenSource/floss-toolbox)
+
 [![Shell](https://img.shields.io/badge/-Shell-89e051?style=for-the-badge)](https://github.com/Orange-OpenSource/floss-toolbox/search?l=shell)
 [![Python](https://img.shields.io/badge/-Python-3572A5?style=for-the-badge)](https://github.com/Orange-OpenSource/floss-toolbox/search?l=python)
 [![Ruby](https://img.shields.io/badge/-Ruby-701516?style=for-the-badge)](https://github.com/Orange-OpenSource/floss-toolbox/search?l=ruby)
