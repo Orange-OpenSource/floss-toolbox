@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Software Name: floss-toolbox
-# SPDX-FileCopyrightText: Copyright (c) 2020-2023 Orange
-# SPDX-License-Identifier: Apache-2.0
-#
-# This software is distributed under the Apache 2.0 license.
-#
-# Author: Laurent BODY <laurent(dot)body(at)orange(dot)com> et al.
+
 
 class CName:
 
@@ -24,3 +18,5 @@ class CName:
         self.go_github = 'go github'
         self.flutter = 'pubspec.yaml'
         self.swift = 'package.swift'
+        self.cocoapods = 'Podfile'
+        self.elm_lang = 'elm.json'

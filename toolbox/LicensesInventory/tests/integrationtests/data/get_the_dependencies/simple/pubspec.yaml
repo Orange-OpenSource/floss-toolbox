@@ -1,0 +1,25 @@
+line to ignore: 1
+  line to ignore: 2
+
+# comment
+  # comment
+dependencies:
+  # comment
+  component_a:
+    line to ignore: 3
+      line to ignore: 4
+
+  component_b: any
+
+  # comment
+  component_c: ^1.2.3
+
+line to ignore: 5
+# comment
+
+dev_dependencies:
+  component_d:
+      line to ignore: 6
+  component_e: any
+line to ignore: 7
+# comment

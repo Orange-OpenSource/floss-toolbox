@@ -1,22 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Software Name: floss-toolbox
-# SPDX-FileCopyrightText: Copyright (c) 2020-2023 Orange
-# SPDX-License-Identifier: Apache-2.0
-#
-# This software is distributed under the Apache 2.0 license.
-#
-# Author: Laurent BODY <laurent(dot)body(at)orange(dot)com> et al.
 
 from ..common import CFile
 from ..common import CFilter
 from ..common import CData
 from ..common import CName
 
+
 class CParsing:
-    """
-    Helps to parse dependencies manager file
-    """
 
     def __init__(self):
         self.head = '{'
@@ -50,10 +41,6 @@ class CParsing:
         return (result, i)
 
     def manage_gradle(self, the_lines):
-        """
-        To manage build.gradle and build.gradle.kts files
-        """
-
         result = list()
 
         for line in the_lines:
@@ -125,9 +112,6 @@ class CParsing:
         return result
 
     def manage_package_json(self, the_lines):
-        """
-        To manage package.json files
-        """
         result = list()
 
         separator = ':'
@@ -186,58 +170,107 @@ class CParsing:
 
         return number_found
 
+    def get_min_of_indent(self, the_lines):
+        n = 999
+        previous_n = 999
+
+        space = ' '
+        tab = '\t'
+        the_values = [' ', '\t']
+        for line in the_lines:
+            if line == str(): continue
+            if line[0] not in the_values: continue
+
+            n = 0
+            for c in line:
+                if c in the_values:
+                    n += 1
+                else:
+                    break
+
+            n = min(previous_n, n)
+            previous_n = n + 0
+
+        return n
+
     def get_data_for_flutter(self, the_lines):
-        """
-        To manage pubspec.yaml files
-        """
         result = list()
 
-        the_allowed_characters = list()
-        for v in range(0, 10):
-            the_allowed_characters.append(str(v))
-        separator = ':'
-        i = 0
-        block_found = False
-        for line in the_lines:
-            if line in self.the_heads:
-                block_found = True
+        the_lines = self.get_the_lines_for_flutter(the_lines)
+        indent_mini = self.get_min_of_indent(the_lines)
+        if indent_mini == 0: return result
+        space = ' '
+        tabulation = '\t'
+
+        for i in range(0, len(the_lines)):
+            line = the_lines[i]
+
+            #check it is a line to keep
+            after_space = line[indent_mini]
+            if (after_space == space) or (after_space == tabulation):
                 continue
-            if block_found == True and line == str():
-                block_found = False
-                continue
 
-            if block_found == True:
-                the_fields = line.split(separator)
-                if len(the_fields ) == 1:
-                    continue
-                if the_fields[1] == str():
-                    continue
+            new_line = line.strip()
+            the_fields = new_line.split(':')
+            component = the_fields[0]
+            version = the_fields[1].strip()
 
-                component = the_fields[0]
-                # version
-                version = the_fields[1]
-                version = version.replace('^', str())
-                version = version.replace(' ', str())
-                the_fields = version.split('.')
-                value = the_fields[0]
-                if value == str():
-                    continue
-                if self.check_allowed_characters_in_string(value, the_allowed_characters) == False:
-                    continue
+            component_found = False
+            if self.version_valid(version) == True:
+                component_found = True
+            elif version == str():
+                component_found = True
 
-                p = component.find('(')
-                if p > -1:
-                    component = component[0:p]
-                component = component.strip()
+            if component_found == True:
                 my_list = [component]
                 result.append(my_list)
 
         return result
 
+    def version_valid(self, value):
+        result = True
+
+        if '$' in value: return True
+
+        value = value.replace('^', str())
+        value = value.replace('.', str())
+        value = value.replace('+', str())
+        for c in value:
+            if c not in self.ins_data.the_numbers:
+                result = False
+                break
+
+        return result
+
+    def get_the_lines_for_flutter(self, the_lines):
+        result = list()
+
+        space = ' '
+        tabulation = '\t'
+
+        block_found = False
+        for i in range(0, len(the_lines)):
+            line = the_lines[i]
+
+            # head
+            if block_found == False:
+                if line in self.the_heads:
+                    block_found = True
+                    continue
+
+            # foot
+            new_line = line.strip()
+            if new_line == str():
+                block_found = False
+                continue
+
+            # good data
+            if block_found == True:
+                result.append(line)
+
+        return result
+
     def manage_go(self, the_lines):
-        """
-        To manage go.mod files
-        """
         result = list()
 
         for line in the_lines:
@@ -253,27 +286,57 @@ class CParsing:
         return result
 
     def manage_swift(self, the_lines):
-        """
-        To manage Package.swift files
-        """
         result = list()
 
         for line in the_lines:
             p = line.find('.package')
-            if p != 0:
-                continue
-            p = line.find('https://github.com/')
-            if p < 0:
-                continue
-
+            if p != 0: continue
+            p = line.find('url:')
+            if p < 0: continue
             line = line[p:]
+
+            p = line.find('\"')
+            line = line[p+1:]
             p = line.find('\"')
             line = line[:p]
+
             component = line.strip()
+            if component.find('https') != 0: continue
             my_list = [component]
             result.append(my_list)
 
         return result
+
+    def get_data_for_cocoapods(self, the_lines):
+        result = list()
+
+        the_quotes = ['\'', '\"']
+        for line in the_lines:
+            new_line = line.strip()
+            if new_line.find('pod') == 0:
+                for quote in the_quotes:
+                    p = new_line.find(quote)
+                    if p > -1:
+                        new_line = new_line[p +1:]
+                        p = new_line.find(quote)
+                        dependency = new_line[:p]
+                        result.append([dependency])
+
+        return result
+
+    def manage_elm_lang(self, the_lines):
+        result = list()
+
+        for line in the_lines:
+            component = line.strip()
+            component = component[1:]
+            p = component.find('\"')
+            component = component[:p]
+            my_list = [component]
+            result.append(my_list)
+
+        return result
+
 
     def get_the_values(self, language, the_lines, ins_filter):
         result = list()
@@ -301,5 +364,11 @@ class CParsing:
             r = self.get_data(0, 1)
             the_lines, i = r
             result = self.manage_swift(the_lines)
+        elif language == ins_name.cocoapods:
+            result = self.get_data_for_cocoapods(the_lines)
+        elif language == ins_name.elm_lang:
+            r = self.get_data(0, 1)
+            the_lines, i = r
+            result = self.manage_elm_lang(the_lines)
 
         return result
