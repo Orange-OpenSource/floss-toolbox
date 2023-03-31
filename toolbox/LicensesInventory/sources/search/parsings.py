@@ -13,47 +13,66 @@ import time
 import os
 import json 
 import xmltodict
+from bs4 import BeautifulSoup
+import bs4
 
 from sources.common import CData
 
+
 class CParsing:
-    """
-    Helps to parse some files extracted from online forges or platforms.
-    Manages some environements like Swift, Flutter, Go, Rust, JS, GitHub and Maven Central.
-    Strong relationship between platforms outputs (like github.com, npmjs.org, maven central...) and that class.
-    """
 
     def __init__(self):
         self.ins_data = CData()
 
-    def get_license_for_swift(self, file):
-        result = list()
-
+    def get_content(self, file):
         content = str()
         with open(file, 'rt', encoding='utf-8') as f:
             content = f.read()
+        return content
 
-        p = content.find('License')
-        if p < 0: return [None]
-        content = content[p+1:]
-        value = '</svg>'
-        p = content.find(value)
-        if p < 0: return [None]
-        content = content[p+len(value):]
-        p = content.find('<')
-        if p < 0: return [None]
-        content = content[:p]
-        content = content.strip()
+    def clean(self, line):
+        # keep only the text
+        # even if there are images, links, etc
+        html_code = '<html>'
+        html_code += '<head>'
+        html_code += '<meta charset=\"utf-8\">'
+        html_code += '<title>titre</title>'
+        html_code += '</head>'
+        html_code += '<body>'
 
-        return [content]
+        line = line.strip()
+        html_code += '<p>' + line + '</p>'
+
+        html_code += '</body>'
+        html_code += '</html>'
+
+        soup = BeautifulSoup(html_code, 'html.parser')
+        license = soup.p.get_text()
+
+        return license
+
+    def get_in_license(self, file):
+        html_code = self.get_content(file)
+        soup = BeautifulSoup(html_code, 'html.parser')
+
+        for i in range(1, 10):
+            my_head = 'h' + str(i)
+            for head in soup.find_all(my_head):
+                text = head.text.strip()
+                if text == 'License':
+                    r = head.find_all_next()
+                    for v in r:
+                        license = v.text.strip()
+                        if license != str():
+                            license = self.clean(license)
+                            return [license]
+
+        return [None]
 
     def get_license_for_flutter(self, file):
         result = list()
 
-        content = str()
-        with open(file, 'rt', encoding='utf-8') as f:
-            content = f.read()
-
+        content = self.get_content(file)
         p = content.find('License</h3')
         content = content[p+1:]
         p = content.find('LICENSE')
@@ -65,17 +84,14 @@ class CParsing:
         content = content[p+1:]
         p = content.find('(')
         content = content[:p]
-        content = content.strip()
+        license = content.strip()
 
-        return [content]
+        return [license]
 
     def get_license_for_go_github(self, file):
         result = list()
 
-        content = str()
-        with open(file, 'rt', encoding='utf-8') as f:
-            content = f.read()
-
+        content = self.get_content(file)
         p = content.find('License')
         content = content[p+1:]
         p = content.find('</svg>')
@@ -84,17 +100,14 @@ class CParsing:
         content = content[p+1:]
         p = content.find('<')
         content = content[0:p]
-        content = content.strip()
+        license = content.strip()
 
-        return [content]
+        return [license]
 
     def get_license_for_go(self, file):
         result = list()
 
-        content = str()
-        with open(file, 'rt', encoding='utf-8') as f:
-            content = f.read()
-
+        content = self.get_content(file)
         p = content.find('license')
         content = content[p+1:]
         p = content.find('gtmc=')
@@ -103,17 +116,14 @@ class CParsing:
         content = content[p+1:]
         p = content.find('</a>')
         content = content[0:p]
-        content = content.strip()
+        license = content.strip()
 
-        return [content]
+        return [license]
 
     def get_license_for_roast(self, file):
         result = list()
 
-        content = str()
-        with open(file, 'rt', encoding='utf-8') as f:
-            content = f.read()
-
+        content = self.get_content(file)
         p = content.find('license')
         content = content[p:]
         p = content.find('\"')
@@ -122,33 +132,9 @@ class CParsing:
         content = content[p + 1:]
         p = content.find('\"')
         content = content[:p]
+        license = content.strip()
 
-        return [content]
-
-    def get_license_for_package_json(self, file):
-        result = list()
-
-        the_lines = list()
-        with open(file, 'rt', encoding='utf-8') as f:
-            the_lines = f.readlines()
-
-        i = 0
-        while i < len(the_lines):
-            line = the_lines[i]
-            if 'version' in line:
-                if 'License' in line:
-                    p = line.find('License')
-                    line = line[p:]
-                    p = line.find('<p')
-                    line = line[p:]
-                    p = line.find('>')
-                    line = line[p + 1:]
-                    p = line.find('<')
-                    license = line[:p]
-                    result.append(license)
-            i += 1
-
-        return result
+        return [license]
 
     def get_license_for_github(self, file):
         the_data = list()
@@ -165,7 +151,9 @@ class CParsing:
             # component
             the_data.append(data['items'][0]['name'])
             # license
-            the_data.append(data['items'][0]['license']['name'])
+            license = data['items'][0]['license']['name']
+            license = license.strip()
+            the_data.append(license)
         except Exception as e:
             return None
 
@@ -184,7 +172,9 @@ class CParsing:
             # component
             result.append(my_dict['project']['name'])
             # license
-            result.append(my_dict['project']['licenses']['license']['name'])
+            license = my_dict['project']['licenses']['license']['name']
+            license = license.strip()
+            result.append(license)
         except Exception:
             return None
 
@@ -202,6 +192,7 @@ class CParsing:
                 return None
 
             version = data['response']['docs'][0]['latestVersion']
+            version = version.strip()
         except Exception:
             return None
 

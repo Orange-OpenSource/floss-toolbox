@@ -563,7 +563,7 @@ You have to also define the location to store clones at **REPOSITORIES_CLONE_LOC
 
 # Licenses inventory
 
-_Keywords: #licenses #SPM #Gradle #Maven #NPMJS #package_
+_Keywords: #licenses #SPM #Gradle #Maven #NPMJS #package #Cocoapods #pubspec #gomod #Cargo #crates_
 
 ## Disclaimer
 
@@ -571,6 +571,8 @@ _Keywords: #licenses #SPM #Gradle #Maven #NPMJS #package_
 *You must deal with platforms and APIs policies and fullfil them.*
 
 *This is software is distributed on "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.*
+
+*Such caveats are about versions of components (not checked) and version names (not sure they are related to the good components)*
 
 ## Prerequisites
 
@@ -614,26 +616,7 @@ python3 sources/main.py
 To run integration tests:
 
 ```shell
- python3 -m pytest tests/integrationtests/test_search.py
-```
-
-To run unit tests:
-
-```shell
- python3 -m pytest tests/unittests/test_config.py
- python3 -m pytest tests/unittests/test_dependency.py
- python3 -m pytest tests/unittests/test_files_check_the_directory.py
- python3 -m pytest tests/unittests/test_files_get_the_filenames_by_name.py
- python3 -m pytest tests/unittests/test_files_write_and_read.py
- python3 -m pytest tests/unittests/test_filter.py
- python3 -m pytest tests/unittests/test_parsing.py
- python3 -m pytest tests/unittests/test_parsing_download.py
-```
-
-or just
-
-```shell
- python3 -m pytest tests/unittests/*.py
+ python3 -m pytest tests/integrationtests/*test_search*.py
 ```
 
 ## Managed platforms
@@ -643,8 +626,8 @@ or just
 `go.mod` files are managed.
 Depending to the `go.mod` definitions implementation, some cases can be applied:
 
-1. github.com will be requested if dependency starts by _github.com_
-2. pkg.go.dev will be requested for other cases
+1. **github.com** will be requested if dependency starts by _github.com_
+2. **pkg.go.dev** will be requested for other cases
 
 For example:
 
@@ -665,29 +648,55 @@ require (
 ### Gradle environment
 
 `build.gradle` and `build.gradle.kts` files are managed.
-Some platforms are requests like _Maven Central_ (search.maven.org) and _GitHub_ (through api.github.com).
+Some platforms are requested like _Maven Central_ (**search.maven.org**) and _GitHub_ (through **api.github.com**).
 
-**Warning: unstable feature with maybe _Maven Central_ troubles.*
+**Warning: unstable feature with maybe _Maven Central_ troubles, missing results sometimes*
+
+Managed (tested) keywords are: 
+```groovy
+    implementation 'ns_d:c_d:4.4.4'
+    compile 'ns_e:c_e:5.5.5'
+    api 'ns_f:c_f:6.6.6'
+    testImplementation 'ns_g:c_g:7.7.7'
+    androidTestImplementation 'ns_h:c_h:8.8.8'
+    annotationProcessor 'ns_i:c_i:9.9.9'
+    compileOnly 'ns_j:c_j:10.10.10'
+```
+
+But the following are not managed yet:
+```groovy
+    implementation('...') {
+        exclude module: '...'
+    }
+
+    androidTestImplementation('...') {
+        exclude group: '...', module: '...'
+    }
+```
 
 ### Rust environment
 
 `Cargo.lock` files are also managed.
-The _crates.io_ platform will be requested for each dependency found.
+_Crates_ (**crates.io**) platform will be requested for each dependency found.
 
-### JavaScript/Node.js environment
+### JavaScript / Node.js environment
 
 `package.json` files can be parsed too.
-The platform _npmjs.org_ wll be requested for each dependency found.
+The platform **npmjs.org**_** wll be requested for each dependency found.
 
 ### Swift / SPM environment
 
 If you use _Swift Package Manager_, you can parse `Package.swift` file.
-The tool will extract the dependency URLs and request some forges, e.g. _github.com_.
+The tool will extract the dependency URLs and request some forges, e.g. **_**github.com**.
 
 ### Dart / Flutter environment
 
 The `pubspec.yaml` files can also be processed.
-For each dependency found, the _pub.dev_ platform will be requested.
+For each dependency found, the **pub.dev**_** platform will be requested.
+
+### CocoaPods case
+
+The `Podfile` files can also be processed and the **cocoapods.org** website will be used.
 
 ## Notes
 
@@ -697,3 +706,5 @@ These files containing the licenses are in directory like 'licenses/sub_folder',
 A file 'licenses.txt' is created in the folder 'licenses'. 
 This file contains the list of the licenses for each dependency.
 To personalize this folder, use 'config.ini'.
+
+Beware of your proxys or public IP address to not be blocked by such platforms, and avoid flooding them.

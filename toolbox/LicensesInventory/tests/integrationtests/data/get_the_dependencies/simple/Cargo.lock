@@ -1,0 +1,14 @@
+name = "to_ignore"
+
+[[package]]
+name = "c_a"
+to_ignore = "1.2.0"
+
+[[package]]
+name = "c_b"
+dependencies = [
+ "bad_a",
+ "bad_b",
+]
+
+name = "to_ignore"

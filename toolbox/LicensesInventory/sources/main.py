@@ -22,13 +22,8 @@ from sources.dependencies import CDependencies
 from sources.search import CSearch
 from sources.common import CFile
 
+
 def get_the_lines(the_licenses_by_platform):
-    """
-    Helps to build the final output file with for each dependency its license
-
-    :param the_licenses_by_platform: Object containing the licenses and dependencies
-    """
-
     print('\t➡️  Getting the lines...')
     the_lines = list()
 
@@ -45,44 +40,32 @@ def get_the_lines(the_licenses_by_platform):
                     line += separator + field
             the_lines.append(line)
 
-    print('\t\t✅ Getting the lines... OK!')
     return the_lines
 
 def main():
-    """
-    Initializes all configuration objects.
-    The get the configuration items from the config file.
-    After that parse the dependencies manager file(s), extract dependencies, get licences and write final file.
-    """
-
     print('➡️  Preparing CConfig()...')
     ins_config = CConfig()
-
-    print('➡️  Preparing CFilter()...')
+    print('➡️  Preparing CConfig()...')
     ins_filter = CFilter()
-
-    print('➡️  Preparing CDependencies()...')
+    print('➡️  Preparing CConfig()...')
     ins_dependencies = CDependencies()
-
     print('➡️  Preparing CSearch()...')
     ins_search = CSearch()
-
-    print('➡️  Preparing CFile()...')
+    print('➡️  Preparing CSearch()...')
     ins_file = CFile()
 
     print('➡️  Getting the config...')
     ins_config.get_the_config()
-
-    print('➡️  Preparing stuff...')
+    print('➡️  Preparing stuff...')    
     ins_filter.prepare(ins_config)
 
     print('🎯 Getting the dependencies...')
     the_dependencies_by_platform = ins_dependencies.get_the_dependencies(ins_filter)
     if len(the_dependencies_by_platform) == 0:
         print('⚠️  No dependencies found!')
-        raise Exception('\t💥  Unable to go further, missing data (dependencies) to process.')
+        raise Exception('\t💥  Unable to go further, missing data (dependencies) to process.')    
 
-    print('🎯 Getting the licences...')
+    print('🎯 Getting the licences...')        
     the_licenses_by_platform = ins_search.get_the_licenses(the_dependencies_by_platform, ins_config, ins_filter)
     if len(the_licenses_by_platform) == 0:
         print('⚠️  No licenses by platform found!')
@@ -101,12 +84,13 @@ def main():
     print('🎉 Found ', len(the_lines), " dependencies and licenses ! 🎉 ")
     print('🔍 See the file at ', ins_config.path_licenses, 'to get details.')
 
+
 if __name__ == "__main__":
     try:
         start = time.time()
         main()
         end = time.time()
         print("⏱️  Elasped time: ", math.ceil(end - start), " seconds")
-        print('👋 See you later!')
+        print('👋 Please, check all the results (licenses, versions and count) of dependancies. See you later!')
     except Exception as e:
         print('💥  main:', e.__str__())

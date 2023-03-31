@@ -8,15 +8,20 @@
 #
 # Author: Laurent BODY <laurent(dot)body(at)orange(dot)com> et al.
 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import sys
 import os
 
 import json 
 
+
 class CData:
 
     def __init__(self):
         self.the_letters = self.get_the_letters()
+        self.the_numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
         self.old_quote = '\''
         self.quote = '\"'
         self.the_comments = ['//', '/*', '*/']

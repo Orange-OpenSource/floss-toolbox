@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# Software Name: floss-toolbox
+# SPDX-FileCopyrightText: Copyright (c) 2020-2023 Orange
+# SPDX-License-Identifier: Apache-2.0
+#
+# This software is distributed under the Apache 2.0 license.
+#
+# Author: Laurent BODY <laurent(dot)body(at)orange(dot)com> et al.
 
 from ..common import CFile
 from ..common import CName
 from ..common import CFilter
 from sources.dependencies import CParsing
 
+
 class CDependencies:
-    """
-    Helps to parse dependencies
-    """
-    
+
     def __init__(self):
         self.ins_name = CName()
         self.ins_filter = None
@@ -20,7 +25,6 @@ class CDependencies:
 
     def delete_the_duplicated(self, the_dependencies_by_platform):
         print('\t➡️  Deleting the duplicated...')
-
         result = dict()
 
         separator = ':::'
@@ -51,20 +55,14 @@ class CDependencies:
 
             result[platform] = the_new_dependencies
 
-        print('\t\t✅ Deleting the duplicated... OK!')
         return result
 
     def get_the_dependencies(self, ins_filter):
-        print('\t➡️  Getting the dependencies...')
-
+        print('\t➡️  Getting the dependencies...')        
         result = dict()
 
         self.ins_filter = ins_filter
         r = dict()
-        
-        if len(ins_filter.the_contents.items()) == 0:
-            raise Exception('\t💥  Unable to go further, missing data (contents in filter) to process.')
-
         for platform, the_lines in ins_filter.the_contents.items():
             if len(the_lines) == 0:
                 continue
@@ -76,6 +74,4 @@ class CDependencies:
             result[platform] = the_dependencies
 
         result = self.delete_the_duplicated(result)
-        
-        print('\t\t✅ Getting the dependencies... OK!')
         return result

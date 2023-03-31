@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@c/a": "1.1.1",
+    "devDependencies": {
+        "c/b": "1.1.1",
+        "peerDependencies": {
+            "c/c": "^1.1.1"
+        }
+        "c/d": "1.1.1"
+    }
+    "c/e": "1.1.1"
+  }
+}
