@@ -646,9 +646,31 @@ require (
 ### Gradle environment
 
 `build.gradle` and `build.gradle.kts` files are managed.
-Some platforms are requests like _Maven Central_ (**search.maven.org**) and _GitHub_ (through **api.github.com**).
+Some platforms are requested like _Maven Central_ (**search.maven.org**) and _GitHub_ (through **api.github.com**).
 
 **Warning: unstable feature with maybe _Maven Central_ troubles, missing results sometimes*
+
+Managed (tested) keywords are: 
+```groovy
+    implementation 'ns_d:c_d:4.4.4'
+    compile 'ns_e:c_e:5.5.5'
+    api 'ns_f:c_f:6.6.6'
+    testImplementation 'ns_g:c_g:7.7.7'
+    androidTestImplementation 'ns_h:c_h:8.8.8'
+    annotationProcessor 'ns_i:c_i:9.9.9'
+    compileOnly 'ns_j:c_j:10.10.10'
+```
+
+But the following are not managed yet:
+```groovy
+    implementation('...') {
+        exclude module: '...'
+    }
+
+    androidTestImplementation('...') {
+        exclude group: '...', module: '...'
+    }
+```
 
 ### Rust environment
 

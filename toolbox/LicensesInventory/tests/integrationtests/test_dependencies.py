@@ -70,7 +70,8 @@ class TestDependencies(unittest.TestCase):
         a = ['c_a', 'ns_a']
         b = ['c_b', 'ns_b']
         c = ['c_c', 'ns_c']
-        expected_dependencies = [a, b, c]
+        d = ['c_d', 'ns_d']
+        expected_dependencies = [a, b, c, d]
         # test
         ins_filter = self.prepare_the_tests('simple', 'build.gradle')
         the_dependencies = self.ins_dependencies.get_the_dependencies(ins_filter)
@@ -87,7 +88,13 @@ class TestDependencies(unittest.TestCase):
         b = ['c_b', 'ns_b']
         c = ['c_c', 'ns_c']
         d = ['c_d', 'ns_d']
-        expected_dependencies = [a, b, c, d]
+        e = ['c_e', 'ns_e']
+        f = ['c_f', 'ns_f']
+        g = ['c_g', 'ns_g']
+        h = ['c_h', 'ns_h']
+        i = ['c_i', 'ns_i']
+        j = ['c_j', 'ns_j']
+        expected_dependencies = [a, b, c, d, e, f, g, h, i, j]
         # test
         ins_filter = self.prepare_the_tests('complex', 'build.gradle')
         the_dependencies = self.ins_dependencies.get_the_dependencies(ins_filter)

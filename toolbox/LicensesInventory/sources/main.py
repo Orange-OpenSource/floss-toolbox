@@ -91,6 +91,6 @@ if __name__ == "__main__":
         main()
         end = time.time()
         print("⏱️  Elasped time: ", math.ceil(end - start), " seconds")
-        print('👋 See you later!')
+        print('👋 Please, check all the results (licenses, versions and count) of dependancies. See you later!')
     except Exception as e:
         print('💥  main:', e.__str__())

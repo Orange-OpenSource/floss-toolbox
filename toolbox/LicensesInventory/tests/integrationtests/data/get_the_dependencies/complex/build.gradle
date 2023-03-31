@@ -17,4 +17,11 @@ dependencies {
         implementation 'ns_c:c_c:3.3.3'
     }
     implementation 'ns_d:c_d:4.4.4'
+    compile 'ns_e:c_e:5.5.5'
+    api 'ns_f:c_f:6.6.6'
+    testImplementation 'ns_g:c_g:7.7.7'
+    androidTestImplementation 'ns_h:c_h:8.8.8'
+    annotationProcessor 'ns_i:c_i:9.9.9'
+    compileOnly 'ns_j:c_j:10.10.10'
+    
 }
