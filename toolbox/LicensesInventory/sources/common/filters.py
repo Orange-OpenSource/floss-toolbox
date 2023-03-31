@@ -29,10 +29,14 @@ class CFilter:
         self.the_commands = dict()
 
     def get_content_by_name(self, ins_name):
+        print('\t➡️  Getting content by name...')
         result = dict()
 
         ins_file = CFile()
         the_files = ins_file.get_the_files(self.ins_config.path_dependencies, self.ins_config.the_filenames)
+
+        if len(the_files) == 0:
+            raise Exception('\t💥  Unable to go further, missing data (files for the filter) to process.')
 
         content_gradle = list()
         content_package_json = list()
@@ -81,9 +85,11 @@ class CFilter:
         if len(content_elm_lang) > 0:
             result[ins_name.elm_lang] = content_elm_lang
 
+        print('\t\t✅ Getting content by name... OK!')
         return result
 
     def get_the_heads_by_name(self, ins_name):
+        print('\t➡️  Getting the heads by name...')
         result = dict()
 
         result[ins_name.gradle] = ['dependencies {']
@@ -108,9 +114,11 @@ class CFilter:
         c = quote + 'dev-dependencies' + quote + ': {'
         result[ins_name.elm_lang] = [a, b, c]
 
+        print('\t\t✅ Getting the heads by name... OK!')
         return result
 
     def get_the_foots_by_name(self, ins_name):
+        print('\t➡️  Getting the foots by name...')        
         result = dict()
 
         foot = '}'
@@ -124,9 +132,11 @@ class CFilter:
         result[ins_name.cocoapods] = None
         result[ins_name.elm_lang] = [foot, foot + comma]
 
+        print('\t\t✅ Getting the foots by name... OK!')
         return result
 
     def get_the_URLs_by_name(self, ins_name):
+        print('\t➡️  Getting the URLs by name...')
         result = dict()
 
         # maven central
@@ -144,9 +154,11 @@ class CFilter:
         result[ins_name.cocoapods] = 'https://cocoapods.org/pods/[component]'
         result[ins_name.elm_lang] = 'https://package.elm-lang.org/packages/[component]/latest/about'
 
+        print('\t\t✅ Getting the URLs by name... OK!')
         return result
 
     def get_the_filenames_by_name(self, ins_name):
+        print('\t➡️  Getting the filenames by name...')        
         result = dict()
 
         # maven central
@@ -164,6 +176,7 @@ class CFilter:
         result[ins_name.cocoapods] = '[component].html'
         result[ins_name.elm_lang] = '[component].html'
 
+        print('\t\t✅ Getting the filenames by name... OK!')
         return result
 
     def manage_the_comments(self, the_lines, i):
@@ -191,6 +204,7 @@ class CFilter:
         return -1
 
     def delete_the_comments(self, the_lines):
+        print('\t➡️  Deleting the comments...')        
         result = list()
 
         i = 0
@@ -202,9 +216,11 @@ class CFilter:
                 i = j + 0
             i += 1
 
+        print('\t\t✅ Deleting the comments... OK!')
         return result
 
     def clean(self, the_lines, platform):
+        print('\t➡️  Cleaning...')        
         result = list()
 
         for line in the_lines:
@@ -216,9 +232,11 @@ class CFilter:
             line = line.replace(self.ins_data.old_quote, self.ins_data.quote)
             result.append(line)
 
+        print('\t\t✅ Cleaning... OK!')
         return result
 
     def prepare(self, ins_config):
+        print('\t➡️  Preparing CFilter...')
         self.ins_config = ins_config
 
         # to get the data
@@ -231,7 +249,8 @@ class CFilter:
 
         # others
         self.the_contents = self.get_content_by_name(self.ins_name)
-
+        print('\t\t✅ Preparing CFilter... OK!')
+        
     def filter(self, the_lines, platform):
         result = list()
 

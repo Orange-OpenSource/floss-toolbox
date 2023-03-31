@@ -31,6 +31,7 @@ class CSearch:
         self.the_licenses = list()
 
     def get_the_licenses_for_others(self, platform, dependency):
+        print('\t➡️  Getting the licenses for others...')
         bad_result = [None]
 
         component = dependency[0]
@@ -53,10 +54,12 @@ class CSearch:
 
         if result == None:
             return bad_result
-
+        
+        print('\t\t✅ Getting the licenses for others... OK!')
         return result
 
     def get_the_licenses_for_gradle(self, platform, dependency):
+        print('\t➡️  Getting the licenses for Gradle...')
         bad_result = [None]
 
         component = dependency[0]
@@ -101,6 +104,7 @@ class CSearch:
         return bad_result
 
     def get_the_licenses_for_go(self, platform, dependency):
+        print('\t➡️  Getting the licenses for Go...')
         bad_result = [None]
 
         component = dependency[0]
@@ -125,6 +129,7 @@ class CSearch:
         return bad_result
 
     def get_the_licenses(self, the_dependencies_by_platform, ins_config, ins_filter):
+        print('\t➡️  Getting the licenses for some...')
         result = dict()
 
         self.ins_filter = ins_filter

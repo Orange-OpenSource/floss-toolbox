@@ -25,6 +25,7 @@ class CDownload:
         self.sleep = 2.5
 
     def get_data(self, platform, the_key_and_dependency):
+        print('\t➡️  Getting data for platform ', platform, "...")
         result = list()
 
         # models
@@ -64,7 +65,7 @@ class CDownload:
 
     def manage_status(self, code):
         if code >= 300:
-            raise Exception('Error: the website returns a bad response')
+            raise Exception('\t💥  Error: the website returns a bad response')
 
     def write_in_file(self, response, filename):
         content = response.text
@@ -82,6 +83,7 @@ class CDownload:
                 time.sleep(to_wait)
 
     def get_file(self, platform, the_key_and_dependency):
+        print('\t➡️  Getting file for platform ', platform, 'at URL ', url, "...")
         result = None
 
         r = self.get_data(platform, the_key_and_dependency)

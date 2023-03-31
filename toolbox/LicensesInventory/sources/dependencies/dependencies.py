@@ -24,6 +24,7 @@ class CDependencies:
         self.the_foots = list()
 
     def delete_the_duplicated(self, the_dependencies_by_platform):
+        print('\t➡️  Deleting the duplicated...')
         result = dict()
 
         separator = ':::'
@@ -57,6 +58,7 @@ class CDependencies:
         return result
 
     def get_the_dependencies(self, ins_filter):
+        print('\t➡️  Getting the dependencies...')        
         result = dict()
 
         self.ins_filter = ins_filter
