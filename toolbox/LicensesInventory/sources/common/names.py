@@ -8,6 +8,7 @@
 #
 # Author: Laurent BODY <laurent(dot)body(at)orange(dot)com> et al.
 
+
 class CName:
 
     def __init__(self):
@@ -24,3 +25,5 @@ class CName:
         self.go_github = 'go github'
         self.flutter = 'pubspec.yaml'
         self.swift = 'package.swift'
+        self.cocoapods = 'Podfile'
+        self.elm_lang = 'elm.json'

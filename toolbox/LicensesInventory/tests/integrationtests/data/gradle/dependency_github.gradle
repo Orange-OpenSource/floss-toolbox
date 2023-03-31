@@ -1,6 +1,0 @@
-
-dependencies {
-    # github
-    testImplementation "androidx.appcompat:appcompat:$mockito_core_version"
-}
-

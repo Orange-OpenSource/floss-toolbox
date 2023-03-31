@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# Software Name: floss-toolbox
+# SPDX-FileCopyrightText: Copyright (c) 2020-2023 Orange
+# SPDX-License-Identifier: Apache-2.0
+#
+# This software is distributed under the Apache 2.0 license.
+#
+# Author: Laurent BODY <laurent(dot)body(at)orange(dot)com> et al.
 
 import os
 
@@ -37,23 +44,29 @@ class CFilter:
         content_go = list()
         content_flutter = list()
         content_swift = list()
+        content_cocoapods = list()
+        content_elm_lang = list()
 
         for file in the_files:
             the_fields = os.path.split(file)
             path = the_fields[0]
             filename = the_fields[1]
-            if ins_name.gradle in filename:
+            if ins_name.gradle.lower() in filename.lower():
                 content_gradle += ins_file.read_text_file (path, filename)
-            elif ins_name.package_json == filename:
+            elif ins_name.package_json.lower() == filename.lower():
                 content_package_json += ins_file.read_text_file (path, filename)
-            elif ins_name.roast == filename:
+            elif ins_name.roast.lower() == filename.lower():
                 content_roast += ins_file.read_text_file (path, filename)
-            elif ins_name.go == filename:    
+            elif ins_name.go.lower() == filename.lower():
                 content_go += ins_file.read_text_file (path, filename)
-            elif ins_name.flutter == filename:    
+            elif ins_name.flutter.lower() == filename.lower():
                 content_flutter += ins_file.read_text_file (path, filename)
-            elif ins_name.swift == filename:    
+            elif ins_name.swift.lower() == filename.lower():
                 content_swift += ins_file.read_text_file (path, filename)
+            elif ins_name.cocoapods.lower() == filename.lower():    
+                content_cocoapods += ins_file.read_text_file (path, filename)
+            elif ins_name.elm_lang.lower() == filename.lower():    
+                content_elm_lang += ins_file.read_text_file (path, filename)
 
         if len(content_gradle) > 0:
             result[ins_name.gradle] = content_gradle
@@ -67,6 +80,10 @@ class CFilter:
             result[ins_name.flutter] = content_flutter
         if len(content_swift) > 0:
             result[ins_name.swift] = content_swift
+        if len(content_cocoapods) > 0:
+            result[ins_name.cocoapods] = content_cocoapods
+        if len(content_elm_lang) > 0:
+            result[ins_name.elm_lang] = content_elm_lang
 
         print('\t\t✅ Getting content by name... OK!')
         return result
@@ -88,12 +105,20 @@ class CFilter:
         result[ins_name.go] = ['require (']
         result[ins_name.flutter] = ['dependencies:', 'dev_dependencies:']
         result[ins_name.swift] = ['dependencies: [']
+        result[ins_name.cocoapods] = None
+
+        #elm_lang
+        quote = '\"'
+        a = quote + 'dependencies' + quote + ': {'
+        b = quote + 'test-dependencies' + quote + ': {'
+        c = quote + 'dev-dependencies' + quote + ': {'
+        result[ins_name.elm_lang] = [a, b, c]
 
         print('\t\t✅ Getting the heads by name... OK!')
         return result
 
     def get_the_foots_by_name(self, ins_name):
-        print('\t➡️  Getting the foots by name...')
+        print('\t➡️  Getting the foots by name...')        
         result = dict()
 
         foot = '}'
@@ -104,6 +129,8 @@ class CFilter:
         result[ins_name.go] = [')']
         result[ins_name.flutter] = [str()]
         result[ins_name.swift] = [']', '],']
+        result[ins_name.cocoapods] = None
+        result[ins_name.elm_lang] = [foot, foot + comma]
 
         print('\t\t✅ Getting the foots by name... OK!')
         return result
@@ -124,12 +151,14 @@ class CFilter:
         result[ins_name.go_github] = 'https://github.com/[component]'
         result[ins_name.flutter] = 'https://pub.dev/packages/[component]'
         result[ins_name.swift] = str()
+        result[ins_name.cocoapods] = 'https://cocoapods.org/pods/[component]'
+        result[ins_name.elm_lang] = 'https://package.elm-lang.org/packages/[component]/latest/about'
 
         print('\t\t✅ Getting the URLs by name... OK!')
         return result
 
     def get_the_filenames_by_name(self, ins_name):
-        print('\t➡️  Getting the filenames by name...')
+        print('\t➡️  Getting the filenames by name...')        
         result = dict()
 
         # maven central
@@ -144,6 +173,8 @@ class CFilter:
         result[ins_name.go_github] = '[component].html'
         result[ins_name.flutter] = '[component].html'
         result[ins_name.swift] = '[component].html'
+        result[ins_name.cocoapods] = '[component].html'
+        result[ins_name.elm_lang] = '[component].html'
 
         print('\t\t✅ Getting the filenames by name... OK!')
         return result
@@ -152,15 +183,14 @@ class CFilter:
         line = the_lines[i]
         line = line.strip()
 
-        # invalid line
-        if len(line) < 2:
-            return -1
-
         # simple comment
-        my_string = line[0:1]
-        if my_string == '#':
+        if len(line) == 0:
+            return -1
+        if line[0] == '#':
             return i
 
+        if len(line) < 2:
+            return -1
         my_string = line[0:2]
         if my_string == self.ins_data.the_comments[0]:
             return i
@@ -174,7 +204,7 @@ class CFilter:
         return -1
 
     def delete_the_comments(self, the_lines):
-        print('\t➡️  Deleting the comments...')
+        print('\t➡️  Deleting the comments...')        
         result = list()
 
         i = 0
@@ -190,12 +220,12 @@ class CFilter:
         return result
 
     def clean(self, the_lines, platform):
-        print('\t➡️  Cleaning...')
+        print('\t➡️  Cleaning...')        
         result = list()
 
         for line in the_lines:
-            line = line.lstrip()
-            line = line.rstrip()
+            if platform != self.ins_name.flutter:
+                line = line.strip()
             if platform != self.ins_name.roast and platform != self.ins_name.flutter:
                 if line == str():
                     continue
@@ -220,11 +250,11 @@ class CFilter:
         # others
         self.the_contents = self.get_content_by_name(self.ins_name)
         print('\t\t✅ Preparing CFilter... OK!')
-
+        
     def filter(self, the_lines, platform):
         result = list()
 
-        the_lines = self.delete_the_comments(the_lines)
-        result = self.clean(the_lines, platform)
+        the_lines = self.clean(the_lines, platform)
+        result = self.delete_the_comments(the_lines)
 
         return result

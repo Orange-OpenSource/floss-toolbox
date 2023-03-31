@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version 2.9.0
+
+### Features
+
+- [#64](https://github.com/Orange-OpenSource/floss-toolbox/issues/64) Licenses Inventory - New release
+
 ## Version 2.8.0
 
 ### Features

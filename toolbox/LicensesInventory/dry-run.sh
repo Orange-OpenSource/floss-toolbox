@@ -8,8 +8,8 @@
 # Author: Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com> et al.
 
 # Since...............: 10/03/2023
-# Description.........: Make a dry-run of the LicensesIventory module to check if everything is ready to use
-# Version.............: 1.0.0
+# Description.........: Make a dry-run of the LicensesInventory module to check if everything is ready to use
+# Version.............: 2.0.0
 
 set -eu
 
@@ -90,7 +90,7 @@ CheckIfPythonModuleInstalled(){
             echo "✅  Cool! Python module '$1' is available"
             NUMBER_OF_SUCCESS=$((NUMBER_OF_SUCCESS+1))
         else
-            echo "❌  WARNING: It seems Python modyle '$1' is not installed"
+            echo "❌  WARNING: It seems Python module '$1' is not installed"
             NUMBER_OF_ERRORS=$((NUMBER_OF_ERRORS+1))  
         fi
     fi
@@ -108,58 +108,67 @@ CheckIfDirectoryExists "./sources"
 CheckIfDirectoryExists "./tests"
 
 echo -e "\nCheck sources files..."
+
 CheckIfFileExists "./sources/common/__init__.py"
 CheckIfFileExists "./sources/common/datas.py"
 CheckIfFileExists "./sources/common/files.py"
 CheckIfFileExists "./sources/common/filters.py"
 CheckIfFileExists "./sources/common/names.py"
+
 CheckIfFileExists "./sources/configuration/__init__.py"
 CheckIfFileExists "./sources/configuration/config.py"
+
 CheckIfFileExists "./sources/dependencies/__init__.py"
 CheckIfFileExists "./sources/dependencies/dependencies.py"
 CheckIfFileExists "./sources/dependencies/parsings.py"
+
 CheckIfFileExists "./sources/search/__init__.py"
 CheckIfFileExists "./sources/search/downloads.py"
+CheckIfFileExists "./sources/search/html_tags.py"
+CheckIfFileExists "./sources/search/links.py"
 CheckIfFileExists "./sources/search/parsings.py"
 CheckIfFileExists "./sources/search/search.py"
+
 CheckIfFileExists "./sources/__init__.py"
 CheckIfFileExists "./sources/main.py"
 CheckIfFileExists "./config.ini"
 
 echo -e "\nCheck integration test files..."
-CheckIfFileExists "./tests/integrationtests/data/gradle/dependency_github.gradle"
-CheckIfFileExists "./tests/integrationtests/data/gradle/dependency_maven_central.gradle"
-CheckIfFileExists "./tests/integrationtests/data/gradle/license_github.json"
-CheckIfFileExists "./tests/integrationtests/data/gradle/license_maven_central.pom"
-CheckIfFileExists "./tests/integrationtests/data/gradle/version_maven_central.json"
-CheckIfFileExists "./tests/integrationtests/data/package_json/license_package_json.html"
-CheckIfFileExists "./tests/integrationtests/data/package_json/package.json"
-CheckIfFileExists "./tests/integrationtests/data/roast/Cargo.lock"
-CheckIfFileExists "./tests/integrationtests/data/config.ini"
-CheckIfFileExists "./tests/integrationtests/test_search.py"
 
-echo -e "\nCheck unit test files..."
-CheckIfFileExists "./tests/unittests/data/config/config_no_data.ini"
-CheckIfFileExists "./tests/unittests/data/config/config.ini"
-CheckIfFileExists "./tests/unittests/data/get_content_by_name/my_gradle_file.txt"
-CheckIfFileExists "./tests/unittests/data/get_content_by_name/package.json"
-CheckIfFileExists "./tests/unittests/data/gradle/license_github.json"
-CheckIfFileExists "./tests/unittests/data/gradle/license_maven_central.pom"
-CheckIfFileExists "./tests/unittests/data/gradle/version.json"
-CheckIfFileExists "./tests/unittests/data/package_json/license_package_json.html"
-CheckIfFileExists "./tests/unittests/data/roast/license_roast.json"
-CheckIfFileExists "./tests/unittests/data/dependency_a.txt"
-CheckIfFileExists "./tests/unittests/data/dependency_b.txt"
-CheckIfFileExists "./tests/unittests/data/filename_by_name.test"
-CheckIfFileExists "./tests/unittests/data/files_read.txt"
-CheckIfFileExists "./tests/unittests/test_config.py"
-CheckIfFileExists "./tests/unittests/test_dependency.py"
-CheckIfFileExists "./tests/unittests/test_files_check_the_directory.py"
-CheckIfFileExists "./tests/unittests/test_files_get_the_filenames_by_name.py"
-CheckIfFileExists "./tests/unittests/test_files_write_and_read.py"
-CheckIfFileExists "./tests/unittests/test_filter.py"
-CheckIfFileExists "./tests/unittests/test_parsing_download.py"
-CheckIfFileExists "./tests/unittests/test_parsing.py"
+CheckIfFileExists "./tests/integrationtests/data/get_the_dependencies/complex/build.gradle"
+CheckIfFileExists "./tests/integrationtests/data/get_the_dependencies/complex/go.mod"
+CheckIfFileExists "./tests/integrationtests/data/get_the_dependencies/complex/package.json"
+CheckIfFileExists "./tests/integrationtests/data/get_the_dependencies/complex/Package.swift"
+CheckIfFileExists "./tests/integrationtests/data/get_the_dependencies/simple/build.gradle"
+CheckIfFileExists "./tests/integrationtests/data/get_the_dependencies/simple/build.gradle.kts"
+CheckIfFileExists "./tests/integrationtests/data/get_the_dependencies/simple/Cargo.lock"
+CheckIfFileExists "./tests/integrationtests/data/get_the_dependencies/simple/go.mod"
+CheckIfFileExists "./tests/integrationtests/data/get_the_dependencies/simple/package.json"
+CheckIfFileExists "./tests/integrationtests/data/get_the_dependencies/simple/Package.swift"
+CheckIfFileExists "./tests/integrationtests/data/get_the_dependencies/simple/Podfile"
+CheckIfFileExists "./tests/integrationtests/data/get_the_dependencies/simple/pubspec.yaml"
+
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/cargo_lock/adler.json"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/go_mod/emperror.dev_errors.html"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/gradle/appcompta_github.json"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/package_json/@babel_core.html"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/package_swift/AliSoftware_OHHTTPStubs.html"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/Podfile/SwiftLint.html"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/pubspec_yaml/build_runner.html"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/sources/build.gradle"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/sources/Cargo.lock"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/sources/go.mod"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/sources/package.json"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/sources/Package.swift"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/sources/Podfile"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/sources/pubspec.yaml"
+
+CheckIfFileExists "./tests/integrationtests/data/config.ini"
+
+CheckIfFileExists "./tests/integrationtests/test_configuration.py"
+CheckIfFileExists "./tests/integrationtests/test_dependencies.py"
+CheckIfFileExists "./tests/integrationtests/test_downloads.py"
+CheckIfFileExists "./tests/integrationtests/test_licenses.py"
 
 # Runtimes and tools
 # ------------------
@@ -185,9 +194,6 @@ echo "----------------------------------"
 
 echo -e "\nRunning integration tests..."
 python3 -m pytest ./tests/integrationtests/*.py
-
-echo -e "\nRunning unit tests..."
-python3 -m pytest ./tests/unittests/*.py
 
 # Conclusion
 # ----------

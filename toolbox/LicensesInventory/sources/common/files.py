@@ -10,13 +10,14 @@
 
 import os
 
+
 class CFile:
 
     def delete_the_files_in_path(self, path):
         name = 'delete_the_files_in_path'
 
         if os.path.isdir(path) == False:
-            raise Exception(name + ': The path does not exist.\n' + path)
+            raise Exception('\t💥  ' + name + ': The path does not exist.\n' + path)
 
         for root, dirs, files in os.walk(path):
             for file in files:
@@ -28,9 +29,9 @@ class CFile:
         the_files = list()
 
         if os.path.isdir(path) == False:
-            raise Exception(name + ': the path to parse the files which contain the dependencies does not exist.')
+            raise Exception('\t💥  ' + name + ': the path to parse the files which contain the dependencies does not exist.')
         if filename == '' or filename == None:
-            raise Exception(name + ': the filename is not precised.')
+            raise Exception('\t💥  ' + name + ': the filename is not precised.')
 
         for root, dirs, files in os.walk(path):
             for file in files:
@@ -38,7 +39,7 @@ class CFile:
                     the_files.append(os.path.join(root, filename))
 
         if len(the_files) < 1:
-            raise Exception(name + ': no file to parse.')
+            raise Exception('\t💥  ' + name + ': no file to parse.')
 
         return the_files
 
@@ -78,7 +79,7 @@ class CFile:
         name = 'write_in_text_file'
 
         if self.check_the_directory(path, False, False) == False:
-            raise Exception (name + ': the directory does not exist.\n' + path)
+            raise Exception('\t💥  ' + name + ': the directory does not exist.\n' + path)
 
         if filename == '':
             filename = path
@@ -86,7 +87,7 @@ class CFile:
             filename = os.path.join(path, filename)
 
         if the_lines == None or len(the_lines) == 0:
-            raise Exception(name + ': no data to write.')
+            raise Exception('\t💥  ' + name + ': no data to write.')
 
         try:
             with open(filename, 'wt', encoding='utf-8') as f:
@@ -94,13 +95,13 @@ class CFile:
                     line = line + '\n'
                     f.write(line)
         except:
-            raise Exception(name + ': the path exists, but, impossible to write in.')
+            raise Exception('\t💥  ' + ame + ': the path exists, but, impossible to write in.')
 
     def read_text_file (self, path, filename=''):
         the_lines = list()
 
         if self.check_the_directory(path, False, False) == False:
-            raise Exception (name + ': the directory does not exist.\n' + path)
+            raise Exception('\t💥  ' + name + ': the directory does not exist.\n' + path)
 
         if filename == '':
             filename = path
@@ -108,13 +109,13 @@ class CFile:
             filename = os.path.join(path, filename)
 
         if os.path.isfile(filename) == False:
-            raise Exception(name + ': no file to read.')
+            raise Exception('\t💥  ' + name + ': no file to read.')
 
         try:
             with open(filename, 'rt', encoding='utf-8') as f:
                 the_lines = f.read().split('\n')
         except:
-            raise Exception(name + ': the file exists, but, impossible to read.\n', filename)
+            raise Exception('\t💥  ' + name + ': the file exists, but, impossible to read.\n', filename)
 
         return the_lines
 
