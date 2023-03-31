@@ -25,9 +25,9 @@ class TestDependencies(unittest.TestCase):
         ins_config.filename = 'config.ini'
         ins_config.get_the_config()
 
-        expected = '/home/sub'
+        expected = 'home/sub'
         self.assertEqual(expected, ins_config.path_dependencies)
         expected = ['f_a.ext', 'f_b.ext']
         self.assertEqual(expected, ins_config.the_filenames)
-        expected = '/home/sub/licenses'
+        expected = 'home/sub/licenses'
         self.assertEqual(expected, ins_config.path_licenses)
