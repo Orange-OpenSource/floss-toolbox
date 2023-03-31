@@ -10,6 +10,8 @@
 
 import sys
 import os
+import time
+import math
 
 path = os.getcwd()
 sys.path.insert(1, path)
@@ -22,7 +24,7 @@ from sources.common import CFile
 
 
 def get_the_lines(the_licenses_by_platform):
-    print('\t➡️  Getting file for platform ', platform, 'at URL ', url, "...")
+    print('\t➡️  Getting the lines...')
     the_lines = list()
 
     separator = ' : '

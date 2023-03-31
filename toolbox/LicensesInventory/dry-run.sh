@@ -8,7 +8,7 @@
 # Author: Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com> et al.
 
 # Since...............: 10/03/2023
-# Description.........: Make a dry-run of the LicensesIventory module to check if everything is ready to use
+# Description.........: Make a dry-run of the LicensesInventory module to check if everything is ready to use
 # Version.............: 2.0.0
 
 set -eu

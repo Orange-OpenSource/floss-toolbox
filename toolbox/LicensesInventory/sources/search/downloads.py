@@ -83,7 +83,7 @@ class CDownload:
                 time.sleep(to_wait)
 
     def get_file(self, platform, the_key_and_dependency):
-        print('\t➡️  Getting file for platform ', platform, 'at URL ', url, "...")
+        print('\t➡️  Getting file for platform ', platform, '...')
         result = None
 
         r = self.get_data(platform, the_key_and_dependency)
