@@ -8,11 +8,8 @@
 #
 # Author: Laurent BODY <laurent(dot)body(at)orange(dot)com> et al.
 
-from ..common import CFile
 from ..common import CName
-from ..common import CFilter
 from sources.dependencies import CParsing
-
 
 class CDependencies:
 
@@ -20,8 +17,8 @@ class CDependencies:
         self.ins_name = CName()
         self.ins_filter = None
         self.ins_parsing = CParsing()
-        self.the_heads = list()
-        self.the_foots = list()
+        #self.the_heads = list()
+        #self.the_foots = list()
 
     def delete_the_duplicated(self, the_dependencies_by_platform):
         print('\t➡️  Deleting the duplicated...')
@@ -58,7 +55,7 @@ class CDependencies:
         return result
 
     def get_the_dependencies(self, ins_filter):
-        print('\t➡️  Getting the dependencies...')        
+        print('\t➡️  Getting the dependencies...')   
         result = dict()
 
         self.ins_filter = ins_filter

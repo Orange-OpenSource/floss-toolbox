@@ -14,7 +14,6 @@ import requests
 
 from sources.common import CFile, CName
 
-
 class CDownload:
 
     def __init__(self):
@@ -22,6 +21,7 @@ class CDownload:
         self.ins_filter = None
         self.ins_name = CName()
         self.path_licenses = str()
+        self.error_code = None
         self.sleep = 2.5
 
     def get_data(self, platform, the_key_and_dependency):
@@ -61,11 +61,16 @@ class CDownload:
                 new_filename = new_filename.replace(c, '_')
         filename = new_filename + extension
 
-        return [url, filename]
+        return [url, filename, component]
 
-    def manage_status(self, code):
-        if code >= 300:
-            raise Exception('\t💥  Error: the website returns a bad response')
+    def manage_status(self, component, response):
+        code = int(response.status_code)
+        msg = component + ': '
+        msg += 'status-code=' + str(code)
+        self.error_code = str(code)
+
+        if code > 299:
+            print(msg)
 
     def write_in_file(self, response, filename):
         content = response.text
@@ -77,7 +82,8 @@ class CDownload:
         return file
 
     def manage_sleep(self, platform, interval):
-        if platform == self.ins_name.package_json:
+        the_platforms = [self.ins_name.package_json]
+        if platform in the_platforms:
             to_wait = self.sleep - interval
             if to_wait > 0:
                 time.sleep(to_wait)
@@ -89,6 +95,7 @@ class CDownload:
         r = self.get_data(platform, the_key_and_dependency)
         url = r[0]
         filename = r[1]
+        component = r[2]
 
         headers = {
             'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36'
@@ -98,10 +105,9 @@ class CDownload:
             start_time = time.time()
             response = requests.get(url, headers=headers)
             interval = time.time() - start_time
-            code = int(response.status_code)
-            self.manage_status(code)
-            result = self.write_in_file(response, filename)
             self.manage_sleep(platform, interval)
+            self.manage_status(component, response)
+            result = self.write_in_file(response, filename)
         except Exception as e:
             return None
 

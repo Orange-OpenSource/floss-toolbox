@@ -8,9 +8,6 @@
 #
 # Author: Laurent BODY <laurent(dot)body(at)orange(dot)com> et al.
 
-import sys
-import time
-import os
 import json 
 import xmltodict
 from bs4 import BeautifulSoup
@@ -18,6 +15,7 @@ import bs4
 
 from sources.common import CData
 
+space = ' '
 
 class CParsing:
 
@@ -30,75 +28,54 @@ class CParsing:
             content = f.read()
         return content
 
-    def clean(self, line):
-        # keep only the text
-        # even if there are images, links, etc
-        html_code = '<html>'
-        html_code += '<head>'
-        html_code += '<meta charset=\"utf-8\">'
-        html_code += '<title>titre</title>'
-        html_code += '</head>'
-        html_code += '<body>'
+    def get_license_with_html(self, file):
+        result = None
 
-        line = line.strip()
-        html_code += '<p>' + line + '</p>'
-
-        html_code += '</body>'
-        html_code += '</html>'
-
-        soup = BeautifulSoup(html_code, 'html.parser')
-        license = soup.p.get_text()
-
-        return license
-
-    def get_in_license(self, file):
         html_code = self.get_content(file)
         soup = BeautifulSoup(html_code, 'html.parser')
 
+        text = str()
         for i in range(1, 10):
             my_head = 'h' + str(i)
             for head in soup.find_all(my_head):
-                text = head.text.strip()
-                if text == 'License':
-                    r = head.find_all_next()
-                    for v in r:
-                        license = v.text.strip()
-                        if license != str():
-                            license = self.clean(license)
-                            return [license]
+                if 'license' not in head.text.lower(): continue
 
-        return [None]
+                license = head.next_sibling
+                while type(license) != bs4.element.Tag:
+                    license = license.next_sibling
 
-    def get_license_for_flutter(self, file):
-        result = list()
+                first_found = False
+                if text == str():
+                    first_found = True
+                tmp = license.text
+                tmp = tmp.replace('\n', str())
+                tmp = tmp.strip()
+                if first_found == True:
+                    text = tmp
+                else:
+                    my_tmp = tmp.lower()
+                    my_text = text.lower()
+                    if (my_tmp != my_text) and(my_tmp not in my_text):
+                        text = text + ' ' + tmp
 
-        content = self.get_content(file)
-        p = content.find('License</h3')
-        content = content[p+1:]
-        p = content.find('LICENSE')
-        content = content[0:p]
-
-        p = content.find('height=')
-        content = content[p+1:]
-        p = content.find('>')
-        content = content[p+1:]
-        p = content.find('(')
-        content = content[:p]
-        license = content.strip()
-
-        return [license]
+        if text == str(): text = None
+        return [text]
 
     def get_license_for_go_github(self, file):
         result = list()
 
         content = self.get_content(file)
         p = content.find('License')
+        if p < 0: return None
         content = content[p+1:]
         p = content.find('</svg>')
+        if p < 0: return None
         content = content[p+1:]
         p = content.find('>')
+        if p < 0: return None
         content = content[p+1:]
         p = content.find('<')
+        if p < 0: return None
         content = content[0:p]
         license = content.strip()
 
@@ -109,12 +86,16 @@ class CParsing:
 
         content = self.get_content(file)
         p = content.find('license')
+        if p < 0: return None
         content = content[p+1:]
         p = content.find('gtmc=')
+        if p < 0: return None
         content = content[p+1:]
         p = content.find('>')
+        if p < 0: return None
         content = content[p+1:]
         p = content.find('</a>')
+        if p < 0: return None
         content = content[0:p]
         license = content.strip()
 
@@ -125,12 +106,16 @@ class CParsing:
 
         content = self.get_content(file)
         p = content.find('license')
+        if p < 0: return None
         content = content[p:]
         p = content.find('\"')
+        if p < 0: return None
         content = content[p + 1:]
         p = content.find('\"')
+        if p < 0: return None
         content = content[p + 1:]
         p = content.find('\"')
+        if p < 0: return None
         content = content[:p]
         license = content.strip()
 
@@ -141,22 +126,38 @@ class CParsing:
 
         data = None
         try:
-            with open(file) as f: 
-                data = json.load(f)
+            with open(file, encoding='utf-8') as f: 
+                data = f.readlines()
 
-            total = 'total_count'
-            if 500000 < data[total]:
-                return None
+            #convert to json
+            line = str()
+            if len(data) == 1:
+                line = data[0]
+            else:
+                for v in data:
+                    line += v
+            data = json.loads(line)
 
-            # component
-            the_data.append(data['items'][0]['name'])
-            # license
-            license = data['items'][0]['license']['name']
-            license = license.strip()
-            the_data.append(license)
         except Exception as e:
+            print('💥  Error: converting the content of the downloaded file to json.')
             return None
 
+            if data['total_count' ] > 500000:
+                return None
+
+        try:
+            component = data['items'][0]['name']
+            component = component.strip()
+        except Exception as e:
+            component = 'None'
+
+        try:
+            license = data['items'][0]['license']['name']
+            license = license.strip()
+        except Exception as e:
+            license = 'None'
+
+        the_data = [component, license]
         return the_data
 
     def get_license_for_maven_central(self, file):
@@ -197,3 +198,4 @@ class CParsing:
             return None
 
         return version
+
