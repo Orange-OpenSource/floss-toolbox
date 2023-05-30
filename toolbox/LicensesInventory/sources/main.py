@@ -23,35 +23,16 @@ from sources.search import CSearch
 from sources.common import CFile
 
 
-def get_the_lines(the_licenses_by_platform):
-    print('\t➡️  Getting the lines...')
-    the_lines = list()
-
-    separator = ' : '
-    for platform, the_licenses in the_licenses_by_platform.items():
-        for license in the_licenses:
-            line = str()
-            for field in license:
-                if field == None or field == str():
-                    field = 'None'
-                if line == str():
-                    line = field
-                else:
-                    line += separator + field
-            the_lines.append(line)
-
-    return the_lines
-
 def main():
     print('➡️  Preparing CConfig()...')
     ins_config = CConfig()
-    print('➡️  Preparing CConfig()...')
+    print('➡️  Preparing CFilter()...')
     ins_filter = CFilter()
-    print('➡️  Preparing CConfig()...')
+    print('➡️  Preparing CDependencies()...')
     ins_dependencies = CDependencies()
     print('➡️  Preparing CSearch()...')
     ins_search = CSearch()
-    print('➡️  Preparing CSearch()...')
+    print('➡️  Preparing CFile()...')
     ins_file = CFile()
 
     print('➡️  Getting the config...')
@@ -65,24 +46,18 @@ def main():
         print('⚠️  No dependencies found!')
         raise Exception('\t💥  Unable to go further, missing data (dependencies) to process.')    
 
-    print('🎯 Getting the licences...')        
-    the_licenses_by_platform = ins_search.get_the_licenses(the_dependencies_by_platform, ins_config, ins_filter)
+    print('🎯 Getting the licences...')    
+    r = ins_search.get_the_licenses(the_dependencies_by_platform, ins_config, ins_filter)
+    the_licenses_by_platform, on_error = r
     if len(the_licenses_by_platform) == 0:
         print('⚠️  No licenses by platform found!')
         raise Exception('\t💥  Unable to go further, missing data (licenses by plaform) to process.')
 
-    print('🎯 Getting the lines...')
-    the_lines = get_the_lines(the_licenses_by_platform)
+    print('🎯 Saving the licenses...')
+    ins_file.save_the_licenses(the_licenses_by_platform, ins_config.path_licenses)
 
-    print('-----------------------')
-    print('📣 Here are the results!')
-    if len(the_lines) == 0:
-        print('⚠️  No license')
-        the_lines = ['No license']
-
-    ins_file.write_in_text_file(ins_config.path_licenses, 'licenses.txt', the_lines)
-    print('🎉 Found ', len(the_lines), " dependencies and licenses ! 🎉 ")
-    print('🔍 See the file at ', ins_config.path_licenses, 'to get details.')
+    print('🎯 Saving the errors...')
+    ins_file.save_the_errors(on_error, ins_config.path, ins_config.filename_for_the_errors)
 
 
 if __name__ == "__main__":
@@ -94,3 +69,4 @@ if __name__ == "__main__":
         print('👋 Please, check all the results (licenses, versions and count) of dependancies. See you later!')
     except Exception as e:
         print('💥  main:', e.__str__())
+        print('Maybe you should run the tests or check your network configuration (e.g. proxys or firewalls)')

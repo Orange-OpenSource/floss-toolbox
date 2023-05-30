@@ -14,7 +14,6 @@ from .names import CName
 from .datas import CData
 from .files import CFile
 
-
 class CFilter:
 
     def __init__(self):
@@ -51,6 +50,7 @@ class CFilter:
             the_fields = os.path.split(file)
             path = the_fields[0]
             filename = the_fields[1]
+
             if ins_name.gradle.lower() in filename.lower():
                 content_gradle += ins_file.read_text_file (path, filename)
             elif ins_name.package_json.lower() == filename.lower():
@@ -63,9 +63,9 @@ class CFilter:
                 content_flutter += ins_file.read_text_file (path, filename)
             elif ins_name.swift.lower() == filename.lower():
                 content_swift += ins_file.read_text_file (path, filename)
-            elif ins_name.cocoapods.lower() == filename.lower():    
+            elif ins_name.cocoapods.lower() == filename.lower():
                 content_cocoapods += ins_file.read_text_file (path, filename)
-            elif ins_name.elm_lang.lower() == filename.lower():    
+            elif ins_name.elm_lang == filename:    
                 content_elm_lang += ins_file.read_text_file (path, filename)
 
         if len(content_gradle) > 0:
@@ -118,7 +118,7 @@ class CFilter:
         return result
 
     def get_the_foots_by_name(self, ins_name):
-        print('\t➡️  Getting the foots by name...')        
+        print('\t➡️  Getting the foots by name...')
         result = dict()
 
         foot = '}'
@@ -158,7 +158,7 @@ class CFilter:
         return result
 
     def get_the_filenames_by_name(self, ins_name):
-        print('\t➡️  Getting the filenames by name...')        
+        print('\t➡️  Getting the filenames by name...')       
         result = dict()
 
         # maven central
@@ -204,7 +204,7 @@ class CFilter:
         return -1
 
     def delete_the_comments(self, the_lines):
-        print('\t➡️  Deleting the comments...')        
+        print('\t➡️  Deleting the comments...')   
         result = list()
 
         i = 0
@@ -250,7 +250,7 @@ class CFilter:
         # others
         self.the_contents = self.get_content_by_name(self.ins_name)
         print('\t\t✅ Preparing CFilter... OK!')
-        
+
     def filter(self, the_lines, platform):
         result = list()
 

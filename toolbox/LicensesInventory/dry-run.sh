@@ -9,7 +9,7 @@
 
 # Since...............: 10/03/2023
 # Description.........: Make a dry-run of the LicensesInventory module to check if everything is ready to use
-# Version.............: 2.0.0
+# Version.............: 2.1.0
 
 set -eu
 
@@ -124,8 +124,6 @@ CheckIfFileExists "./sources/dependencies/parsings.py"
 
 CheckIfFileExists "./sources/search/__init__.py"
 CheckIfFileExists "./sources/search/downloads.py"
-CheckIfFileExists "./sources/search/html_tags.py"
-CheckIfFileExists "./sources/search/links.py"
 CheckIfFileExists "./sources/search/parsings.py"
 CheckIfFileExists "./sources/search/search.py"
 
@@ -150,9 +148,16 @@ CheckIfFileExists "./tests/integrationtests/data/get_the_dependencies/simple/pub
 
 CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/cargo_lock/adler.json"
 CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/go_mod/emperror.dev_errors.html"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/gradle/androidannotations_github.json"
 CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/gradle/appcompta_github.json"
 CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/package_json/@babel_core.html"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/package_json/karma.html"
 CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/package_swift/AliSoftware_OHHTTPStubs.html"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/package_swift/apple_swift_collections.html"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/package_swift/CocoaLumberjack_CocoaLumberjack_git.html"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/package_swift/krzyzanowskim_CryptoSwift_git.html"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/Podfile/AppleReachability.html"
+CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/Podfile/ReachabilitySwift.html"
 CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/Podfile/SwiftLint.html"
 CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/results/pubspec_yaml/build_runner.html"
 CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/sources/build.gradle"
@@ -162,7 +167,10 @@ CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/sources/packag
 CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/sources/Package.swift"
 CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/sources/Podfile"
 CheckIfFileExists "./tests/integrationtests/data/get_the_licenses/sources/pubspec.yaml"
-
+CheckIfFileExists "./tests/integrationtests/data/config_empty.ini"
+CheckIfFileExists "./tests/integrationtests/data/config_no_file.ini"
+CheckIfFileExists "./tests/integrationtests/data/config_no_path_licenses.ini"
+CheckIfFileExists "./tests/integrationtests/data/config_no_path_to_parse.ini"
 CheckIfFileExists "./tests/integrationtests/data/config.ini"
 
 CheckIfFileExists "./tests/integrationtests/test_configuration.py"
@@ -184,6 +192,7 @@ echo -e "\nCheck for Python modules"
 CheckIfPythonModuleInstalled "requests"
 CheckIfPythonModuleInstalled "xmltodict"
 CheckIfPythonModuleInstalled "pytest"
+CheckIfPythonModuleInstalled "bs4"
 
 # Units tests
 # -----------

@@ -11,6 +11,11 @@ Source Code: https://github.com/psf/requests
 MIT License
 ================================================================================
 
+Component: Beautiful Soup 
+Copyright: Copyright (c) Leonard Richardson
+License Text URL: licenses/LICENSE-beautifulsoup
+Source Code: https://git.launchpad.net/beautifulsoup/
+
 Component: pytest 
 Copyright: 2004 Holger Krekel and others
 License Text URL: licenses/LICENSE-pytest.txt

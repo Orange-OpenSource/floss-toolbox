@@ -583,6 +583,7 @@ _Keywords: #licenses #SPM #Gradle #Maven #NPMJS #package #Cocoapods #pubspec #go
 pip install requests
 pip install xmltodict
 pip install pytest
+pip install beautifulsoup4
 ```
 
 ## Fill the configuration file
@@ -616,7 +617,7 @@ python3 sources/main.py
 To run integration tests:
 
 ```shell
- python3 -m pytest tests/integrationtests/*test_search*.py
+ python3 -m pytest tests/integrationtests/*.py
 ```
 
 ## Managed platforms
