@@ -22,7 +22,6 @@ dependencies {
     implementation "ns_b:c_b:$version"
 
     def to_ignore = '4.8.0'
-    api "ns_d:c_d:$version"
 
 implementation 'ns_c:c_c:3.3.3'
 }

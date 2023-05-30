@@ -13,9 +13,7 @@
 
 import sys
 import os
-
 import json 
-
 
 class CData:
 

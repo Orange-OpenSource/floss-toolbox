@@ -99,6 +99,7 @@ class CFile:
 
     def read_text_file (self, path, filename=''):
         the_lines = list()
+        name = 'read_text_file'
 
         if self.check_the_directory(path, False, False) == False:
             raise Exception('\t💥  ' + name + ': the directory does not exist.\n' + path)
@@ -146,3 +147,45 @@ class CFile:
 
         return result
 
+    def save_the_licenses(self, the_licenses_by_platform, path):
+        separator = ' : '
+        for platform, the_licenses in the_licenses_by_platform.items():
+            the_lines = ['# If the license is at None, or not clear, you are invited to search in the downloaded file.']
+            for license in the_licenses:
+                line = str()
+                for field in license:
+                    if field == None or field == str():
+                        field = 'None'
+                    if line == str():
+                        line = field
+                    else:
+                        line += separator + field
+                the_lines.append(line)
+
+            if len(the_lines) == 0:
+                print('No license')
+                the_lines = ['No license']
+
+            filename = 'licenses_' + platform + '.txt'
+            self.write_in_text_file(path, filename, the_lines)
+
+    def save_the_errors(self, on_error, path, filename):
+
+        if len(on_error) == 0:
+            return
+
+        separator = '-'
+        for platform, the_dependencies in on_error.items():
+            filename = 'errors' + separator + platform + '.txt'
+            the_lines = [platform]
+            for dependency in the_dependencies:
+                line = str()
+                for value in dependency:
+                    if line == str():
+                        line+= value
+                    else:
+                        line += ' : ' + value
+                the_lines += [line]
+
+            self.write_in_text_file(path, filename, the_lines)
+            print('The dependencies not threatted are saved in the file:', filename)

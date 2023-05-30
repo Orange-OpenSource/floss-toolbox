@@ -8,7 +8,6 @@
 #
 # Author: Laurent BODY <laurent(dot)body(at)orange(dot)com> et al.
 
-
 class CName:
 
     def __init__(self):
@@ -20,10 +19,21 @@ class CName:
         self.version_for_maven_central = 'version'
         self.maven_central = 'maven_central'
         self.package_json = 'package.json'
-        self.roast = 'cargo.lock'
+        self.roast = 'Cargo.lock'
         self.go = 'go.mod'
         self.go_github = 'go github'
         self.flutter = 'pubspec.yaml'
-        self.swift = 'package.swift'
+        self.swift = 'Package.swift'
         self.cocoapods = 'Podfile'
-        self.elm_lang = 'elm.json'
+        self.elm_lang = 'elm.json' #unable: no result in the response of the request
+
+    def get_the_platforms(self):
+        r = [self.gradle]
+        r += [self.package_json]
+        r += [self.roast]
+        r += [self.go]
+        r += [self.flutter]
+        r += [self.swift]
+        r += [self.cocoapods]
+        r += [self.elm_lang]
+        return r

@@ -96,3 +96,87 @@ class TestDownloads(unittest.TestCase):
 
         file = self.ins_download.get_file(platform, the_key_and_dependency)
         self.assertEqual(expected_file, file)
+        self.assertEqual('299', self.ins_download.error_code)
+
+    @patch('sources.search.downloads.CFile.write_in_text_file')
+    @patch('sources.search.downloads.requests.get')
+    def test_2_get_file_bad_status_code(self, mock_requests_get, mock_CFile_write_in_text_file):
+        # source: build.gradle
+
+        # inputs for the method
+        platform = self.ins_name.github
+        # appcompat : appcompatprocessor : Apache License 2.0
+        the_key_and_dependency = dict()
+        the_key_and_dependency[self.ins_name.namespace] = 'my_namespace'
+        the_key_and_dependency[self.ins_name.component] = 'appcompat'
+
+        # before executing ins_download.get_file
+        ins_filter = CFilter()
+        the_urls = dict()
+        the_urls[self.ins_name.github] = "my_url"
+        ins_filter.the_URLs = the_urls
+        the_filenames = dict()
+        the_filenames[self.ins_name.github] = '[component]_github.json'
+        ins_filter.the_filenames = the_filenames
+        self.ins_download.ins_filter = ins_filter
+
+        #with error 403
+        self.ins_download.path_licenses = os.path.join(self.path_licenses, self.ins_name.gradle)
+        filename = 'appcompat_github.json'
+        expected_file = os.path.join(self.ins_download.path_licenses, filename)
+        mock_CFile_write_in_text_file.return_value = expected_file
+
+        expected_response = requests.models.Response
+        expected_response.status_code = '403'
+        expected_response.text = 'line_a\nline_b'
+        mock_requests_get.return_value = expected_response
+
+        file = self.ins_download.get_file(platform, the_key_and_dependency)
+        self.assertEqual(expected_file, file)
+        self.assertEqual('403', self.ins_download.error_code)
+
+        #with error 300
+        self.ins_download.path_licenses = os.path.join(self.path_licenses, self.ins_name.gradle)
+        filename = 'appcompat_github.json'
+        expected_file = os.path.join(self.ins_download.path_licenses, filename)
+        mock_CFile_write_in_text_file.return_value = expected_file
+
+        expected_response = requests.models.Response
+        expected_response.status_code = '300'
+        expected_response.text = 'line_a\nline_b'
+        mock_requests_get.return_value = expected_response
+
+        file = self.ins_download.get_file(platform, the_key_and_dependency)
+        self.assertEqual(expected_file, file)
+
+    @patch('sources.search.downloads.requests.get')
+    def test_2_get_file_exception_on_writting(self, mock_requests_get):
+        # source: build.gradle
+
+        # inputs for the method
+        platform = self.ins_name.github
+        the_key_and_dependency = dict()
+        the_key_and_dependency[self.ins_name.namespace] = 'my_namespace'
+        the_key_and_dependency[self.ins_name.component] = 'appcompat'
+
+        # before executing ins_download.get_file
+        ins_filter = CFilter()
+        the_urls = dict()
+        the_urls[self.ins_name.github] = "my_url"
+        ins_filter.the_URLs = the_urls
+        the_filenames = dict()
+        the_filenames[self.ins_name.github] = '[component]_github.json'
+        ins_filter.the_filenames = the_filenames
+        self.ins_download.ins_filter = ins_filter
+
+        #no path for the licenses: exception on writting the file
+        self.ins_download.path_licenses = str()
+        filename = 'appcompat_github.json'
+
+        expected_response = requests.models.Response
+        expected_response.status_code = '200'
+        expected_response.text = 'line_a\nline_b'
+        mock_requests_get.return_value = expected_response
+
+        file = self.ins_download.get_file(platform, the_key_and_dependency)
+        self.assertEqual(None, file)

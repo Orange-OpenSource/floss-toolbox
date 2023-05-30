@@ -8,17 +8,13 @@
 #
 # Author: Laurent BODY <laurent(dot)body(at)orange(dot)com> et al.
 
-from ..common import CFile
-from ..common import CFilter
 from ..common import CData
 from ..common import CName
-
 
 class CParsing:
 
     def __init__(self):
         self.head = '{'
-        self.foot = '}'
         self.the_heads = list()
         self.the_foots = list()
         self.ins_data = CData()
@@ -183,7 +179,7 @@ class CParsing:
 
         space = ' '
         tab = '\t'
-        the_values = [' ', '\t']
+        the_values = [space, tab]
         for line in the_lines:
             if line == str(): continue
             if line[0] not in the_values: continue
@@ -200,40 +196,6 @@ class CParsing:
 
         return n
 
-    def get_data_for_flutter(self, the_lines):
-        result = list()
-
-        the_lines = self.get_the_lines_for_flutter(the_lines)
-        indent_mini = self.get_min_of_indent(the_lines)
-        if indent_mini == 0: return result
-        space = ' '
-        tabulation = '\t'
-
-        for i in range(0, len(the_lines)):
-            line = the_lines[i]
-
-            #check it is a line to keep
-            after_space = line[indent_mini]
-            if (after_space == space) or (after_space == tabulation):
-                continue
-
-            new_line = line.strip()
-            the_fields = new_line.split(':')
-            component = the_fields[0]
-            version = the_fields[1].strip()
-
-            component_found = False
-            if self.version_valid(version) == True:
-                component_found = True
-            elif version == str():
-                component_found = True
-
-            if component_found == True:
-                my_list = [component]
-                result.append(my_list)
-
-        return result
-
     def version_valid(self, value):
         result = True
 
@@ -249,12 +211,11 @@ class CParsing:
 
         return result
 
-    def get_the_lines_for_flutter(self, the_lines):
+    def extract_the_blocks_for_flutter(self, the_lines):
         result = list()
 
         space = ' '
         tabulation = '\t'
-
         block_found = False
         for i in range(0, len(the_lines)):
             line = the_lines[i]
@@ -265,15 +226,59 @@ class CParsing:
                     block_found = True
                     continue
 
-            # foot
+            #foot: empty line
             new_line = line.strip()
             if new_line == str():
                 block_found = False
                 continue
 
-            # good data
+            #foot: first character
+            if (line[0] != space) and (line[0] != tabulation):
+                block_found = False
+                continue
+
+            #enough characters in the line ?
+            if len(new_line) < 2:
+                continue
+
             if block_found == True:
                 result.append(line)
+
+        return result
+
+    def get_data_for_flutter(self, the_lines):
+        result = list()
+
+        the_lines = self.extract_the_blocks_for_flutter(the_lines)
+        indent_mini = self.get_min_of_indent(the_lines)
+        if indent_mini == 0: return result
+        space = ' '
+        tabulation = '\t'
+
+        for i in range(0, len(the_lines)):
+            line = the_lines[i]
+
+            #character after the indent
+            if (line[indent_mini] == space) or (line[indent_mini] == tabulation):
+                continue
+
+            # good data
+            if ':' not in line: continue
+            new_line = line.strip()
+            the_fields = new_line.split(':')
+            component = the_fields[0]
+
+            version = the_fields[1]
+            version = version.strip()
+            dependency_found = False
+            if version.lower() == 'any':
+                dependency_found = True
+            elif self.version_valid(version) == True:
+                dependency_found = True
+
+            if dependency_found == True:
+                my_list = [component]
+                result.append(my_list)
 
         return result
 
