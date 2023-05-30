@@ -3,23 +3,21 @@ line to ignore: 1
 
 # comment
   # comment
+
 dependencies:
   # comment
-  component_a:
+  component_a: 1
     line to ignore: 3
-      line to ignore: 4
-
-  component_b: any
-
+  component_b: 2.2
   # comment
-  component_c: ^1.2.3
+  component_c: ^3.3.3
 
-line to ignore: 5
+  line to ignore: 5
 # comment
-
 dev_dependencies:
-  component_d:
+  component_d: 4.4.4.4
       line to ignore: 6
   component_e: any
 line to ignore: 7
-# comment
+dev_dependencies:
+  f:
