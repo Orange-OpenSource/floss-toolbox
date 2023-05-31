@@ -210,7 +210,7 @@ current_folder=`pwd`
 cd "$git_based_project"
 
 git_log_file="$current_folder/data/$GIT_LOG_TEMP_FILE"
-if [ -f $git_log_file ]; then
+if [ -f "$git_log_file" ]; then
     rm $git_log_file
 fi
 
@@ -222,7 +222,7 @@ if [ "$( git log --oneline -5 2>/dev/null | wc -l )" -eq 0 ]; then
     NormalExit
 fi
 
-git log --since=$git_log_limit > $git_log_file
+git log --since=$git_log_limit > "$git_log_file"
 
 if [ ! -s "$git_log_file" ]; then
     cd "$current_folder"
@@ -276,7 +276,7 @@ echo "📈 Elapsed time.............................................: $(($script
 
 # The end!
 
-rm $git_log_file
+rm "$git_log_file"
 echo -e "\nReports available in $REPORT_METRIC_FILE:"
 cat $REPORT_METRIC_FILE
 

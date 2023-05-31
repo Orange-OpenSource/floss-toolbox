@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version 2.10.1
+
+### Features
+
+- [#80](https://github.com/Orange-OpenSource/floss-toolbox/issues/80) Diver - Path variables not protected
+
 ## Version 2.10.0
 
 ### Features
