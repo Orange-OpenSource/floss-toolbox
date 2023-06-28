@@ -1,8 +1,14 @@
 # CHANGELOG
 
-## Version 2.10.1
+## Version 2.11.0
 
 ### Features
+
+- [#82](https://github.com/Orange-OpenSource/floss-toolbox/issues/82) GitHub - Set teams permissions to read
+
+## Version 2.10.1
+
+### Bugs
 
 - [#80](https://github.com/Orange-OpenSource/floss-toolbox/issues/80) Diver - Path variables not protected
 

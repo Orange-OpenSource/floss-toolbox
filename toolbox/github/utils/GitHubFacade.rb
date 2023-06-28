@@ -13,7 +13,7 @@
 # Loads configuration elements from configuration.rb, writes outputs using FileManager.rb and calls GitHubWrapper.rb for requests
 #
 # Usage: ruby GitHubFacade.rb feature-to-launch
-# where feature-to-launch in: [get-members-2fa-disabled, get-all-members, get-members-without-company, get-projects-without-team, get-users-with-bad-email, get-users-with-bad-fullname, get_not_conform_repositories, get-unconform-projects, get-projects-without-licenses, set-users-permissions-to-push, set-teams-permissions-to-push]
+# where feature-to-launch in: [get-members-2fa-disabled, get-all-members, get-members-without-company, get-projects-without-team, get-users-with-bad-email, get-users-with-bad-fullname, get_not_conform_repositories, get-unconform-projects, get-projects-without-licenses, set-users-permissions-to-push, set-teams-permissions-to-push, set-teams-permissions-to-read]
 #
 # Note that some features need to have Ruby env. varibale set (OCTOKIT_ACCESS_TOKEN), use the Shell wizard to do so.
 # Shell wizard must be prefered than than using this Ruby file.
@@ -51,7 +51,7 @@ if ARGV.length <= 0
 end
 feature_to_run=ARGV[0]
 
-if feature_to_run != "get-members-2fa-disabled" && feature_to_run != "get-all-members" && feature_to_run != "get-members-without-company" && feature_to_run != "get-projects-without-team" && feature_to_run != "get-users-with-bad-email" && feature_to_run != "get-users-with-bad-fullname" && feature_to_run != "get-projects-conformity" && feature_to_run != "get-projects-without-licenses" && feature_to_run != "get-empty-projects" && feature_to_run != "set-users-permissions-to-push" && feature_to_run != "set-teams-permissions-to-push" 
+if feature_to_run != "get-members-2fa-disabled" && feature_to_run != "get-all-members" && feature_to_run != "get-members-without-company" && feature_to_run != "get-projects-without-team" && feature_to_run != "get-users-with-bad-email" && feature_to_run != "get-users-with-bad-fullname" && feature_to_run != "get-projects-conformity" && feature_to_run != "get-projects-without-licenses" && feature_to_run != "get-empty-projects" && feature_to_run != "set-users-permissions-to-push" && feature_to_run != "set-teams-permissions-to-push" && feature_to_run != "set-teams-permissions-to-read"
     Log.error "Unknown feature. Exit now."
     exit $EXIT_UNKNOWN_FEATURE
 end
@@ -261,6 +261,15 @@ end
 if feature_to_run == "set-teams-permissions-to-push"
     Log.log "Updating all repositories with new permissions for teams..."
     GitHubWrapper.set_permissions_for_teams(client, $GITHUB_ORGANIZATION_NAME, "push")
+    Log.log "Task completed! Exits now."
+    exit $EXIT_OK
+end
+
+# FEATURE: set-teams-permissions-to-read
+# For all projects, change right to 'read' for each team
+if feature_to_run == "set-teams-permissions-to-read"
+    Log.log "Updating all repositories with new permissions for teams..."
+    GitHubWrapper.set_permissions_for_teams(client, $GITHUB_ORGANIZATION_NAME, "pull")
     Log.log "Task completed! Exits now."
     exit $EXIT_OK
 end
