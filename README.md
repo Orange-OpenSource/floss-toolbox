@@ -271,7 +271,7 @@ _path/to/the/project_ points to the root of the project to analyse.
 
 ```ruby
 gem install octokit
-gem intall git
+gem install git
 ```
 
 ## Third-party elements
@@ -405,6 +405,17 @@ Permissions will be set to "push", i.e. "write".
 
 ```shell
 bash GitHubWizard.sh set-teams-permissions-to-push
+```
+
+### Define teams permissions for all projects to "read"
+
+_Keywords: #organisation #GitHub #permissions #teams #read_
+
+Run the following command to update rights of all teams, for all projects.
+Permissions will be set to "read".
+
+```shell
+bash GitHubWizard.sh set-teams-permissions-to-read
 ```
 
 # Play with GitHub CLI (GH)

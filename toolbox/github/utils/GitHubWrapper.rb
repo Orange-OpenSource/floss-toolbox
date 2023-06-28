@@ -18,7 +18,7 @@ require 'uri'
 ##
 # Ruby module providing a quite small and simple wrapper for the GitHub API, here using only the Octokit library.
 # Allows to request the GitHub project to help projects and teams management.
-# Version: 1.1.0
+# Version: 121.0
 #
 # Written with Octokit version 4.20.0
 #
@@ -546,7 +546,7 @@ module GitHubWrapper
             return
         end
         if permission != "push" && permission != "pull" && permission != "admin"
-            Log.warning "Permission #{permission} is not managed. Returns now.s"
+            Log.warning "Permission #{permission} is not managed. Returns now."
             return
         end
         Log.debug "Get all projects of organization '#{organization_name}'..."
