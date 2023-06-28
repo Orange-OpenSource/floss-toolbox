@@ -259,8 +259,8 @@ _path/to/the/project_ points to the root of the project to analyse.
 
 ## Prerequisites
 
-- Ruby Gem: `octokit 4.20.0`
-- Ruby Gem: `git 1.8.1`
+- Ruby Gem: `octokit 6.1.1`
+- Ruby Gem: `git 1.18.0`
 - Ruby 2.7.1
 
 - Create a [GitHub personal token](https://github.com/settings/tokens) and define it in the _configuration.rb_ file for the `GITHUB_PERSONAL_ACCESS_TOKEN` variable.
@@ -269,9 +269,15 @@ _path/to/the/project_ points to the root of the project to analyse.
 
 ## Prepare project
 
-```ruby
+```shell
 gem install octokit
 gem install git
+```
+
+of if you have _Bundler_:
+
+```shell
+bundle install
 ```
 
 ## Third-party elements
