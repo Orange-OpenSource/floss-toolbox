@@ -646,6 +646,7 @@ This project expects to have this tools available and already added in your syst
 None of them have been modified nor distributed.
 It could be seen as a [mere aggregation](https://www.gnu.org/licenses/gpl-faq.html#MereAggregation) of components, you can get licenses details in THIRD-PARTY.txt and licenses folder.
 
+For integration tests, you must download the archive assets attaches in this current release, extract the ZIP folder you got called *toolbox/LicensesInventory/tests/integrationtests/data* and place the *data* folder in _tests/integrationtests_ folder.Otherwise tests won't work.
 
 ## Fill the configuration file
 
