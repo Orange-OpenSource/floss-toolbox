@@ -13,7 +13,7 @@
 
 Toolbox to help developers and open source referents to have cleaner projects in _GitHub_ organizations, and more.
 
-Toolbox is mainly written in _Shell_ because this language is very efficient for files processing and provides a strong and rich standard API with cool primitives. Contains also _Ruby_ scripts. _Ruby_ are shiny gems, I love them. _Python_ is also used.
+Toolbox is mainly written in _Shell_ because this language is very efficient for files processing and provides a strong and rich standard API with cool primitives. It helps also to call system primitives easily. Contains also _Ruby_ scripts. _Ruby_ are shiny gems, I love them. _Python_ is also used.
 
 # Environment
 
@@ -99,6 +99,22 @@ Table of Contents
    * [Notes](#notes)
 
 # The "diver" of source code and commits
+
+## Prerequisites
+
+Some components must be available (dry run script will help to find the ones missing):
+- Ruby (version 2.7.1)
+- Bash (version 3.2.5)
+- Python3 (version 3.8.5)
+- Git (version 2.32.0)
+- GH (version 1.31.1)
+- Gitleaks (version 8.3.0)
+- Octokit Ruby gem (version 4.20.0)
+- Cloc (version 1.88)
+
+This project expects to have this tools available and already added in your system.
+Thus there is not composition nor aggregation (mere or not) about them.
+None of them have been modified nor distributed.
 
 ## File of words
 
@@ -255,6 +271,17 @@ bash extract-emails-from-history.sh  --project path/to.git/project --loglimit gi
 The log limit is the value to pass to the `git log` command, e.g. _2.weeks_ or _3.years_.
 _path/to/the/project_ points to the root of the project to analyse.
 
+### Count lines of code in a directory
+
+_Keywords: #cloc #metrics #KPI #APP_
+
+You can use one script to compute lines of code thanks to [cloc](https://github.com/AlDanial/cloc) program.
+It will generate a report with all the metrics you may need.
+
+```bash
+bash lines-count.sh --target "absolute/path/to/target"
+```
+
 # Play with GitHub web API
 
 ## Prerequisites
@@ -266,6 +293,10 @@ _path/to/the/project_ points to the root of the project to analyse.
 - Create a [GitHub personal token](https://github.com/settings/tokens) and define it in the _configuration.rb_ file for the `GITHUB_PERSONAL_ACCESS_TOKEN` variable.
 - Define the _GitHub_ organization name in the _configuration.rb_ file for the `GITHUB_ORGANIZATION_NAME` variable. It will allow to send requests to query and modify your organization.
 - Define also the logins of the GitHub adminsitrators of your organization so as to prevent to change their permisssion for example.
+
+This project expects to have this tools available and already added in your system.
+Thus there is not composition nor aggregation (mere or not) about them.
+None of them have been modified nor distributed.
 
 ## Prepare project
 
@@ -437,6 +468,10 @@ Some configuration details must be defined (in _configuration.rb), like:
 2. `REPOSITORIES_CLONE_LOCATION_PATH` location of the clone sif you want to make a dump of the organisation repositories
 3. `REPOSITORIES_CLONE_URL_JSON_KEY` to choose the JSON key to get the repository URL from GitHub API
 
+This project expects to have this tools available and already added in your system.
+Thus there is not composition nor aggregation (mere or not) about them.
+None of them have been modified nor distributed.
+
 ## Prepare project
 
 ```shell
@@ -525,6 +560,10 @@ You need to define in the _configuration.rb_ files the Github organisation at **
 - Create a [GitLab personal token](https://gitlab.com/-/profile/personal_access_tokens) and define it in the _configuration.rb_ file for the `GILAB_PERSONAL_ACCESS_TOKEN` variable.
 - Define the GitLab organization id in the _configuration.rb_ file for the `GITLAB_ORGANIZATION_ID` variable. It will allow to send requests to query and modify your organization.
 
+This project expects to have this tools available and already added in your system.
+Thus there is not composition nor aggregation (mere or not) about them.
+None of them have been modified nor distributed.
+
 ## Prepare project
 
 ```ruby
@@ -602,6 +641,11 @@ pip install xmltodict
 pip install pytest
 pip install beautifulsoup4
 ```
+
+This project expects to have this tools available and already added in your system.
+None of them have been modified nor distributed.
+It could be seen as a [mere aggregation](https://www.gnu.org/licenses/gpl-faq.html#MereAggregation) of components, you can get licenses details in THIRD-PARTY.txt and licenses folder.
+
 
 ## Fill the configuration file
 

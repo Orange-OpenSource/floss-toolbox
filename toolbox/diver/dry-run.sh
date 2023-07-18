@@ -9,7 +9,7 @@
 
 # Since...............: 10/03/2023
 # Description.........: Make a dry-run of the diver module to check if everything is ready to use
-# Version.............: 1.0.0
+# Version.............: 1.1.0
 
 set -eu
 
@@ -112,6 +112,7 @@ CheckIfFileExists "./find-credentials-in-files.sh"
 CheckIfFileExists "./find-credits-in-files.sh"
 CheckIfFileExists "./find-missing-developers-in-git-commits.sh"
 CheckIfFileExists "./list-contributors-in-history.sh"
+CheckIfFileExists "./lines-count.sh"
 
 echo -e "\nCheck utilitary scripts..."
 CheckIfFileExists "./utils/extract-contributors-lists.rb"
@@ -149,6 +150,9 @@ CheckIfRuntimeExists "Gitleaks" "gitleaks version" "8.3.0"
 
 echo -e "\nCheck for Octokit..."
 CheckIfRuntimeExists "Octokit (Ruby gem)" "gem list | grep octokit" "4.20.0"
+
+echo -e "\nCheck for cloc..."
+CheckIfRuntimeExists "cloc" "cloc --version" "1.88"
 
 # Conclusion
 # ----------
