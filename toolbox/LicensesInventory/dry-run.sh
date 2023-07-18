@@ -9,7 +9,7 @@
 
 # Since...............: 10/03/2023
 # Description.........: Make a dry-run of the LicensesInventory module to check if everything is ready to use
-# Version.............: 2.1.0
+# Version.............: 2.2.0
 
 set -eu
 
@@ -177,6 +177,16 @@ CheckIfFileExists "./tests/integrationtests/test_configuration.py"
 CheckIfFileExists "./tests/integrationtests/test_dependencies.py"
 CheckIfFileExists "./tests/integrationtests/test_downloads.py"
 CheckIfFileExists "./tests/integrationtests/test_licenses.py"
+
+echo -e "\nCheck other files"
+
+CheckIfFileExists "./README.md"
+CheckIfFileExists "./THIRD-PARTY.txt"
+CheckIfDirectoryExists "./licenses"
+CheckIfFileExists "./licenses/LICENSE-beautifulsoup.txt"
+CheckIfFileExists "./licenses/LICENSE-pytest.txt"
+CheckIfFileExists "./licenses/LICENSE-requests.txt"
+CheckIfFileExists "./licenses/LICENSE-xmltodict.txt"
 
 # Runtimes and tools
 # ------------------
