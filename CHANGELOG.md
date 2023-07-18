@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## Version 2.12.0
+
+### Features
+
+- [#28](https://github.com/Orange-OpenSource/floss-toolbox/issues/28) Diver - Lines of codes and useful metrics
+
+### Changes
+
+- [#87](https://github.com/Orange-OpenSource/floss-toolbox/issues/87) Project - Add DCO
+- [#90](https://github.com/Orange-OpenSource/floss-toolbox/issues/90) Project - Add security policy file
+- [#85](https://github.com/Orange-OpenSource/floss-toolbox/issues/85) Project - Split README files
+- [#86](https://github.com/Orange-OpenSource/floss-toolbox/issues/86) Licenses Inventory - Move HTML test files to archives of release
+- [#93](https://github.com/Orange-OpenSource/floss-toolbox/issues/93) GitHub - Add in dry-run Gemfiles
+
 ## Version 2.11.0
 
 ### Features
