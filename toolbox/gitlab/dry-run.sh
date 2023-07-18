@@ -9,7 +9,7 @@
 
 # Since...............: 10/03/2023
 # Description.........: Make a dry-run of the gitlab module to check if everything is ready to use
-# Version.............: 1.0.0
+# Version.............: 1.1.0
 
 set -eu
 
@@ -101,9 +101,6 @@ echo -e "\n-----------------------"
 echo "Assertions for runtimes"
 echo "-----------------------"
 
-echo -e "\nCheck for Ruby..."
-CheckIfRuntimeExists "Ruby" "ruby -v" "2.7.1"
-
 echo -e "\nCheck for Bash..."
 CheckIfRuntimeExists "Bash" "bash --version" "3.2.5"
 
@@ -112,9 +109,6 @@ CheckIfRuntimeExists "Python3" "python3 --version" "3.8.5"
 
 echo -e "\nCheck for git..."
 CheckIfRuntimeExists "git" "git --version" "2.32.0"
-
-echo -e "\nCheck for gh (GitHub CLI)..."
-CheckIfRuntimeExists "GitHub CLI (gh)" "gh --version" "1.3.1"
 
 echo -e "\nCheck for Gitleaks..."
 CheckIfRuntimeExists "Gitleaks" "gitleaks version" "8.3.0"

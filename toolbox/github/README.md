@@ -3,6 +3,7 @@
 Table of Contents
 =================
    * [Play with GitHub web API](#play-with-github-web-api)
+      * [Project tree](#project-tree)
       * [Prerequisites](#prerequisites)
       * [Prepare project](#prepare-project)
       * [Third party elements](#third-party-elements)
@@ -30,6 +31,12 @@ Table of Contents
 
 # Play with GitHub web API
 
+## Project tree
+
+1. _github_ contains all scripts and programs to play with GitHub API using Octokit or GH
+2. _github/licenses_ contains third-party licenses files
+3. _github/utils_ contains utility scripts calls by the wizard
+
 ## Prerequisites
 
 - Ruby Gem: `octokit 6.1.1`
@@ -40,9 +47,10 @@ Table of Contents
 - Define the _GitHub_ organization name in the _configuration.rb_ file for the `GITHUB_ORGANIZATION_NAME` variable. It will allow to send requests to query and modify your organization.
 - Define also the logins of the GitHub adminsitrators of your organization so as to prevent to change their permisssion for example.
 
-This project expects to have this tools available and already added in your system.
-Thus there is not composition nor aggregation (mere or not) about them.
+This project expects to have several third-party elements available and already added in your system, like [Octokit Ruby gem](https://github.com/octokit/octokit.rb), [Git](https://git-scm.com/), [Ruby](https://www.ruby-lang.org), [Bash](https://www.gnu.org/software/bash/) and [Git Ruby gem](https://github.com/ruby-git/ruby-git)
 None of them have been modified nor distributed.
+
+Thus there is no composition nor [aggregation (mere or not)](https://www.gnu.org/licenses/gpl-faq.html#MereAggregation) with them but these components are also called by the system calls mainly, except for _Octokit_ and _Git_ Ruby gems under MIT licenses.
 
 To check preconditions, run:
 
@@ -62,11 +70,6 @@ of if you have _Bundler_:
 ```shell
 bundle install
 ```
-
-## Third-party elements
-
-This project uses [Octokit](https://github.com/octokit/octokit.rb) Ruby client, licensed under MIT license.
-It also uses [Git](https://github.com/ruby-git/ruby-git) Ruby gem, under MIT license.
 
 ## Features
 
@@ -215,14 +218,15 @@ bash GitHubWizard.sh set-teams-permissions-to-read
 - Ruby 2.7.1
 - Python 3
 
-Some configuration details must be defined (in _configuration.rb), like:
+Some configuration details must be defined (in _configuration.rb_), like:
 1. `GITHUB_ORGANIZATION_NAME` to store the name of the organization
 2. `REPOSITORIES_CLONE_LOCATION_PATH` location of the clone sif you want to make a dump of the organisation repositories
 3. `REPOSITORIES_CLONE_URL_JSON_KEY` to choose the JSON key to get the repository URL from GitHub API
 
-This project expects to have this tools available and already added in your system.
-Thus there is not composition nor aggregation (mere or not) about them.
+This project expects to have several third-party elements available and already added in your system, like [[Ruby](https://www.ruby-lang.org), [Python 3](https://www.python.org/) and [GitHub CLI](https://github.com/cli/cli)
 None of them have been modified nor distributed.
+
+Thus there is no composition nor [aggregation (mere or not)](https://www.gnu.org/licenses/gpl-faq.html#MereAggregation) with them but these components are also called by the system calls mainly.
 
 To check preconditions, run:
 
@@ -235,10 +239,6 @@ bash dry-run.sh
 ```shell
 brew install gh
 ```
-
-## Third-party elements
-
-This project uses [GitHub CLI](https://github.com/cli/cli), licensed under MIT license.
 
 ## Features
 

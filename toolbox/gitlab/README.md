@@ -13,26 +13,22 @@ Table of Contents
 
 ## Prerequisites
 
-- Ruby Gem: `git 1.8.1`
-- Python3
+- [Python 3](https://www.python.org/)
+- [Git](https://git-scm.com/) (version 2.32.0)
+- [curl](https://github.com/curl/curl)
+- [gitleaks](https://github.com/gitleaks/gitleaks)
 
 - Create a [GitLab personal token](https://gitlab.com/-/profile/personal_access_tokens) and define it in the _configuration.rb_ file for the `GILAB_PERSONAL_ACCESS_TOKEN` variable.
 - Define the GitLab organization id in the _configuration.rb_ file for the `GITLAB_ORGANIZATION_ID` variable. It will allow to send requests to query and modify your organization.
 
-This project expects to have this tools available and already added in your system.
-Thus there is not composition nor aggregation (mere or not) about them.
+This project expects to have several third-party elements available and already added in your system, like _Python3_, _git_, _curl_ and _gitleaks_.
 None of them have been modified nor distributed.
+Thus there is no composition nor [aggregation (mere or not)](https://www.gnu.org/licenses/gpl-faq.html#MereAggregation) with them but these components are also called by the system calls mainly.
 
 To check preconditions, run:
 
 ```shell
 bash dry-run.sh
-```
-
-## Prepare project
-
-```ruby
-gem install git
 ```
 
 ## Features

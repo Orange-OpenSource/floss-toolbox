@@ -3,6 +3,7 @@
 Table of Contents
 =================
    * [The diver of source code and commits](#the-diver-of-source-code-and-commits)
+      * [Project tree](#project-tree)
       * [Prerequisites](#prerequisites)
       * [Input file](#file-of-words)
       * [Features](#features)
@@ -16,20 +17,24 @@ Table of Contents
 
 # The "diver" of source code and commits
 
+## Project tree
+
+1. _diver_ contains several scripts you need. At the root of this folder are _Shell_ main scripts.
+2. _diver/utils_ contains the programs called from the _Shell_ main scripts.
+3. _diver/data_ contains some datasets and projects samples to work on.
+
+**Please, note for this version for some features you might have to copy/paste your project in the _toolbox/diver/data_ folder because non-absolute paths and commands are used in the scripts**
+
 ## Prerequisites
 
-Some components must be available (dry run script will help to find the ones missing):
-- Ruby (version 2.7.1)
-- Bash (version 3.2.5)
-- Python3 (version 3.8.5)
-- Git (version 2.32.0)
-- GH (version 1.31.1)
-- Gitleaks (version 8.3.0)
-- Octokit Ruby gem (version 4.20.0)
-- Cloc (version 1.88)
+Some components must be available (dry-run script will help to find the ones missing):
+- [Bash](https://www.gnu.org/software/bash/) (version 3.2.5)
+- [Ruby](https://www.ruby-lang.org) (version 2.7.1)
+- [Git](https://git-scm.com/) (version 2.32.0)
+- [Cloc](https://github.com/AlDanial/cloc) (version 1.88)
 
-This project expects to have this tools available and already added in your system.
-Thus there is not composition nor aggregation (mere or not) about them.
+This project expects to have these third party elements available and already added in your system.
+Thus there is no composition nor [aggregation (mere or not)](https://www.gnu.org/licenses/gpl-faq.html#MereAggregation) with them but these components are also called by the system calls mainly.
 None of them have been modified nor distributed.
 
 To check preconditions, run:

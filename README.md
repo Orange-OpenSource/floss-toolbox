@@ -25,19 +25,19 @@ Environment:
 
 # Project tree
 
-_toolbox/diver_ contains several scripts you need. At the root of this folder are _Shell_ main scripts.
-_toolbox/diver/utils_ contains the programs called from the _Shell_ main scripts.
-_toolbox/diver/data_ contains some datasets and projects samples to work on.
-_toolbox/github_ contains _Ruby_ and _Shell_ scripts to use so as to deal with _GitHub_ REST API.
+There are four folders containing scripts and programs to make your life a bit easier:
 
-**Please, note for this version for some features you might have to copy/paste your project in the _toolbox/diver/data_ folder because non-absolute paths and commands are used in the scripts**
+1. _toolbox/diver_ contains scripts to scrap data in Git logs and histories, look for sensitive data in sources, etc.
+2. _toolbox/github_ contains scripts and programs to make requests to GitHub API so as to automate some actions
+3. _toolbox/gitlab_ contains scripts and programs to make requests to GitLab API so as to automate some actions
+4. _toobox/LicensesInventory_ contains program to get licenses of third party components thanks to dependency manager files
+
+Feel free to read each README available in all of the subdirectories listed above.
 
 # Dry run
 
-To be sure you have a ready-to-run project, you can run the dry-run command:
+To be sure you have a ready-to-run project, you can run the following dry-run command which will check if runtimes, third party tools and files are available.
 
 ```shell
 bash dry-run.sh
 ```
-
-# About features

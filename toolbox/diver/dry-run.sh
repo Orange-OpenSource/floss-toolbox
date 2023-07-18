@@ -9,7 +9,7 @@
 
 # Since...............: 10/03/2023
 # Description.........: Make a dry-run of the diver module to check if everything is ready to use
-# Version.............: 1.1.0
+# Version.............: 1.2.0
 
 set -eu
 
@@ -123,6 +123,9 @@ CheckIfFileExists "./utils/find-missing-developers-in-git-commits.rb"
 echo -e "\nCheck for generated files folder..."
 CheckIfDirectoryExists "./data"
 
+echo -e "\nCheck other files..."
+CheckIfFileExists "./README.md"
+
 # Runtimes and tools
 # ------------------
 
@@ -136,20 +139,8 @@ CheckIfRuntimeExists "Ruby" "ruby -v" "2.7.1"
 echo -e "\nCheck for Bash..."
 CheckIfRuntimeExists "Bash" "bash --version" "3.2.5"
 
-echo -e "\nCheck for Python3..."
-CheckIfRuntimeExists "Python3" "python3 --version" "3.8.5"
-
 echo -e "\nCheck for git..."
 CheckIfRuntimeExists "git" "git --version" "2.32.0"
-
-echo -e "\nCheck for gh (GitHub CLI)..."
-CheckIfRuntimeExists "GitHub CLI (gh)" "gh --version" "1.3.1"
-
-echo -e "\nCheck for Gitleaks..."
-CheckIfRuntimeExists "Gitleaks" "gitleaks version" "8.3.0"
-
-echo -e "\nCheck for Octokit..."
-CheckIfRuntimeExists "Octokit (Ruby gem)" "gem list | grep octokit" "4.20.0"
 
 echo -e "\nCheck for cloc..."
 CheckIfRuntimeExists "cloc" "cloc --version" "1.88"

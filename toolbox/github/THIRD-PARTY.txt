@@ -2,22 +2,12 @@
 MIT License
 ================================================================================
 
-Component: Git 
-Copyright: 2008 Scott Chacon
-License Text URL: licenses/LICENSE-Git.txt
-Source Code: https://github.com/ruby-git/ruby-git
-
-Component: GitHubCLI
-Copyright: 2019 GitHub Inc.
-License Text URL: licenses/LICENSE-GitHubCLI.txt
-Source Code: https://github.com/cli/cli
-
-Component: Gitleaks 
-Copyright: Copyright (c) 2019 Zachary Rice
-License Text URL: licenses/LICENSE-Gitleaks.txt
-Source Code: https://github.com/zricethezav/gitleaks
-
 Component: Octokit 
 Copyright: 2009-2017 Wynn Netherland, Adam Stacoviak, Erik Michaels-Ober
 License Text URL: licenses/LICENSE-Octokit.txt
 Source Code: https://github.com/octokit/octokit.rb
+
+Component: Ruby Git
+Copyright: Copyright (c) 2008 Scott Chacon
+License Text URL: licenses/LICENSE-Ruby-Git.txt
+Source Code: https://github.com/ruby-git/ruby-git
