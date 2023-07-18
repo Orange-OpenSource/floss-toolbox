@@ -14,6 +14,7 @@ Table of Contents
          * [Find credits](#find-credits)
          * [List conributors from Git history](#list-contributors-from-git-history)
          * [Extract email adress from Git history](#extract-email-address-from-git-history)
+         * [Count lines of code in a directory](#count-lines-of-code-in-a-directory)
 
 # The "diver" of source code and commits
 

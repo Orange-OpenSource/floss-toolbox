@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version x.y.z
+
+### Bugs
+
+- [#96](https://github.com/Orange-OpenSource/floss-toolbox/issues/96) Project - Broken links in README
+
 ## Version 2.12.0
 
 ### Features

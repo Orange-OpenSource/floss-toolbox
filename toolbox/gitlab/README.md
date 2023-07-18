@@ -3,11 +3,10 @@
 Table of Contents
 =================		
    * [Play with GitLab web API](#play-with-gitlab-web-api)
-      * [Prerequisites](#prerequisites-2)
-      * [Prepare projects](#prepare-project-2)									
-      * [Features](#features-3)			
-         * [Make a backup of organization repositories](#make-a-backup-of-organization-repositories-1)			
-         * [Check if there are leaks in organisation repositories (using gitleaks)](#check-if-there-are-leaks-in-organisation-repositories-using-gitleaks-1)			
+      * [Prerequisites](#prerequisites)
+      * [Features](#features)			
+         * [Make a backup of organization repositories](#make-a-backup-of-organization-repositories)			
+         * [Check if there are leaks in organisation repositories (using gitleaks)](#check-if-there-are-leaks-in-organisation-repositories-using-gitleaks)			
 
 # Play with GitLab web API
 
