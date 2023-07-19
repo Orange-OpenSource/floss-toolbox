@@ -129,6 +129,12 @@ else
     BadArgumentsExit
 fi
 
+# Check if target is directory
+if [ ! -d "$directory_to_scan" ]; then
+    echo "💥 Error: Target is not a directory ($directory_to_scan)."
+    BadArgumentsExit
+fi
+
 # Run!
 SECONDS=0
 
