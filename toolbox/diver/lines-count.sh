@@ -105,7 +105,7 @@ fi
 # Get target
 if [ "$1" = "--folder"  ]; then
     if [ "$2" ]; then
-	    directory_to_scan=$2
+        directory_to_scan=$2
         repo_to_clone_url=""
         # Check if target is directory
         if [ ! -d "$directory_to_scan" ]; then
@@ -119,19 +119,13 @@ if [ "$1" = "--folder"  ]; then
 elif [ "$1" = "--url"  ]; then
     if [ "$2" ]; then
         directory_to_scan=""
-	    repo_to_clone_url=$2
+        repo_to_clone_url=$2
     else
         DisplayUsages
         BadArgumentsExit
     fi
 else
     DisplayUsages
-    BadArgumentsExit
-fi
-
-# Check if target is directory
-if [ ! -d "$directory_to_scan" ]; then
-    echo "💥 Error: Target is not a directory ($directory_to_scan)."
     BadArgumentsExit
 fi
 
