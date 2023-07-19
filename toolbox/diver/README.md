@@ -207,5 +207,9 @@ You can use one script to compute lines of code thanks to [cloc](https://github.
 It will generate a report with all the metrics you may need.
 
 ```shell
-bash lines-count.sh --target "absolute/path/to/target"
+# To compute metrics in some folder
+bash lines-count.sh --folder "absolute/path/to/target"
+
+# To compute metrics for a remote repository to clone at given URL
+bash lines-count.sh --url "HTTP-or-SSH-URL-of-Git-repository"
 ```
