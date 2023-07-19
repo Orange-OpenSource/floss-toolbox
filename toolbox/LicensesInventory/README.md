@@ -4,7 +4,7 @@ Table of Contents
 =================		
    * [Licenses inventory](#licenses-inventory)			
       * [Disclaimer](#disclaimer)			
-      * [Prerequisites](#prerequisites-3)			
+      * [Prerequisites](#prerequisites)			
       * [Fill the configuration file](#fill-the-configuration-file)			
       * [Run the tool](#run-the-tool)
       * [Run the tests](#run-the-tests)
@@ -12,7 +12,7 @@ Table of Contents
          * [Go with go.mod](#go-language)
          * [Gradle with build.gradle(.kts)](#gradle-environment)
          * [Rust with Cargo.lock](#rust-environment)		 
-         * [JavaScript / Node.js with package.json](#javascriptnodejs-environment)
+         * [JavaScript / Node.js with package.json](#javascript--nodejs-environment)
          * [Swift with Package.swift](#swift--spm-environment)
          * [Dart / Flutter with pubspec.yaml](#dart--flutter-environment)		 		 		 
       * [Notes](#notes)

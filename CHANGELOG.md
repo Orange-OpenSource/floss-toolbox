@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## Version 2.13.0
+
+### Features
+
+- [#98](https://github.com/Orange-OpenSource/floss-toolbox/issues/98) Diver - Compute metrics with in parameter URL to clone repo 
+
+### Bugs
+
+- [#96](https://github.com/Orange-OpenSource/floss-toolbox/issues/96) Project - Broken links in README
+
 ## Version 2.12.0
 
 ### Features
