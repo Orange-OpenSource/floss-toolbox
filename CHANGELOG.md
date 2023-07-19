@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Version x.y.z
+## Version 2.13.0
 
 ### Features
 
