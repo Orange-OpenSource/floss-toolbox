@@ -1,147 +1,152 @@
-# CHANGELOG
+# Changelog
 
-## Version 2.13.0
+All notable changes to this project will be documented in this file.
 
-### Features
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-- [#98](https://github.com/Orange-OpenSource/floss-toolbox/issues/98) Diver - Compute metrics with in parameter URL to clone repo 
+## Unreleased
 
-### Bugs
+- Make CHANGELOG more compliant (#103)
 
-- [#96](https://github.com/Orange-OpenSource/floss-toolbox/issues/96) Project - Broken links in README
+## [2.13.0] - 2023-07-19
 
-## Version 2.12.0
+### Added
 
-### Features
+- Diver - Compute metrics with in parameter URL to clone repo (#98)
 
-- [#28](https://github.com/Orange-OpenSource/floss-toolbox/issues/28) Diver - Lines of codes and useful metrics
+### Fixed
 
-### Changes
+- Project - Broken links in README (#96)
 
-- [#87](https://github.com/Orange-OpenSource/floss-toolbox/issues/87) Project - Add DCO
-- [#90](https://github.com/Orange-OpenSource/floss-toolbox/issues/90) Project - Add security policy file
-- [#85](https://github.com/Orange-OpenSource/floss-toolbox/issues/85) Project - Split README files
-- [#86](https://github.com/Orange-OpenSource/floss-toolbox/issues/86) Licenses Inventory - Move HTML test files to archives of release
-- [#93](https://github.com/Orange-OpenSource/floss-toolbox/issues/93) GitHub - Add in dry-run Gemfiles
+## [2.12.0] - 2023-07-18
 
-## Version 2.11.0
+### Added
 
-### Features
+- Diver - Lines of codes and useful metrics (#28)
 
-- [#82](https://github.com/Orange-OpenSource/floss-toolbox/issues/82) GitHub - Set teams permissions to read
+### Changed
 
-## Version 2.10.1
+- Project - Add DCO (#87)
+- Project - Add security policy file (#90)
+- Project - Split README files (#85)
+- Licenses Inventory - Move HTML test files to archives of release (#86)
+- GitHub - Add in dry-run Gemfiles (#93)
 
-### Bugs
+## [2.11.0] - 2023-06-28
 
-- [#80](https://github.com/Orange-OpenSource/floss-toolbox/issues/80) Diver - Path variables not protected
+### Added
 
-## Version 2.10.0
+- GitHub - Set teams permissions to read (#82)
 
-### Features
+## [2.10.1] - 2023-05-31
 
-- [#77](https://github.com/Orange-OpenSource/floss-toolbox/issues/77) Licenses Inventory - New release
+### Fixed
 
-## Version 2.9.0
+- Diver - Path variables not protected (#80)
 
-### Features
+## [2.10.0] - 2023-05-30
 
-- [#64](https://github.com/Orange-OpenSource/floss-toolbox/issues/64) Licenses Inventory - New release
+### Added
 
-## Version 2.8.0
+- Licenses Inventory - New release (#77)
 
-### Features
+## [2.9.0] - 2023-03-31
 
-- [#68](https://github.com/Orange-OpenSource/floss-toolbox/issues/68) Project - Split dry run
+### Added
 
-### Changes
+- Licenses Inventory - New release (#64)
 
-- [#70](https://github.com/Orange-OpenSource/floss-toolbox/issues/70) Project - Update copyright
-- [#69](https://github.com/Orange-OpenSource/floss-toolbox/issues/69) Project - Improve README
+## [2.8.0] - 2023-03-10
 
-## Version 2.7.1
+### Added
 
-### Changes
+- Project - Split dry run (#68)
 
-- [#63](https://github.com/Orange-OpenSource/floss-toolbox/issues/63) Add missing files
+### Changed
 
-## Version 2.7.0
+- Project - Update copyright (#70)
+- Project - Improve README (#69)
 
-### Features
+## [2.7.1]
 
-- [#2](https://github.com/Orange-OpenSource/floss-toolbox/issues/2) Package manager - Extract from files downloaded dependencies
+### Changed
 
-## Version 2.6.0
+- Add missing files (#63)
 
-### Features
+## [2.7.0] - 2023-01-18
 
-- [#57](https://github.com/Orange-OpenSource/floss-toolbox/issues/57) Look for leaks and vulnerabilities with exclusion of projects
+### Added
 
-## Version 2.5.0
+- Package manager - Extract from files downloaded dependencies (#2)
 
-### Features
+## [2.6.0] - 2022-05-05
 
-- [#32](https://github.com/Orange-OpenSource/floss-toolbox/issues/32) GitLab Auto Backup
-- [#49](https://github.com/Orange-OpenSource/floss-toolbox/issues/49) Look for leaks (GitLab)
+### Added
 
-### Bugs
+- Look for leaks and vulnerabilities with exclusion of projects (#57)
 
-- [#52](https://github.com/Orange-OpenSource/floss-toolbox/issues/52) Failure of git log if no commits
+## [2.5.0] - 2022-03-09
 
-## Version 2.4.0
+### Added
 
-### Features
+- GitLab Auto Backup (#32)
+- Look for leaks (GitLab) (#49)
 
-- [#44](https://github.com/Orange-OpenSource/floss-toolbox/issues/44) Look for leaks (GitHub)
-- [#29](https://github.com/Orange-OpenSource/floss-toolbox/issues/29) Dry run
+### Fixed
 
-### Refactoring
+- Failure of git log if no commits (#52)
 
-- [#37](https://github.com/Orange-OpenSource/floss-toolbox/issues/37) Check of vulnerabilities #37
-- [#40](https://github.com/Orange-OpenSource/floss-toolbox/issues/40) Fix typo in doc and files
+## [2.4.0] - 2022-03-08
 
-## Version 2.3.0
+### Added
 
-### Features
+- Look for leaks (GitHub) (#44)
+- Dry run (#29)
 
-- [#20](https://github.com/Orange-OpenSource/floss-toolbox/issues/20) Find repositories with vulnerabilities (Dependabot)
+### Changed
 
-## Version 2.2.0
+- Check of vulnerabilities (#37)
+- Fix typo in doc and files (#40)
 
-### Features
+## [2.3.0] - 2022-02-25
 
-- [#19](https://github.com/Orange-OpenSource/floss-toolbox/issues/19) Backup of repositories
-- [#27](https://github.com/Orange-OpenSource/floss-toolbox/issues/27) Extract email addresses
+### Added
 
-### Features (diver)
+- Find repositories with vulnerabilities (Dependabot) (#20)
 
-- [#27](https://github.com/Orange-OpenSource/floss-toolbox/issues/27) Extract email addresses
+## [2.2.0] 2022-02-24
 
-## Version 2.1.0
+### Added
 
-### Features
+- Backup of repositories (#19)
+- Extract email addresses (#27)
 
-- [#13](https://github.com/Orange-OpenSource/floss-toolbox/issues/13) List all contributors of a Git repository using Git history
+## [2.1.0] - 2021-10-06
 
-## Version 2.0.0
+### Added
 
-### Features
+- List all contributors of a Git repository using Git history (#13)
 
-- [#4](https://github.com/Orange-OpenSource/floss-toolbox/issues/4) Get all members of GitHub organization
-- [#4](https://github.com/Orange-OpenSource/floss-toolbox/issues/4) Get members who don't have 2FA enabled
-- [#4](https://github.com/Orange-OpenSource/floss-toolbox/issues/4) Get members of organization with "company" field undefined
-- [#4](https://github.com/Orange-OpenSource/floss-toolbox/issues/4) Get projects which don't have any assigned GitHub team
-- [#4](https://github.com/Orange-OpenSource/floss-toolbox/issues/4) Get users which have undefined or hidden email
-- [#4](https://github.com/Orange-OpenSource/floss-toolbox/issues/4) Get users which may have not suitable fullname
-- [#4](https://github.com/Orange-OpenSource/floss-toolbox/issues/4) Get repositories with undefined licenses
-- [#4](https://github.com/Orange-OpenSource/floss-toolbox/issues/4) Get repositories which seems to be unconform (i.e. missing files)
-- [#4](https://github.com/Orange-OpenSource/floss-toolbox/issues/4) Get repositories which seems to be empty or have not enough files
-- [#4](https://github.com/Orange-OpenSource/floss-toolbox/issues/4) Define permissions (push / write) for all contributors of all projects (except teams and organization owners)
-- [#4](https://github.com/Orange-OpenSource/floss-toolbox/issues/4) Define permissions (push / write) for all teams of all projects
+## [2.0.0] - 2021-06-05
 
-## Version 1.0.0
+## Added
 
-### Features
+- Get all members of GitHub organization (#4)
+- Get members who don't have 2FA enabled (#4)
+- Get members of organization with "company" field undefined (#4)
+- Get projects which don't have any assigned GitHub team (#4)
+- Get users which have undefined or hidden email (#4)
+- Get users which may have not suitable fullname (#4)
+- Get repositories with undefined licenses (#4)
+- Get repositories which seems to be unconform (i.e. missing files) (#4)
+- Get repositories which seems to be empty or have not enough files (#4)
+- Define permissions (push / write) for all contributors of all projects (except teams and organization owners) (#4)
+- Define permissions (push / write) for all teams of all projects (#4)
+
+## [1.0.0]
+
+### Added
 
 - Find contributors in files using a base of words and producing logs
 - Find contributors in git logs
