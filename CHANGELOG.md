@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [2.14.0] - 2024-03-01
+
 - Generate template-based text using variables ([#84](https://github.com/Orange-OpenSource/floss-toolbox/issues/84))
 - Make CHANGELOG more compliant ([#103](https://github.com/Orange-OpenSource/floss-toolbox/issues/103))
 
