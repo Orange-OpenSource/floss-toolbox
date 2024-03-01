@@ -15,8 +15,8 @@ brew install php
 ## Description
 
 Sometimes as open source reference or software forges administrator, we need so send emails to people.
-These emails can be big with lot of detials and hyperlinks to resources, and writing them is time expansive.
-Becaise these emails are almost the same (except with some details), we can generate them using a template and variables.
+These emails can be big with lot of details and hyperlinks to resources, and writing them is time expansive.
+Because these emails are almost the same (except with some details), we can generate them using a template and variables.
 
 ```shell
 php text-generator.php "_templates/new-GitHub-repository-contributors.fr.template.txt" "_templates/values.ini"

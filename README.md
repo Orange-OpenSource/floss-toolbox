@@ -13,15 +13,15 @@
 
 Toolbox to help developers and open source referents to have cleaner projects in _GitHub_ organizations, and more.
 
-Toolbox is mainly written in _Shell_ because this language is very efficient for files processing and provides a strong and rich standard API with cool primitives and nice performanes due to system calls. It helps also to call system primitives easily.
+Toolbox is mainly written in _Shell_ because this language is very efficient for files processing and provides a strong and rich standard API with cool primitives and nice performances due to system calls. It helps also to call system primitives easily.
 Contains also _Ruby_ scripts. _Ruby_ are shiny gems, I love them.
 _Python_ is also used. 
-And a bit of _PHP_ because it is nice to use severa alnguages we are not used to.
+And a bit of _PHP_ because it is nice to use several languages we are not used to (stop the routine!).
 For these needs scripting is enough.
 
 # Environment
 
-You should have mainly the following environments:
+You should have mainly the following environments bellow, but have a look on each folder README:
 - _Bash_ version **3.2.5**
 - _Ruby_ version **2.7.1**
 - _Python_ version **3.7**
