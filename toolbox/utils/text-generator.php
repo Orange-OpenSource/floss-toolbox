@@ -28,6 +28,11 @@ $ERROR_BAD_ARGUMENT_VARIABLES = 3;
 $ERROR_MISSING_VARIABLE_VALUE = 4;
 $ERROR_DURING_OUTPUT = 5;
 
+$VARIABLE_PREFIX = "%";
+$VARIABLE_SUFFIX = "%";
+
+$TEXT_FILE_OUTPUT_SUFFIX = ".result";
+
 // ---------------
 // Check arguments
 // ---------------
@@ -68,7 +73,7 @@ $newText = $text;
 foreach($variables as $key => $value) {
     if ($value !== "") {
         echo "Replacing all occurences of '$key' by '$value'".PHP_EOL;
-        $newText = str_replace("[[$key]]", $value, $newText);        
+        $newText = str_replace($VARIABLE_PREFIX . $key . $VARIABLE_SUFFIX, $value, $newText);        
     } else {
         echo "Error: No value associated to key '$key'".PHP_EOL;
         exit($ERROR_MISSING_VARIABLE_VALUE);
@@ -79,8 +84,8 @@ foreach($variables as $key => $value) {
 // Output
 // ------
 
-$destinationName="$template_file.result";
-$writeResult=file_put_contents("$template_file.result", $newText);
+$destinationName = "$template_file" . $TEXT_FILE_OUTPUT_SUFFIX;
+$writeResult = file_put_contents("$template_file.result", $newText);
 if (!$writeResult) {
     echo "Error: Something wrong occured during writing process".PHP_EOL;
     exit($ERROR_DURING_OUTPUT);
