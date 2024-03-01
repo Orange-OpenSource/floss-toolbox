@@ -9,7 +9,7 @@
 
 # Since...............: 08/03/2021
 # Description.........: Make a dry-run of the project to check if everything is ready to use
-# Version.............: 3.0.0
+# Version.............: 3.1.0
 
 set -eu
 
@@ -83,6 +83,18 @@ echo "Assertions for the GITLAB features"
 echo "----------------------------------"
 
 RunDryRunInFolder "gitlab"
+
+# Utils features
+# --------------
+
+echo -e "\n"
+read -p "✋ Press any key to dry run utils features"
+
+echo -e "\n---------------------------------"
+echo "Assertions for the Utils features"
+echo "---------------------------------"
+
+RunDryRunInFolder "utils"
 
 # Licenses Inventory tool
 # -----------------------
