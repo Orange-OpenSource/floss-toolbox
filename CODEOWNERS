@@ -11,6 +11,8 @@ CODE_OF_CONFLICT.md @pylapp
 CONTRIBUTORS.txt @pylapp
 LICENSE.txt @pylapp
 README.md @pylapp
+DCO.txt @pylapp
+SECURITY.md @pylapp
 
 # Toolbox
 
@@ -18,4 +20,5 @@ README.md @pylapp
 /toolbox/diver/ @pylapp
 /toolbox/github/ @pylapp
 /toolbox/gitlab/ @pylapp
+/toolbox/utils/ @pylapp
 /toolbox/dry-run.sh @pylapp
