@@ -1,38 +1,38 @@
 Bonjour,
  
-Les utilisateurs GitHub ci-dessous seront ajoutés avec les droits [[FORGE_ADDED_USERS_PERMISSION]] au dépôt GitHub [[FORGE_REPO_NAME]] [1] :
+Les utilisateurs GitHub ci-dessous seront ajoutés avec les droits "[[FORGE_ADDED_USERS_PERMISSION]]" au dépôt GitHub "[[FORGE_REPO_NAME]]" [1] :
 [[FORGE_ADDED_HANDLES_LIST]].
 
 Normalement ces droits seront suffisants mais nous vous invitons à nous contacter si ce n’est pas le cas en fournissant l'argumentaire adéquat.
  
-Les utilisateurs ont été ajoutés à une team GitHub ([[FORGE_REPO_TEAM_NAME]]), mais c’est pour notre tambouille interne côté administrateurs.
-Cette team, pour les mêmes raisons, a été ajoutée avec les droits [[FORGE_REPO_TEAM_PERMISSION]] au dépôt, il faudra laisser les choses en l'état.
+Les utilisateurs ont été ajoutés à une team GitHub ("[[FORGE_REPO_TEAM_NAME]]"), mais c’est pour notre tambouille interne côté administrateurs.
+Cette team, pour les mêmes raisons, a été ajoutée avec les droits "[[FORGE_REPO_TEAM_PERMISSION]]" au dépôt, il faudra laisser les choses en l'état.
 Les utilisateurs ont été ajoutés à notre liste de diffusion des usagers des forges logicielles publiques (fréquence faible de méls envoyés) ([[RESSOURCE_MAILING_LIST_FORGE_USERS]]).
  
 Les utilisateurs devront recevoir sous peu des invitations méls pour plusieurs sujets :
-- Rejoindre l'organisation GitHub du Groupe ([[FORGE_ORG_NAME]])
-- Rejoindre le dépôt ([[FORGE_REPO_NAME]])
+- Rejoindre l'organisation GitHub du Groupe ([[FORGE_ORG_NAME]]) ;
+- Rejoindre le dépôt ([[FORGE_REPO_NAME]]).
 
 Les comptes GitHub doivent respecter les règles ci-dessous, ceci ne prend que quelques minutes et c'est indispensable de le faire.
 Les administrateurs de l'organisation n’ayant pas la main sur les comptes, leurs propriétaires doivent s'en charger, condition impérative pour utiliser les dépôts.
 1. Avoir son prénom et son nom clairement affichés ;
-2. Afficher dans le champ « company » votre entreprise (e.g. « Orange ») ;
+2. Afficher dans le champ "company" votre entreprise (e.g. "Orange") ;
 3. Afficher son appartenance à l’organisation GitHub (cf cette documentation [2]) ;
 4. Ajouter son adresse email professionnelle parmi les adresses emails de votre compte GitHub ; attention, votre compte étant personnel, ne mettez pas votre adresse email professionnelle en tant qu’adresse "primary".
  
 À noter que seuls les internes (CDI, apprentis, thésards) sont concernés par les critères susmentionnés, et non les prestataires et stagiaires qui ne peuvent rejoindre l’organisation (mais peuvent être ajoutés aux dépôts).
  
-Concernant vos contributions à venir, nous vous demanderons d’être vigilants à votre configuration Git (prénom et nom correctement renseignés dans le « user.name », adresse mail pro correctement renseignée dans le « user.email »).
+Concernant vos contributions à venir, nous vous demanderons d’être vigilants à votre configuration Git (prénom et nom correctement renseignés dans le "user.name", adresse mail pro correctement renseignée dans le "user.email").
 Nous vous demanderons aussi d’appliquer le DCO (option signed-off de votre client Git).
 Pour les externes, si vous avez une adresse email Orange, il faut l’utiliser. Sinon ce sera votre adresse email employeur.
  
 Bien évidemment, vous devriez apporter le plus grand soin à vos commits, et être vigilants quant à la correction des vulnérabilités et fuites de secrets.
  
-Par défaut les personnes auront les droits [[FORGE_ADDED_USERS_PERMISSION]], nous n’autorisons les droits admins qu’au cas par cas compte-tenu des possibilités de cette permission.
+Par défaut les personnes auront les droits "[[FORGE_ADDED_USERS_PERMISSION]]", nous n’autorisons le droit "admin" qu’au cas par cas compte-tenu des possibilités de cette permission.
 Nous nous réservons le droit de retirer ces droits à tout moment sans préavis si les personnes ne respectent pas les règles.
   
 Pour rappel, les CGU de GitHub [3] n’autorisent pas d’avoir plusieurs comptes GitHub gratuits, et Orange ne fournit aucun compte GitHub à ses employés, vous devrez donc utiliser votre compte GitHub personnel pour contribuer si vous en avez un.
-Pour plus d’information, nous vous invitons à consulter ce document qui reprend les points à traiter concernant vos comptes GitHub : [4]
+Pour plus d’information, nous vous invitons à consulter ce document [4] qui reprend les points à traiter concernant vos comptes GitHub.
  
 Ne pas oublier non plus de signer ses commits avec le signoff [5] (les signatures cryptographiques via GPG ne sont pas exigées mais rien n'empêche de le faire).
 Il faudra aussi être vigilant quant aux alertes Dependabot [6] et aux fuites de secrets détectables via gitleaks [7].
@@ -42,11 +42,12 @@ L'ajout d'apps tierces ou de GitHub Actions aux dépôts est soumis à validatio
 Pour ce sujet ou toute question, vous pouvez nous contacter via [[RESSOURCE_MAILING_LIST_ADMINS]].
 
 Pour aller plus loin, nous avons :
-- un espace [[TOOL_CHAT_NAME]] pour discuter [10]
-- un espace [[TOOL_DOCS_NAME]] dédié à l'open source [11]
-- un espace [[TOOL_DOCS_NAME]] dédié à la propriété intellectuelle [12]
-- un site web interne [11]
-- un site web externe [12]
+- un espace [[TOOL_CHAT_NAME]] pour discuter [10] ;
+- un espace [[TOOL_DOCS_NAME]] dédié à l'open source [11] ;
+- un espace [[TOOL_DOCS_NAME]] dédié à la propriété intellectuelle [12] ;
+- un site web interne [11] ;
+- un site web externe [12] ;
+- un site vitrine pour GitHub [13].
 
 Restant à disposition,
  
@@ -64,4 +65,4 @@ Restant à disposition,
 [12] [[TOOL_DOCS_IPJD_LINK]]
 [11] [[RESSOURCES_WEB_INTERNAL-SITE]]
 [12] [[RESSOURCES_WEB_PUBLIC-SITE]]
-
+[13] [[RESSOURCES_WEB_GITHUB-SITE]]
