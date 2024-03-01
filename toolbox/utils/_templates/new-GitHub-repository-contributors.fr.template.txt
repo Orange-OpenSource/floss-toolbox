@@ -1,17 +1,17 @@
 Bonjour,
  
-Les utilisateurs GitHub ci-dessous seront ajoutés avec les droits "[[FORGE_ADDED_USERS_PERMISSION]]" au dépôt GitHub "[[FORGE_REPO_NAME]]" [1] :
-[[FORGE_ADDED_HANDLES_LIST]].
+Les utilisateurs GitHub ci-dessous seront ajoutés avec les droits "%FORGE_ADDED_USERS_PERMISSION%" au dépôt GitHub "%FORGE_REPO_NAME%" [1] :
+%FORGE_ADDED_HANDLES_LIST%.
 
 Normalement ces droits seront suffisants mais nous vous invitons à nous contacter si ce n’est pas le cas en fournissant l'argumentaire adéquat.
  
-Les utilisateurs ont été ajoutés à une team GitHub ("[[FORGE_REPO_TEAM_NAME]]"), mais c’est pour notre tambouille interne côté administrateurs.
-Cette team, pour les mêmes raisons, a été ajoutée avec les droits "[[FORGE_REPO_TEAM_PERMISSION]]" au dépôt, il faudra laisser les choses en l'état.
-Les utilisateurs ont été ajoutés à notre liste de diffusion des usagers des forges logicielles publiques (fréquence faible de méls envoyés) ([[RESSOURCE_MAILING_LIST_FORGE_USERS]]).
+Les utilisateurs ont été ajoutés à une team GitHub ("%FORGE_REPO_TEAM_NAME%"), mais c’est pour notre tambouille interne côté administrateurs.
+Cette team, pour les mêmes raisons, a été ajoutée avec les droits "%FORGE_REPO_TEAM_PERMISSION%" au dépôt, il faudra laisser les choses en l'état.
+Les utilisateurs ont été ajoutés à notre liste de diffusion des usagers des forges logicielles publiques (fréquence faible de méls envoyés) (%RESSOURCE_MAILING_LIST_FORGE_USERS%).
  
 Les utilisateurs devront recevoir sous peu des invitations méls pour plusieurs sujets :
-- Rejoindre l'organisation GitHub du Groupe ([[FORGE_ORG_NAME]]) ;
-- Rejoindre le dépôt ([[FORGE_REPO_NAME]]).
+- Rejoindre l'organisation GitHub du Groupe (%FORGE_ORG_NAME%) ;
+- Rejoindre le dépôt (%FORGE_REPO_NAME%).
 
 Les comptes GitHub doivent respecter les règles ci-dessous, ceci ne prend que quelques minutes et c'est indispensable de le faire.
 Les administrateurs de l'organisation n’ayant pas la main sur les comptes, leurs propriétaires doivent s'en charger, condition impérative pour utiliser les dépôts.
@@ -28,7 +28,7 @@ Pour les externes, si vous avez une adresse email Orange, il faut l’utiliser. 
  
 Bien évidemment, vous devriez apporter le plus grand soin à vos commits, et être vigilants quant à la correction des vulnérabilités et fuites de secrets.
  
-Par défaut les personnes auront les droits "[[FORGE_ADDED_USERS_PERMISSION]]", nous n’autorisons le droit "admin" qu’au cas par cas compte-tenu des possibilités de cette permission.
+Par défaut les personnes auront les droits "%FORGE_ADDED_USERS_PERMISSION%", nous n’autorisons le droit "admin" qu’au cas par cas compte-tenu des possibilités de cette permission.
 Nous nous réservons le droit de retirer ces droits à tout moment sans préavis si les personnes ne respectent pas les règles.
   
 Pour rappel, les CGU de GitHub [3] n’autorisent pas d’avoir plusieurs comptes GitHub gratuits, et Orange ne fournit aucun compte GitHub à ses employés, vous devrez donc utiliser votre compte GitHub personnel pour contribuer si vous en avez un.
@@ -39,30 +39,30 @@ Il faudra aussi être vigilant quant aux alertes Dependabot [6] et aux fuites de
 
 Pensez également à avoir les en-têtes des fichiers sources à jour [8] et à maintenir au besoin le fichier listant les dépendances tierces [9].
 L'ajout d'apps tierces ou de GitHub Actions aux dépôts est soumis à validation auprès des administrateurs de l'organisation, prévenez-nous quand vous faîtes de telles demandes car nous n'avons que des informations parcellaires.
-Pour ce sujet ou toute question, vous pouvez nous contacter via [[RESSOURCE_MAILING_LIST_ADMINS]].
+Pour ce sujet ou toute question, vous pouvez nous contacter via %RESSOURCE_MAILING_LIST_ADMINS%.
 
 Pour aller plus loin, nous avons :
-- un espace [[TOOL_CHAT_NAME]] pour discuter [10] ;
-- un espace [[TOOL_DOCS_NAME]] dédié à l'open source [11] ;
-- un espace [[TOOL_DOCS_NAME]] dédié à la propriété intellectuelle [12] ;
+- un espace %TOOL_CHAT_NAME% pour discuter [10] ;
+- un espace %TOOL_DOCS_NAME% dédié à l'open source [11] ;
+- un espace %TOOL_DOCS_NAME% dédié à la propriété intellectuelle [12] ;
 - un site web interne [11] ;
 - un site web externe [12] ;
 - un site vitrine pour GitHub [13].
 
 Restant à disposition,
  
-[1] [[FORGE_REPO_URL]]
+[1] %FORGE_REPO_URL%
 [2] https://docs.github.com/fr/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-your-membership-in-organizations/publicizing-or-hiding-organization-membership
 [3] https://docs.github.com/en/site-policy/github-terms/github-terms-of-service#3-account-requirements
-[4] [[RESSOURCE_DOC_GITHUB-ACCOUNT-SETTINGS]]
-[5] [[RESSOURCE_DOC_COMMITS-SIGNING]]
-[6] [[RESSOURCE_DOC_DEPENDABOT]]
-[7] [[RESSOURCE_DOC_GITLEAKS]]
-[8] [[RESSOURCE_DOC_ABOUT_HEADERS]]
-[9] [[RESSOURCE_DOC_ABOUT_THIRD-PARTY]]
-[10] [[TOOL_CHAT_LINK]]
-[11] [[TOOL_DOCS_OPENSOURCE_LINK]]
-[12] [[TOOL_DOCS_IPJD_LINK]]
-[11] [[RESSOURCES_WEB_INTERNAL-SITE]]
-[12] [[RESSOURCES_WEB_PUBLIC-SITE]]
-[13] [[RESSOURCES_WEB_GITHUB-SITE]]
+[4] %RESSOURCE_DOC_GITHUB-ACCOUNT-SETTINGS%
+[5] %RESSOURCE_DOC_COMMITS-SIGNING%
+[6] %RESSOURCE_DOC_DEPENDABOT%
+[7] %RESSOURCE_DOC_GITLEAKS%
+[8] %RESSOURCE_DOC_ABOUT_HEADERS%
+[9] %RESSOURCE_DOC_ABOUT_THIRD-PARTY%
+[10] %TOOL_CHAT_LINK%
+[11] %TOOL_DOCS_OPENSOURCE_LINK%
+[12] %TOOL_DOCS_IPJD_LINK%
+[11] %RESSOURCES_WEB_INTERNAL-SITE%
+[12] %RESSOURCES_WEB_PUBLIC-SITE%
+[13] %RESSOURCES_WEB_GITHUB-SITE%
