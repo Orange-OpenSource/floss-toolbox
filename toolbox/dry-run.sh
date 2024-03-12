@@ -94,7 +94,8 @@ echo -e "\n---------------------------------"
 echo "Assertions for the Utils features"
 echo "---------------------------------"
 
-RunDryRunInFolder "utils"
+RunDryRunInFolder "utils/text-generator"
+RunDryRunInFolder "utils/third-party-generator"
 
 # Licenses Inventory tool
 # -----------------------

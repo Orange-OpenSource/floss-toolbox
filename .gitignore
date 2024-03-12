@@ -1,4 +1,7 @@
 toolbox/github/data
 toolbox/diver/data
 toolbox/gitlab/data
-toolbox/utils/_templates/new-GitHub-repository-contributors.fr.template.txt.result
+toolbox/utils/text-generator/_templates/new-GitHub-repository-contributors.fr.template.txt.result
+toolbox/utils/third-party-generator/components.csv.result
+toolbox/utils/third-party-generator/THIRD-PARTY.md.result
+toolbox/utils/third-party-generator/__pycache__

@@ -7,9 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [2.15.0] - 2024-03-12
+
+### Added
+
+-  Project - Generate THIRD-PARTY.md based on user inputs ([#119](https://github.com/Orange-OpenSource/floss-toolbox/issues/119))
+
 ## [2.14.0] - 2024-03-01
 
+### Added
+
 - Generate template-based text using variables ([#84](https://github.com/Orange-OpenSource/floss-toolbox/issues/84))
+
+### Changed
+
 - Make CHANGELOG more compliant ([#103](https://github.com/Orange-OpenSource/floss-toolbox/issues/103))
 
 ## [2.13.0] - 2023-07-19
