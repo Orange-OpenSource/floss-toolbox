@@ -14,7 +14,7 @@ brew install php
 
 ## Description
 
-Sometimes as open source reference or software forges administrator, we need so send emails to people.
+Sometimes as open source referent or software forges administrator, we need so send emails to people.
 These emails can be big with lot of details and hyperlinks to resources, and writing them is time expansive.
 Because these emails are almost the same (except with some details), we can generate them using a template and variables.
 
