@@ -17,7 +17,7 @@ repository-code: 'https://github.com/Orange-OpenSource/floss-toolbox'
 url: 'https://github.com/Orange-OpenSource/floss-toolbox/wiki'
 abstract: >-
   Ths floss-toolbox is a repository which contains
-  several scripts in Shell, Python and Ruby for
+  several scripts in Shell, Python, Ruby or PHP for
   administrations and forensics purposes.
 
   It exposes scripts to manage GitHub and GitLab 
@@ -25,7 +25,7 @@ abstract: >-
   or scrap licences from dependency managers file.
 
   This tool has been developed so as to help
-  people to manage open sources projects.
+  people to manage open source projects.
 
   The project is under permissive non-copyleft
   open source license Apache 2.0.
@@ -35,6 +35,9 @@ keywords:
   - git
   - scripts
   - administration
+  - SBOM
+  - audits
+  - history
 license: Apache-2.0
-version: v2.7.0
-date-released: '2023-01-18'
+version: v2.14.0
+date-released: '2024-03-01'
