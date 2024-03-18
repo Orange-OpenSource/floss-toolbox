@@ -32,7 +32,8 @@ so as to iterate on each component and build the final Markdown file.
 ```shell
 # --file: the path to the CSV file containing the details
 # --delimiter: to define how to split each row fields. Do not forget to escape it if ';'
-python3.8 third-party-generator.py --file components.csv.result --delimiter \;
+# --avoid: if a version or copyright field has "?" as value, do not add it in generated file
+python3.8 third-party-generator.py --file components.csv.result --delimiter \; --avoid \?
 ```
 
 ### About the CSV file
@@ -72,7 +73,7 @@ requirements of the relevant license of the Third Party Software they are using.
 
 Version 1.2.0
 
-Copyright Copyright (c) 2023 Laszlo Teveli
+Copyright (c) 2023 Laszlo Teveli
 
 **SwiftUI-Flow** is distributed under the terms and conditions of the [MIT License](https://opensource.org/license/mit).
 You may download the source code on the [following website](https://github.com/tevelee/SwiftUI-Flow).
@@ -82,7 +83,7 @@ You may download the source code on the [following website](https://github.com/t
 
 Version 3.1.1
 
-Copyright Copyright (c) 2021-2022 Lucas Zischka
+Copyright (c) 2021-2022 Lucas Zischka
 
 **BottomSheet** is distributed under the terms and conditions of the [MIT License](https://opensource.org/license/mit).
 You may download the source code on the [following website](https://github.com/lucaszischka/BottomSheet).
@@ -92,7 +93,7 @@ You may download the source code on the [following website](https://github.com/l
 
 Version 1.2.0
 
-Copyright Copyright (c) 2021-2023 Orange SA
+Copyright (c) 2021-2023 Orange SA
 
 **DeclarationAccessibility** is distributed under the terms and conditions of the [Apache-2.0 License](https://opensource.org/license/apache-2-0).
 You may download the source code on the [following website](https://github.com/Orange-OpenSource/accessibility-statement-lib-ios).
