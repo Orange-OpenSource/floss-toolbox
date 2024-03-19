@@ -12,7 +12,7 @@
 
 # Since...............: 10/03/2023
 # Description.........: Make a dry-run of the github module to check if everything is ready to use
-# Version.............: 1.1.0
+# Version.............: 1.2.0
 
 set -eu
 
@@ -96,7 +96,6 @@ CheckIfFileExists "./Gemfile"
 CheckIfFileExists "./Gemfile.lock"
 
 CheckIfFileExists "./README.md"
-CheckIfFileExists "./THIRD-PARTY.txt"
 
 CheckIfFileExists "./utils/check-leaks-from-github.sh"
 CheckIfFileExists "./utils/check-vulnerabilities-from-github.sh"
@@ -108,9 +107,6 @@ CheckIfFileExists "./utils/GitHubFacade.rb"
 CheckIfFileExists "./utils/GitHubWrapper.rb"
 CheckIfFileExists "./utils/GitWrapper.rb"
 CheckIfFileExists "./utils/IO.rb"
-
-CheckIfFileExists "./licenses/LICENSE-Octokit.txt"
-CheckIfFileExists "./licenses/LICENSE-Ruby-Git.txt"
 
 # Runtimes and tools
 # ------------------
