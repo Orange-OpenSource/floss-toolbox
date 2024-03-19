@@ -1,15 +1,18 @@
 #!/bin/bash
 # Software Name: floss-toolbox
-# SPDX-FileCopyrightText: Copyright (c) 2020-2023 Orange
+# SPDX-FileCopyrightText: Copyright (c) Orange SA
 # SPDX-License-Identifier: Apache-2.0
 #
-# This software is distributed under the Apache 2.0 license.
+# This software is distributed under the Apache 2.0 license,
+# the text of which is available at https://opensource.org/license/apache-2-0
+# or see the "LICENSE.txt" file for more details.
 #
-# Author: Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com> et al.
+# Authors: See CONTRIBUTORS.txt
+# Software description: A toolbox of scripts to help work of forges admins and open source referents
 
 # Since...............: 10/03/2023
 # Description.........: Make a dry-run of the LicensesInventory module to check if everything is ready to use
-# Version.............: 2.2.0
+# Version.............: 2.3.0
 
 set -eu
 
@@ -130,6 +133,7 @@ CheckIfFileExists "./sources/search/search.py"
 CheckIfFileExists "./sources/__init__.py"
 CheckIfFileExists "./sources/main.py"
 CheckIfFileExists "./config.ini"
+CheckIfFileExists "./requirements.txt"
 
 echo -e "\nCheck integration test files..."
 
@@ -181,12 +185,6 @@ CheckIfFileExists "./tests/integrationtests/test_licenses.py"
 echo -e "\nCheck other files"
 
 CheckIfFileExists "./README.md"
-CheckIfFileExists "./THIRD-PARTY.txt"
-CheckIfDirectoryExists "./licenses"
-CheckIfFileExists "./licenses/LICENSE-beautifulsoup.txt"
-CheckIfFileExists "./licenses/LICENSE-pytest.txt"
-CheckIfFileExists "./licenses/LICENSE-requests.txt"
-CheckIfFileExists "./licenses/LICENSE-xmltodict.txt"
 
 # Runtimes and tools
 # ------------------
