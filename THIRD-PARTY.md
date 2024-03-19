@@ -6,13 +6,23 @@ This document contains the list of Third Party Softwares along with the license 
 Third Party Software may impose additional restrictions and it is the user's responsibility to ensure that they have met the licensing
 requirements of the relevant license of the Third Party Software they are using.
 
+## For project
+
+### gitleaks.toml
+
+Copyright (c) 2019 Zachary Rice
+
+The *gitleaks.toml* file was generated and distributed under the terms and conditions of the [MIT License](https://opensource.org/license/MIT).
+You may download the source code on the [following website](https://github.com/gitleaks/gitleaks).
+The local version has been modified by us since.
+
 ## For "github" bucket
 
 ### Octokit
 
 Version 6.1.1
 
-Copyright 2009-2017 Wynn Netherland, Adam Stacoviak, Erik Michaels-Ober
+Copyright (c) 2009-2017 Wynn Netherland, Adam Stacoviak, Erik Michaels-Ober
 
 *octokit.rb* is distributed under the terms and conditions of the [MIT License](https://opensource.org/license/MIT).
 You may download the source code on the [following website](https://github.com/octokit/octokit.rb).

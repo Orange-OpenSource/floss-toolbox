@@ -1,0 +1,25 @@
+# Software Name: floss-toolbox
+# SPDX-FileCopyrightText: Copyright (c) Orange SA
+# SPDX-License-Identifier: Apache-2.0
+#
+# This software is distributed under the Apache 2.0 license,
+# the text of which is available at https://opensource.org/license/apache-2-0
+# or see the "LICENSE.txt" file for more details.
+#
+# Authors: See CONTRIBUTORS.txt
+# Software description: A toolbox of scripts to help work of forges admins and open source referents
+
+name: gitleaks
+on: [pull_request, push, workflow_dispatch]
+jobs:
+  scan:
+    name: gitleaks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
