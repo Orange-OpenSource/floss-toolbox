@@ -5,102 +5,121 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [Unreleased](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.16.0..dev)
 
-## [2.15.0] - 2024-03-12
-
-### Added
-
--  Project - Generate THIRD-PARTY.md based on user inputs ([#119](https://github.com/Orange-OpenSource/floss-toolbox/issues/119))
-
-## [2.14.0] - 2024-03-01
+## [2.16.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.16.0..2.15.0) - 2024-03-16
 
 ### Added
 
-- Generate template-based text using variables ([#84](https://github.com/Orange-OpenSource/floss-toolbox/issues/84))
+- [Utils] Add metrics and improve outputs for third-party generator scripts
 
 ### Changed
 
-- Make CHANGELOG more compliant ([#103](https://github.com/Orange-OpenSource/floss-toolbox/issues/103))
+- [Licenses Inventory] Update dependency pytests to v7.4.4
+- [Licenses Inventory] Update dependency beautifulsoup4 to v4.12.3
+- [Licenses Inventory] Improve requirements for Python modules in use ([#108](https://github.com/Orange-OpenSource/floss-toolbox/issues/108))
+- [Project] Plug Renovate, Gitleaks ([#112](https://github.com/Orange-OpenSource/floss-toolbox/issues/112))
+- [Project] Apply REUSE standards ([#114](https://github.com/Orange-OpenSource/floss-toolbox/issues/114))
+- [Project] Improve a bit CHANGELOG by leading scope keyword for each line
 
-## [2.13.0] - 2023-07-19
+### Security
+
+- [Licenses Inventory] Bump requests from v2.28.1 to v2.31.0 ([#3](https://github.com/Orange-OpenSource/floss-toolbox/security/dependabot/3))
+
+## [2.15.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.15.0..2.14.0) - 2024-03-12
 
 ### Added
 
-- Diver - Compute metrics with in parameter URL to clone repo ([#98](https://github.com/Orange-OpenSource/floss-toolbox/issues/98))
+- [Project] Generate THIRD-PARTY.md based on user inputs ([#119](https://github.com/Orange-OpenSource/floss-toolbox/issues/119))
+
+## [2.14.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.14.0..2.13.0) - 2024-03-01
+
+### Added
+
+- [Utils] Generate template-based text using variables ([#84](https://github.com/Orange-OpenSource/floss-toolbox/issues/84))
+
+### Changed
+
+- [Project] Make CHANGELOG more compliant ([#103](https://github.com/Orange-OpenSource/floss-toolbox/issues/103))
+
+## [2.13.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.13.0..2.12.0) - 2023-07-19
+
+### Added
+
+- [Diver] Compute metrics with in parameter URL to clone repo ([#98](https://github.com/Orange-OpenSource/floss-toolbox/issues/98))
 
 ### Fixed
 
-- Project - Broken links in README ([#96](https://github.com/Orange-OpenSource/floss-toolbox/issues/96))
+- [Project] Broken links in README ([#96](https://github.com/Orange-OpenSource/floss-toolbox/issues/96))
 
-## [2.12.0] - 2023-07-18
+## [2.12.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.12.0..2.11.0) - 2023-07-18
 
 ### Added
 
-- Diver - Lines of codes and useful metrics ([#28](https://github.com/Orange-OpenSource/floss-toolbox/issues/28))
+- [Diver] Lines of codes and useful metrics ([#28](https://github.com/Orange-OpenSource/floss-toolbox/issues/28))
 
 ### Changed
 
-- Project - Add DCO ([#87](https://github.com/Orange-OpenSource/floss-toolbox/issues/87))
-- Project - Add security policy file ([#90](https://github.com/Orange-OpenSource/floss-toolbox/issues/90))
-- Project - Split README files  ([#85](https://github.com/Orange-OpenSource/floss-toolbox/issues/85))
-- Licenses Inventory - Move HTML test files to archives of release ([#86](https://github.com/Orange-OpenSource/floss-toolbox/issues/86))
-- GitHub - Add in dry-run Gemfiles ([#93](https://github.com/Orange-OpenSource/floss-toolbox/issues/93))
+- [Project] Add DCO ([#87](https://github.com/Orange-OpenSource/floss-toolbox/issues/87))
+- [Project] Add security policy file ([#90](https://github.com/Orange-OpenSource/floss-toolbox/issues/90))
+- [Project] Split README files  ([#85](https://github.com/Orange-OpenSource/floss-toolbox/issues/85))
+- [Licenses Inventory] Move HTML test files to archives of release ([#86](https://github.com/Orange-OpenSource/floss-toolbox/issues/86))
+- [GitHub] Add in dry-run Gemfiles ([#93](https://github.com/Orange-OpenSource/floss-toolbox/issues/93))
 
-## [2.11.0] - 2023-06-28
+## [2.11.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.11.0..2.10.1) - 2023-06-28
 
 ### Added
 
-- GitHub - Set teams permissions to read ([#82](https://github.com/Orange-OpenSource/floss-toolbox/issues/82))
+- [GitHub] Set teams permissions to read ([#82](https://github.com/Orange-OpenSource/floss-toolbox/issues/82))
 
-## [2.10.1] - 2023-05-31
+## [2.10.1](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.10.1..2.10.0) - 2023-05-31
 
 ### Fixed
 
-- Diver - Path variables not protected ([#80](https://github.com/Orange-OpenSource/floss-toolbox/issues/80))
+- [Diver] Path variables not protected ([#80](https://github.com/Orange-OpenSource/floss-toolbox/issues/80))
 
-## [2.10.0] - 2023-05-30
-
-### Added
-
-- Licenses Inventory - New release ([#77](https://github.com/Orange-OpenSource/floss-toolbox/issues/77))
-
-## [2.9.0] - 2023-03-31
+## [2.10.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.10.0..2.9.0) - 2023-05-30
 
 ### Added
 
-- Licenses Inventory - New release ([#64](https://github.com/Orange-OpenSource/floss-toolbox/issues/64))
+- [Licenses Inventory] New release ([#77](https://github.com/Orange-OpenSource/floss-toolbox/issues/77))
 
-## [2.8.0] - 2023-03-10
+## [2.9.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.9.0..2.8.0) - 2023-03-31
 
 ### Added
 
-- Project - Split dry run ([#68](https://github.com/Orange-OpenSource/floss-toolbox/issues/68))
+- [Licenses Inventory] New release ([#64](https://github.com/Orange-OpenSource/floss-toolbox/issues/64))
+
+## [2.8.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.8.0..2.7.1) - 2023-03-10
+
+### Added
+
+- [Project] Split dry run ([#68](https://github.com/Orange-OpenSource/floss-toolbox/issues/68))
 
 ### Changed
 
-- Project - Update copyright ([#70](https://github.com/Orange-OpenSource/floss-toolbox/issues/70))
-- Project - Improve README ([#69](https://github.com/Orange-OpenSource/floss-toolbox/issues/69))
+- [Project] Update copyright ([#70](https://github.com/Orange-OpenSource/floss-toolbox/issues/70))
+- [Project] Improve README ([#69](https://github.com/Orange-OpenSource/floss-toolbox/issues/69))
 
-## [2.7.1]
+## [2.7.1](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.7.1..2.7.0)
 
 ### Changed
 
 - Add missing files ([#63](https://github.com/Orange-OpenSource/floss-toolbox/issues/63))
 
-## [2.7.0] - 2023-01-18
+## [2.7.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.7.0..2.6.0) - 2023-01-18
 
 ### Added
 
 - Package manager - Extract from files downloaded dependencies ([#2](https://github.com/Orange-OpenSource/floss-toolbox/issues/2))
 
-## [2.6.0] - 2022-05-05
+## [2.6.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.6.0..2.5.0) - 2022-05-05
 
 ### Added
 
 - Look for leaks and vulnerabilities with exclusion of projects ([#57](https://github.com/Orange-OpenSource/floss-toolbox/issues/57))
 
-## [2.5.0] - 2022-03-09
+## [2.5.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.5.0..2.4.0) - 2022-03-09
 
 ### Added
 
@@ -111,11 +130,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Failure of git log if no commits ([#52](https://github.com/Orange-OpenSource/floss-toolbox/issues/52))
 
-## [2.4.0] - 2022-03-08
+## [2.4.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.4.0..2.3.0) - 2022-03-08
 
 ### Added
 
-- Look for leaks (GitHub) ([#44](https://github.com/Orange-OpenSource/floss-toolbox/issues/44))
+- [GitHub] Look for leaks ([#44](https://github.com/Orange-OpenSource/floss-toolbox/issues/44))
 - Dry run ([#29](https://github.com/Orange-OpenSource/floss-toolbox/issues/29))
 
 ### Changed
@@ -123,26 +142,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Check of vulnerabilities ([#37](https://github.com/Orange-OpenSource/floss-toolbox/issues/37))
 - Fix typo in doc and files ([#40](https://github.com/Orange-OpenSource/floss-toolbox/issues/40))
 
-## [2.3.0] - 2022-02-25
+## [2.3.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.3.0..2.2.0) - 2022-02-25
 
 ### Added
 
 - Find repositories with vulnerabilities (Dependabot) ([#20](https://github.com/Orange-OpenSource/floss-toolbox/issues/20))
 
-## [2.2.0] 2022-02-24
+## [2.2.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.2.0..2.1.0) 2022-02-24
 
 ### Added
 
 - Backup of repositories ([#19](https://github.com/Orange-OpenSource/floss-toolbox/issues/19))
 - Extract email addresses ([#27](https://github.com/Orange-OpenSource/floss-toolbox/issues/27))
 
-## [2.1.0] - 2021-10-06
+## [2.1.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.1.0..2.0.0) - 2021-10-06
 
 ### Added
 
 - List all contributors of a Git repository using Git history ([#13](https://github.com/Orange-OpenSource/floss-toolbox/issues/13))
 
-## [2.0.0] - 2021-06-05
+## [2.0.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.0.0..1.0.0) - 2021-06-05
 
 ## Added
 

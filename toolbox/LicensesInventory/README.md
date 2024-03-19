@@ -33,13 +33,10 @@ _Keywords: #licenses #SPM #Gradle #Maven #NPMJS #package #Cocoapods #pubspec #go
 ## Prerequisites
 
 - _Python_ version **3.7**
-- _Python_ modules like _requests_, _xmltodict_ and _pytest-6.2.5_
+- _Python_ modules like _requests_, _xmltodict_, _pytests_ and _beautiful soup_
 
 ```shell
-pip install requests
-pip install xmltodict
-pip install pytest
-pip install beautifulsoup4
+pip install -r requirements.txt
 ```
 
 This project expects to have the third-party elements above available and already added in your system.

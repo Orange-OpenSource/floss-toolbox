@@ -1,13 +1,16 @@
 #!/usr/bin/python3
 # Software Name: floss-toolbox
-# SPDX-FileCopyrightText: Copyright (c) 2020-2024 Orange
+# SPDX-FileCopyrightText: Copyright (c) Orange SA
 # SPDX-License-Identifier: Apache-2.0
 #
-# This software is distributed under the Apache 2.0 license.
+# This software is distributed under the Apache 2.0 license,
+# the text of which is available at https://opensource.org/license/apache-2-0
+# or see the "LICENSE.txt" file for more details.
 #
-# Author: Pierre-Yves LAPERSONNE <pierreyves(dot)lapersonne(at)orange(dot)com> et al.
+# Authors: See CONTRIBUTORS.txt
+# Software description: A toolbox of scripts to help work of forges admins and open source referents
 
-# Version.............: 1.0.0
+# Version.............: 1.1.0
 # Since...............: 12/03/2024
 # Description.........: Builds a CSV file based on user inputs.
 
@@ -15,13 +18,11 @@ import csv
 import os
 import sys
 
+from collections import defaultdict
 from licenses import *
 
 # Configuration
 # -------------
-
-# Script version
-VERSION = "1.0.0"
 
 # Error codes
 EXIT_OK = 0
@@ -114,13 +115,13 @@ while should_continue:
             continue
         
         # Copyright assigned to the component is optional
-        input_component_copyright = input("✏️  Copyright of the component ('bye' to exit): ")
+        input_component_copyright = input("✏️  Copyright of the component ('bye' to exit, '?' if unknown): ")
         if not check_value(input_component_copyright):
             continue
         check_exit(input_component_copyright)
 
         # Version of the component is optional
-        input_component_version = input("✏️  Version of the component ('bye' to exit): ")
+        input_component_version = input("✏️  Version of the component ('bye' to exit, '?' if unknown): ")
         if not check_value(input_component_version):
             continue
         check_exit(input_component_version)
@@ -148,8 +149,26 @@ print("\n")
 print(f'🎉 Operation completed! Find your result file at "{SAVE_FILE}" with {components_added} new component(s)! 🎉')
 if components_with_missing_licences > 0:
     print("\n")
-    print(f'❗ But beware you have {components_with_missing_licences} components without managed licenses, you shall fix they result file with suitable names and URL ❗')
+    print(f'❗ But beware you have {components_with_missing_licences} components without managed licenses, you shall fix the result file with suitable names and URL ❗')
     print("👉 Please refer to either https://opensource.org/licenses or https://spdx.org/licenses/ 👈")
     print("🧡 You can also submit an issue or a pull request to manage new licences: https://github.com/Orange-OpenSource/floss-toolbox/issues/new 🧡")
+
+# Some figures
+result_file = open(SAVE_FILE, "r")
+reader = csv.reader(result_file, delimiter=SAVE_FILE_DELIMITER)
+stats = defaultdict(int)
+
+for i, line in enumerate(reader):
+    license_name = line[2]
+    stats[license_name] += 1
+
+result_file.close()
+flat_stats = [(license, count) for license, count in stats.items()]
+sorted_stats = sorted(flat_stats, key=lambda x: x[1], reverse=True)
+
+print("\n")
+print("ℹ️  Here are some metrics about the licences: ")
+for license, count in sorted_stats:
+    print(f"\t {count} component(s) under license {license}")
 
 sys.exit(EXIT_OK)
