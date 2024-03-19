@@ -40,7 +40,7 @@ You may download the source code on the [following website](https://github.com/r
 
 ### Beautiful Soup
 
-Version 4.10.0
+Version 4.12.3
 
 Copyright (c) Leonard Richardson
 
