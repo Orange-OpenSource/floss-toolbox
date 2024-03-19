@@ -133,6 +133,7 @@ CheckIfFileExists "./sources/search/search.py"
 CheckIfFileExists "./sources/__init__.py"
 CheckIfFileExists "./sources/main.py"
 CheckIfFileExists "./config.ini"
+CheckIfFileExists "./requirements.txt"
 
 echo -e "\nCheck integration test files..."
 

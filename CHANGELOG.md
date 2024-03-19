@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- [Licenses Inventory] Improve requirements for Python modules in use ([#108](https://github.com/Orange-OpenSource/floss-toolbox/issues/108))
 - [Project] Apply REUSE standards ([#114](https://github.com/Orange-OpenSource/floss-toolbox/issues/114))
 - [Utils] Add metrics and improve outputs for third-party generator scripts
 - [Project] Improve a bit CHANGELOG by leading scope keyword for each line
