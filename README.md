@@ -60,3 +60,12 @@ A _gitleaks.toml_ file has been placed at the project root, picked from the _Git
 A *gitleaks-action.yml* is also defined to define the GitHub Action to call and some secrets to use to do so.
 The *GITLEAKS_LICENSE* is defined in the organization level, **only the organization admins can make it visible to projects**.
 This key (dedicated to organization) has been asked to the *Gitleaks* team and received gratefully from them.
+
+### DCO
+
+The *Developer Certificate of Origin* is applied here thanks to a [Probot bot](https://probot.github.io/apps/dco/).
+On pull requests all commits must be signed off. This control is processed in an action.
+
+### Dependabot
+
+By default [Dependabot](https://docs.github.com/fr/code-security/supply-chain-security/understanding-your-software-supply-chain/about-supply-chain-security#what-is-dependabot) is enabled for this project.
