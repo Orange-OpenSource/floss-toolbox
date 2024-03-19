@@ -7,13 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- [Utils] Add metrics and improve outputs for third-party generator scripts
+
 ### Changed
 
 - [Project] Plug Renovate, Gitleaks ([#112](https://github.com/Orange-OpenSource/floss-toolbox/issues/112))
 - [Licenses Inventory] Improve requirements for Python modules in use ([#108](https://github.com/Orange-OpenSource/floss-toolbox/issues/108))
 - [Project] Apply REUSE standards ([#114](https://github.com/Orange-OpenSource/floss-toolbox/issues/114))
-- [Utils] Add metrics and improve outputs for third-party generator scripts
-- [Project] Improve a bit CHANGELOG by leading-scope-keyword for each line
+- [Project] Improve a bit CHANGELOG by leading scope keyword for each line
+
+### Security
+
+- [Licenses Inventory] Bump requests from 2.28.1 to 2.31.0 ([#3](https://github.com/Orange-OpenSource/floss-toolbox/security/dependabot/3))
 
 ## [2.15.0] - 2024-03-12
 

@@ -58,7 +58,7 @@ You may download the source code on the [following website](https://github.com/p
 
 ### requests
 
-Version 2.28.1
+Version 2.31.0
 
 Copyright (c) 2019 Kenneth Reitz
 
