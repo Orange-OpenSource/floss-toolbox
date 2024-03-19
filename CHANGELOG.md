@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- [Licenses Inventory] Update dependency pytests to v7.4.4
 - [Licenses Inventory] Update dependency beautifulsoup4 to v4.12.3
 - [Licenses Inventory] Improve requirements for Python modules in use ([#108](https://github.com/Orange-OpenSource/floss-toolbox/issues/108))
 - [Project] Plug Renovate, Gitleaks ([#112](https://github.com/Orange-OpenSource/floss-toolbox/issues/112))
@@ -21,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
-- [Licenses Inventory] Bump requests from 2.28.1 to 2.31.0 ([#3](https://github.com/Orange-OpenSource/floss-toolbox/security/dependabot/3))
+- [Licenses Inventory] Bump requests from v2.28.1 to v2.31.0 ([#3](https://github.com/Orange-OpenSource/floss-toolbox/security/dependabot/3))
 
 ## [2.15.0] - 2024-03-12
 
