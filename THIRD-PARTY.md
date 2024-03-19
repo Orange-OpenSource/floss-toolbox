@@ -49,7 +49,7 @@ You may download the source code on the [following website](https://git.launchpa
 
 ### pytest
 
-Version 7.2.1
+Version 7.4.4
 
 Copyright (c) 2004 Holger Krekel and others
 
