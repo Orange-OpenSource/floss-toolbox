@@ -30,26 +30,34 @@ You may download the source code on the [following website](https://github.com/r
 
 ### Beautiful Soup
 
+Version 4.10.0
+
 Copyright (c) Leonard Richardson
 
 *Beautiful Soup* is distributed under the terms and conditions of the [MIT License](https://opensource.org/license/MIT).
 You may download the source code on the [following website](https://git.launchpad.net/beautifulsoup/).
 
-### requests
-
-Copyright (c) 2019 Kenneth Reitz
-
-*requests* is distributed under the terms and conditions of the [Apache 2.0 License](https://opensource.org/license/apache-2-0).
-You may download the source code on the [following website](https://github.com/psf/requests).
-
 ### pytest
+
+Version 7.2.1
 
 Copyright (c) 2004 Holger Krekel and others
 
 *pytest* is distributed under the terms and conditions of the [MIT License](https://opensource.org/license/MIT).
 You may download the source code on the [following website](https://github.com/pytest-dev/pytest).
 
+### requests
+
+Version 2.28.1
+
+Copyright (c) 2019 Kenneth Reitz
+
+*requests* is distributed under the terms and conditions of the [Apache 2.0 License](https://opensource.org/license/apache-2-0).
+You may download the source code on the [following website](https://github.com/psf/requests).
+
 ### xmltodict
+
+Version 0.13.0
 
 Copyright (c) 2012 Martin Blech and individual contributors.
 
