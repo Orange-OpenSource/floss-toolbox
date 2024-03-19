@@ -52,6 +52,7 @@ bash dry-run.sh
 
 [Renovate](https://docs.renovatebot.com/) is used to as to try to keep updated dependencies of the project.
 A _renovate.json_ must be added at the project root with cofiguration details ; but **the organization admins must enable it** (through the [admin console](https://developer.mend.io/)).
+By default [Dependabot](https://docs.github.com/fr/code-security/supply-chain-security/understanding-your-software-supply-chain/about-supply-chain-security#what-is-dependabot) was enabled for this project but has been replaced by _Renovate_.
 
 ### Gitleaks
 
@@ -65,7 +66,3 @@ This key (dedicated to organization) has been asked to the *Gitleaks* team and r
 
 The *Developer Certificate of Origin* is applied here thanks to a [Probot bot](https://probot.github.io/apps/dco/).
 On pull requests all commits must be signed off. This control is processed in an action.
-
-### Dependabot
-
-By default [Dependabot](https://docs.github.com/fr/code-security/supply-chain-security/understanding-your-software-supply-chain/about-supply-chain-security#what-is-dependabot) is enabled for this project.
