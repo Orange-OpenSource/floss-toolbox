@@ -1,4 +1,4 @@
 beautifulsoup4==4.10.0
 pytest==7.2.1
-requests==2.28.1
+requests==2.31.0
 xmltodict==0.13.0
