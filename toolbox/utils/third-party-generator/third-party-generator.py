@@ -10,16 +10,16 @@
 # Authors: See CONTRIBUTORS.txt
 # Software description: A toolbox of scripts to help work of forges admins and open source referents
 
-# Version.............: 2.0.0
+# Version.............: 3.0.0
 # Since...............: 12/03/2024
-# Description.........: Builds a third-party Markdown based on a CSV file and a delimiter
+# Description.........: Builds a third-party Markdown file based on a CSV file and a delimiter
 
 import argparse
 import csv
 import os
 import sys
 
-from licenses import *
+from configuration import *
 
 # Configuration
 # -------------
@@ -36,9 +36,9 @@ RESULT_FILE_NAME = "THIRD-PARTY.md.result"
 
 parser = argparse.ArgumentParser(description='This script will build a third-party file listing components based on a CSV file and a delimiter')
 required_args = parser.add_argument_group('Required arguments')
-required_args.add_argument('-f', '--file', help='The CSV file file to process', required=True)
-required_args.add_argument('-d', '--delimiter', help='The delimter symbol (e.g. ";" to split fields for each line of the CSV file', required=True)
-required_args.add_argument('-a', '--avoid', help='The sequence to use to define wether or not a specific field (version or copyright) must be ignored (e.g. "?" in the CSV raw field', required=True)
+required_args.add_argument('-f', '--file', help='The CSV file file to process', default=DEFAULT_PROMPT_RESULT_FILE)
+required_args.add_argument('-d', '--delimiter', help='The delimter symbol (e.g. ";" to split fields for each line of the CSV file', default=DEFAULT_PROMPT_RESULT_FILE_DELIMITER)
+required_args.add_argument('-a', '--avoid', help='The sequence to use to define wether or not a specific field (version or copyright) must be ignored (e.g. "?" in the CSV raw field', default=DEFAULT_AVOID_FIELD_SYMBOL)
 args = parser.parse_args()
 
 content_file_name = args.file
