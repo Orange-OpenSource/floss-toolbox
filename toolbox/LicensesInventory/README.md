@@ -2,24 +2,30 @@
 
 Table of Contents
 =================		
-   * [Licenses inventory](#licenses-inventory)			
-      * [Disclaimer](#disclaimer)			
-      * [Prerequisites](#prerequisites)			
-      * [Fill the configuration file](#fill-the-configuration-file)			
+   * [Licenses inventory](#licenses-inventory)
+      * [Disclaimer](#disclaimer)
+      * [What the tool does](#what-the-tool-does)
+      * [Prerequisites](#prerequisites)
+      * [Fill the configuration file](#fill-the-configuration-file)
       * [Run the tool](#run-the-tool)
       * [Run the tests](#run-the-tests)
+      * [Limits](#limits)
+      * [Scenarios](#scenarios)
+      * [Example of use](#example-of-use)
       * [Managed platforms and environments](#managed-platforms)
          * [Go with go.mod](#go-language)
          * [Gradle with build.gradle(.kts)](#gradle-environment)
-         * [Rust with Cargo.lock](#rust-environment)		 
+         * [Rust with Cargo.lock](#rust-environment)
          * [JavaScript / Node.js with package.json](#javascript--nodejs-environment)
          * [Swift with Package.swift](#swift--spm-environment)
-         * [Dart / Flutter with pubspec.yaml](#dart--flutter-environment)		 		 		 
+         * [Dart / Flutter with pubspec.yaml](#dart--flutter-environment) 		 
       * [Notes](#notes)
 
 # Licenses inventory
 
 _Keywords: #licenses #SPM #Gradle #Maven #NPMJS #package #Cocoapods #pubspec #gomod #Cargo #crates_
+
+The tool searches a license for each dependency found in the files to treat.
 
 ## Disclaimer
 
@@ -29,6 +35,15 @@ _Keywords: #licenses #SPM #Gradle #Maven #NPMJS #package #Cocoapods #pubspec #go
 *This is software is distributed on "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.*
 
 *Such caveats are about versions of components (not checked) and version names (not sure they are related to the good components)*
+
+## What the tool does
+
+1. Read the file 'config.ini' ;
+2. Read the files to treat ;
+3. Extract the dependencies from these files ; 
+4. Search in the web a license for each dependency ;
+5. Save the licenses ;
+6. Save the dependencies on error.
 
 ## Prerequisites
 
@@ -56,7 +71,7 @@ bash dry-run.sh
 Before to use the tools, the file 'config.ini' is at the root of the project, you have to personalize this file.
 
 For example:
-```text
+```ini
 [dependencies]
 # Where to find the package manager file above
 path to parse = /absolute/path/to/project_to_test
@@ -64,12 +79,15 @@ path to parse = /absolute/path/to/project_to_test
 the filenames = go.mod
 # For outputs
 path to store the licenses = /absolute/path/to/project_to_test-licences
+# Erros maangement if requests failed
+number of authorized successive errors = 1
 ```
 
 where:
 - `path to parse` contains the dependencies manager files
 - `the filenames` contains the names of the dependencies manager files to process
-- `path to store the licenses` points to a folder containing the result files
+- `path to store the licenses` points to a folder containing the result files prefixed by "licenses_" if license has been found or "errors_"  if an error occured (e.g. requests limits in web site, etc)
+- `number of authorized successive errors` is the number of succesive errors authorized before ignoring the next dependencies to treat
 
 ## Run the tool
 
@@ -84,6 +102,30 @@ To run integration tests:
 ```shell
  python3 -m pytest tests/integrationtests/*.py
 ```
+
+## Limits
+
+The dependencies are always treated in the same order. The downloading can be aborted. For example, a website can limit the number of requests for a done duration. In this case, all the following dependencies will have the same error. For Gradle, we can limit the number of authorized errors to avoid to continue the unuseful downloadings.
+
+## Scenarios
+
+With no error:
+- the dependency is saved in the file "licenses_platform.txt"
+- the dependency is not saved in the file "errors_platform.txt"
+
+On error:
+- the dependency is not saved in the file "licenses_platform.txt"
+- the dependency is saved in the file "errors_platform.txt"
+
+## Example of use
+
+The user executes the tools. If dependencies are on error, the tools displays, for each treated platform, the number of new dependencies to treat, the number of dependencies on error and the number of duplicated (dependencies on error which are in the new dependencies)/
+The tools asks to the user to treat the dependencies on error or the new dependencies or to quit the program.
+
+If they are only new dependencies, the tools does not display the number of dependencies.
+If they are only dependencies on error, the tools does not display the number of dependencies.
+
+So, we can search licenses for dependencies which have not been treated following an error during the downloading.
 
 ## Managed platforms
 
