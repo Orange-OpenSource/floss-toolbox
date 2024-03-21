@@ -9,6 +9,7 @@ toolbox/LicensesInventory/.pytest_cache
 toolbox/LicensesInventory/sources/__pycache__
 toolbox/LicensesInventory/sources/*/__pycache__
 toolbox/LicensesInventory/sources/data_to_test_main
+toolbox/LicensesInventory/sources/test_main.py
 toolbox/LicensesInventory/tests/.pytest_cache
 toolbox/LicensesInventory/tests/integrationtests/__pycache__
 toolbox/LicensesInventory/tests/integrationtests/real_data

@@ -272,14 +272,14 @@ echo "Run of LicensesInventory unit tests"
 echo "-----------------------------------"
 
 echo -e "\nRunning unit tests..."
-python3.8 -m pytest -s ./tests/unittests/test_1_configuration.py
-python3.8 -m pytest -s ./tests/unittests/test_2_filters.py
-python3.8 -m pytest -s ./tests/unittests/test_3_dependencies.py
-python3.8 -m pytest -s ./tests/unittests/test_4_dependencies_with_exception.py
-python3.8 -m pytest -s ./tests/unittests/test_5_downloads.py
-python3.8 -m pytest -s ./tests/unittests/test_6_licenses.py
-python3.8 -m pytest -s ./tests/unittests/test_7_save_the_licenses.py
-python3.8 -m pytest -s ./tests/unittests/test_8_save_the_errors.py
+python3.8 -m pytest ./tests/unittests/test_1_configuration.py
+python3.8 -m pytest ./tests/unittests/test_2_filters.py
+python3.8 -m pytest ./tests/unittests/test_3_dependencies.py
+python3.8 -m pytest ./tests/unittests/test_4_dependencies_with_exception.py
+python3.8 -m pytest ./tests/unittests/test_5_downloads.py
+python3.8 -m pytest ./tests/unittests/test_6_licenses.py
+python3.8 -m pytest ./tests/unittests/test_7_save_the_licenses.py
+python3.8 -m pytest ./tests/unittests/test_8_save_the_errors.py
 
 # Conclusion
 # ----------
