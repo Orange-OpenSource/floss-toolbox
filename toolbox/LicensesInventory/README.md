@@ -36,6 +36,9 @@ The tool searches a license for each dependency found in the files to treat.
 
 *Such caveats are about versions of components (not checked) and version names (not sure they are related to the good components)*
 
+**This is an experimental feature designed and implemented by a blind colleague, you must always keep in mind our [Code of Conduct](https://github.com/Orange-OpenSource/floss-toolbox/blob/dev/CODE_OF_CONDUCT.md) for any issues nor comments, and be benevolent and kind.
+This is mandatory.**
+
 ## What the tool does
 
 1. Read the file 'config.ini' ;
@@ -105,10 +108,16 @@ To run the tests (all must pass):
 # Integration tests some user inputs
 python3 -m pytest -s tests/integrationtests/*.py
 
-
 # Unit tests 
 python3 -m pytest tests/unittests/*.py
 ```
+
+To run the unit tests, you must get the assets attached as artificats to [the release you got](https://github.com/Orange-OpenSource/floss-toolbox/releases).
+For integration tests, get the *real_data* folder in the *integrationtests* folder and move it to the same folder in your project.
+For unit tests, get the *data* folder in the *unittests* folder and move it to the same folder in your project.
+
+Then you will have to update the configuration values defined in all the _config_ files of the data sets.
+Indeed, absolute paths are used, so you must look for any "🥜" and replace by the path fragments leading to the folders.
 
 ## Limits
 
