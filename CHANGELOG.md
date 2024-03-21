@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.16.0..dev)
 
+### Added
+
+- [Licenses Inventory] Upgrade to version v4.0.4 ([#136](https://github.com/Orange-OpenSource/floss-toolbox/issues/136))
+
 ### Changed
 
 - [Utils] Default values for THIRD_PARTY generator script, shared configuration with prompt script

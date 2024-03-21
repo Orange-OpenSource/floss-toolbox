@@ -73,11 +73,11 @@ Before to use the tools, the file 'config.ini' is at the root of the project, yo
 For example:
 ```ini
 [dependencies]
-# Where to find the package manager file above
+# Where to find the package manager files above, must be defined, target must exist
 path to parse = /absolute/path/to/project_to_test
-# The name of the package manager file to process store above
+# The name of the package manager file to process stored above, must be defined
 the filenames = go.mod
-# For outputs
+# For outputs, must be defined, target must exists
 path to store the licenses = /absolute/path/to/project_to_test-licences
 # Erros maangement if requests failed
 number of authorized successive errors = 1
@@ -95,12 +95,19 @@ where:
 python3 sources/main.py
 ```
 
+For example, if you define some _Cargo.lock_ file to process in *the filenames* stored at *path to parse*, it will create in *path to store the licenses* a *Cargo_lock_ folder with some outputs (mainly HTML or JSON files) and a *licenses_Cargo.lock.txt* with the licenses of each component found.
+
 ## Run the tests
  
-To run integration tests:
+To run the tests (all must pass):
 
 ```shell
- python3 -m pytest tests/integrationtests/*.py
+# Integration tests some user inputs
+python3 -m pytest -s tests/integrationtests/*.py
+
+
+# Unit tests 
+python3 -m pytest tests/unittests/*.py
 ```
 
 ## Limits
