@@ -5,3 +5,12 @@ toolbox/utils/text-generator/_templates/new-GitHub-repository-contributors.fr.te
 toolbox/utils/third-party-generator/components.csv.result
 toolbox/utils/third-party-generator/THIRD-PARTY.md.result
 toolbox/utils/third-party-generator/__pycache__
+toolbox/LicensesInventory/.pytest_cache
+toolbox/LicensesInventory/sources/__pycache__
+toolbox/LicensesInventory/sources/*/__pycache__
+toolbox/LicensesInventory/sources/data_to_test_main
+toolbox/LicensesInventory/tests/.pytest_cache
+toolbox/LicensesInventory/tests/integrationtests/__pycache__
+toolbox/LicensesInventory/tests/integrationtests/real_data
+toolbox/LicensesInventory/tests/unittests/__pycache__
+toolbox/LicensesInventory/tests/unittests/data
