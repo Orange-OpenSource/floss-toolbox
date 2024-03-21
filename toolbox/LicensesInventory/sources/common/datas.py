@@ -11,12 +11,9 @@
 # Authors: See CONTRIBUTORS.txt
 # Software description: A toolbox of scripts to help work of forges admins and open source referents
 
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
-import sys
-import os
 import json 
+
 
 class CData:
 

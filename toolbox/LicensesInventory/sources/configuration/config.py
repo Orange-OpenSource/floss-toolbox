@@ -13,82 +13,56 @@
 
 import os
 
-from ..common import CFile
+from sources.common import CFile, CFileException
 
-def value_is_empty(value):
-    if value == '' or value == None:
-        return True
-    return False
 
 class CConfig():
 
     def __init__(self):
         self.path = os.getcwd()
         self.filename = "config.ini"
-        self.filename_for_the_errors = 'errors.txt'
-        self.separator = ' = '
+
         self.path_dependencies = str()
         self.the_filenames = list()
         self.path_licenses = str()
+        self.number_of_errors_max = 999
+
+        self.filename_for_the_licenses = 'licenses_[platform].txt'
+        self.path_errors = str()
+        self.model_for_errors_file = 'errors_[platform].txt'
+
+        self.separator = ' = '
 
     def extract_data_from_ini_file(self, the_lines):
 
-        print('\t➡️  Reading the ini file...')
-
         for i in range(len(the_lines) - 1, -1, -1):
             line = the_lines[i]
-            if self.separator in line:
-                the_parameters = line.split(self.separator)
-                options = the_parameters[0]
-                value = the_parameters[1]
-                value = value.strip()
-                if value == '':
-                    raise Exception('\t💥  At least, 1 line is not well formatted.')
+            if self.separator not in line: continue
 
-                if "parse" in options:
-                    self.path_dependencies = value
-                    print('\t🔨  Path to project is: ' + value)
-                elif "file" in options:
-                    if value != str():
-                        self.the_filenames = value.split(", ")
-                        print('\t🔨  Path to dependencies manager file is: ' + value)
-                elif "license" in options:
-                    self.path_licenses = value
-                    print('\t🔨  Path to licenses folder is: ' + value)
-        
-        print('\t\t✅ Reading the ini file... OK!')
+            the_parameters = line.split(self.separator)
+            options = the_parameters[0]
+            value = the_parameters[1]
+            value = value.strip()
 
-    def check(self, ins_file):
-
-        print('\t➡️  Checking the extracted value from the ini file...')
-
-        if self.path_dependencies == str():
-            raise Exception('\t💥  The path containing the dependencies is not found in the ini file')
-        if self.the_filenames == list():
-            raise Exception('\t💥  The filenames containing the dependencies are not found in the ini file')
-        if self.path_licenses == str():
-            raise Exception('\t💥  The path to store the licenses is not found in the ini file')
-
-        try:
-            ins_file.check_the_directory(self.path_dependencies, True, False)
-            ins_file.check_the_directory(self.path_licenses, True, False)
-        except Exception as e:
-            print('\t💥  config.ini:', e.__str__())
-            raise e()
-
-        print('\t\t✅ Checking the extracted value from the ini file...: OK!')
-
+            if "parse" in options:
+                self.path_dependencies = value
+            elif "file" in options:
+                if value != str():
+                    self.the_filenames = value.split(", ")
+            elif "license" in options:
+                self.path_licenses = value
+            elif "errors" in options:
+                self.number_of_errors_max = value
 
     def get_the_config(self):
-    
-        print('\t➡️  Getting the ini file...')
 
         ins_file = CFile()
-        the_lines = ins_file.read_text_file (self.path, self.filename)
+        try:
+            the_lines = ins_file.read_text_file (self.path, self.filename)
+        except Exception as e:
+            raise Exception(e.__str__())
         self.extract_data_from_ini_file(the_lines)
-        self.check(ins_file)
-
-        print('\t\t✅ Getting the ini file... OK!')
+        self.path_errors = self.path_licenses
 
     def str(self):
         print('Path to parse the dependencies:')
