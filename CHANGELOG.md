@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.17.0..dev)
 
+### Changed
+
+- [Utils] Add RSALv2 license in third-party generator scripts ([#139](https://github.com/Orange-OpenSource/floss-toolbox/issues/139))
+
 ## [2.17.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.17.0..2.16.0) - 2024-03-22
 
 ### Added
