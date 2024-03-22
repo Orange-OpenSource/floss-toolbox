@@ -13,36 +13,39 @@
 
 import os
 
+from sources.common import CDate
+
+class CErrorCode():
+    def __init__(self):
+        self.isdir = 'The path is not correct !'
+        self.exists = 'The path does not exist !'
+        self.isfile = 'The filename does not exist !'
+
+class CFileException(Exception):
+    def __init__(self, msg, filename):
+        super().__init__(msg + '\n\tfilename ' + filename)
 
 class CFile:
 
+    def __init__(self):
+        self.separator = ' : '
+        self.last_field_for_duplicated = 'DUPLICATED'
+        self.space = ' '
+        self.ins_date = CDate()
+
     def delete_the_files_in_path(self, path):
-        name = 'delete_the_files_in_path'
-
-        if os.path.isdir(path) == False:
-            raise Exception('\t💥  ' + name + ': The path does not exist.\n' + path)
-
         for root, dirs, files in os.walk(path):
-            for file in files:
-                filename = os.path.join(path, file)
-                os.remove(filename)
+            for filename in files:
+                file = os.path.join(path, filename)
+                os.remove(file)
 
     def get_the_files_by_names(self, path, filename):
-        name = 'get_the_files_by_names'
         the_files = list()
-
-        if os.path.isdir(path) == False:
-            raise Exception('\t💥  ' + name + ': the path to parse the files which contain the dependencies does not exist.')
-        if filename == '' or filename == None:
-            raise Exception('\t💥  ' + name + ': the filename is not precised.')
 
         for root, dirs, files in os.walk(path):
             for file in files:
                 if file == filename:
                     the_files.append(os.path.join(root, filename))
-
-        if len(the_files) < 1:
-            raise Exception('\t💥  ' + name + ': no file to parse.')
 
         return the_files
 
@@ -60,66 +63,27 @@ class CFile:
 
         return False
 
-    def check_the_directory(self, my_path, to_create, to_ask):
+    def get_file_from_path_and_filename(self, path, filename):
 
-        if os.path.isdir(my_path) == True:
-            return True
+        file = path
+        if filename != str():
+            file = os.path.join(path, filename)
 
-        if to_create == False:
-            return False
-        if to_ask == True:
-            if self.ask_before_creating_directory(my_path) == False:
-                return False
+        return file
 
-        try:
-            os.makedirs(my_path)
-        except Exception as e:
-            raise e
-
-        return True
-
-    def write_in_text_file(self, path='', filename='', the_lines=list()):
-        name = 'write_in_text_file'
-
-        if self.check_the_directory(path, False, False) == False:
-            raise Exception('\t💥  ' + name + ': the directory does not exist.\n' + path)
-
-        if filename == '':
-            filename = path
-        else:
-            filename = os.path.join(path, filename)
-
-        if the_lines == None or len(the_lines) == 0:
-            raise Exception('\t💥  ' + name + ': no data to write.')
-
-        try:
-            with open(filename, 'wt', encoding='utf-8') as f:
-                for line in the_lines:
-                    line = line + '\n'
-                    f.write(line)
-        except:
-            raise Exception('\t💥  ' + ame + ': the path exists, but, impossible to write in.')
+    def write_in_text_file(self, path=str(), filename=str(), the_lines=list()):
+        file = self.get_file_from_path_and_filename(path, filename)
+        with open(file, 'wt', encoding='utf-8') as f:
+            for line in the_lines:
+                line = line + '\n'
+                f.write(line)
 
     def read_text_file (self, path, filename=''):
         the_lines = list()
-        name = 'read_text_file'
 
-        if self.check_the_directory(path, False, False) == False:
-            raise Exception('\t💥  ' + name + ': the directory does not exist.\n' + path)
-
-        if filename == '':
-            filename = path
-        else:
-            filename = os.path.join(path, filename)
-
-        if os.path.isfile(filename) == False:
-            raise Exception('\t💥  ' + name + ': no file to read.')
-
-        try:
-            with open(filename, 'rt', encoding='utf-8') as f:
-                the_lines = f.read().split('\n')
-        except:
-            raise Exception('\t💥  ' + name + ': the file exists, but, impossible to read.\n', filename)
+        file = os.path.join(path, filename)
+        with open(file, 'rt', encoding='utf-8') as f:
+            the_lines = f.read().split('\n')
 
         return the_lines
 
@@ -135,7 +99,7 @@ class CFile:
                     if b == None:
                         b = 'None'
                         c = 'None'
-                    f.write(a + ' : ' + b + ' : ' + c + '\n')
+                    f.write(a + self.separator + b + self.separator + c + '\n')
 
     def get_the_files(self, path, the_names):
         result = list()
@@ -150,45 +114,131 @@ class CFile:
 
         return result
 
-    def save_the_licenses(self, the_licenses_by_platform, path):
-        separator = ' : '
+    def get_the_lines_from_the_new_licenses(self, the_licenses):
+        result = list()
+
+        for license in the_licenses:
+            line = str()
+            for field in license:
+                if field == None or field == str():
+                    field = 'None'
+                if line == str():
+                    line = field
+                else:
+                    line += self.separator + field
+            result.append(line)
+
+        return result
+
+    def extract_the_lines_to_write(self, the_old_lines, the_new_lines, comment, my_date):
+        result = list()
+
+        if len(the_old_lines) == 0:
+            result = [comment]
+        else:
+            result = the_old_lines[:]
+
+        result += [my_date]
+        result += the_new_lines
+
+        return result
+
+    def rename_original_filename(original_filename):
+        p_extension = original_filename.find('.')
+        extension = original_filename[p_extension:]
+        filename = original_filename[:p_extension]
+
+        current_date = self.ins_date.get_date_and_time().replace(':', '_')
+        current_date = current_date.replace(':', '_')
+
+        return filename + '_' + current_date + extension
+
+    def save_the_licenses(self, the_licenses_by_platform, ins_config):
+        result = list()
+
+        comment = '# If the license is at None, or not clear, you are invited to search in the downloaded file.'
+        path = ins_config.path_licenses
+        my_date = CDate().prefix_for_date + CDate().get_date_and_time()
         for platform, the_licenses in the_licenses_by_platform.items():
-            the_lines = ['# If the license is at None, or not clear, you are invited to search in the downloaded file.']
-            for license in the_licenses:
-                line = str()
-                for field in license:
-                    if field == None or field == str():
-                        field = 'None'
-                    if line == str():
-                        line = field
-                    else:
-                        line += separator + field
-                the_lines.append(line)
+            filename = ins_config.filename_for_the_licenses.replace('[platform]', platform)
+            file = os.path.join(path, filename)
+            old_filename = filename.replace('.txt', '.old')
+            old_file = os.path.join(path, old_filename)
 
-            if len(the_lines) == 0:
-                print('No license')
-                the_lines = ['No license']
+            the_old_lines = self.manage_old_lines(path, filename)
+            the_new_lines = self.get_the_lines_from_the_new_licenses(the_licenses)
+            the_lines = self.extract_the_lines_to_write(the_old_lines, the_new_lines, comment, my_date)
 
-            filename = 'licenses_' + platform + '.txt'
-            self.write_in_text_file(path, filename, the_lines)
-
-    def save_the_errors(self, on_error, path, filename):
-
-        if len(on_error) == 0:
-            return
-
-        separator = '-'
-        for platform, the_dependencies in on_error.items():
-            filename = 'errors' + separator + platform + '.txt'
-            the_lines = [platform]
-            for dependency in the_dependencies:
-                line = str()
-                for value in dependency:
-                    if line == str():
-                        line+= value
-                    else:
-                        line += ' : ' + value
-                the_lines += [line]
+            if len(the_old_lines) > 0:
+                os.rename(file, old_file)
 
             self.write_in_text_file(path, filename, the_lines)
-            print('The dependencies not threatted are saved in the file:', filename)
+            result += the_lines
+
+            if len(the_old_lines) > 0:
+                os.remove(old_file)
+
+        return result
+
+    def save_the_errors(self, the_new_dependencies_on_error_by_platform, ins_config):
+        result = list()
+
+        path = ins_config.path_errors
+        my_date = CDate().prefix_for_date + CDate().get_date_and_time()
+        for platform, the_new_dependencies_on_error in the_new_dependencies_on_error_by_platform.items():
+            filename = ins_config.model_for_errors_file.replace('[platform]', platform)
+            file = os.path.join(path, filename)
+            old_filename = filename.replace('.txt', '.old')
+            old_file = os.path.join(path, old_filename)
+
+            the_old_lines = self.manage_old_lines(path, filename)
+            the_new_lines = self.manage_new_lines(the_new_dependencies_on_error)
+
+            if len(the_old_lines) > 0:
+                os.rename(file, old_file)
+
+            the_lines = the_old_lines + [my_date] + the_new_lines
+            self.write_in_text_file(path, filename, the_lines)
+            result += the_lines
+
+            if len(the_old_lines) > 0:
+                os.remove(old_file)
+
+        return result
+
+    def manage_new_lines(self, the_new_dependencies_on_error):
+        the_new_lines = list()
+        for new_dependency_on_error in the_new_dependencies_on_error:
+            line = str()
+            for value in new_dependency_on_error:
+                if value == None or value == str():
+                    value = 'None'
+                if line == str():
+                    line+= value
+                else:
+                    line += self.separator + value
+            the_new_lines += [line]
+
+        return the_new_lines
+
+    def manage_old_lines(self, path, filename):
+        the_old_lines = list()
+        try:
+            the_old_lines = self.read_text_file (path, filename)
+        except Exception as e:
+            the_old_lines = list()
+
+        the_tmp = the_old_lines[:]
+        the_old_lines = list()
+        for tmp in the_tmp:
+            line = tmp.strip()
+            if line != str():
+                the_old_lines.append(line)
+
+        return the_old_lines
+
+    def delete_file(self, path, filename):
+
+        file = os.path.join(path, filename)
+        if os.path.isfile(file) == True:
+            os.remove(file)

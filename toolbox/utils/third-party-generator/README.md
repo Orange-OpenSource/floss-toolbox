@@ -34,6 +34,9 @@ so as to iterate on each component and build the final Markdown file.
 # --delimiter: to define how to split each row fields. Do not forget to escape it if ';'
 # --avoid: if a version or copyright field has "?" as value, do not add it in generated file
 python3.8 third-party-generator.py --file components.csv.result --delimiter \; --avoid \?
+
+# or use the default configuration
+python3.8 third-party-generator.py
 ```
 
 ### About the CSV file
@@ -53,7 +56,7 @@ Meaning:
 - version: the verison of the component
 
 
-For example, with the CSV file bellow
+For example, with the CSV file bellow (without the first line containing headers, don't fill it, not used)
 ```csv
 SwiftUI-Flow;https://github.com/tevelee/SwiftUI-Flow;MIT;Copyright (c) 2023 Laszlo Teveli;1.2.0
 BottomSheet;https://github.com/lucaszischka/BottomSheet;MIT;Copyright (c) 2021-2022 Lucas Zischka;3.1.1
@@ -99,8 +102,10 @@ Copyright (c) 2021-2023 Orange SA
 You may download the source code on the [following website](https://github.com/Orange-OpenSource/accessibility-statement-lib-ios).
 ```
 
-### About the licenses.py file
+### About the configuration.py file
 
 There is plenty of licenses and also a lot of standards. It can be a pain or time-consuming to let the user write the license in use for a component,
 then find the URL pointing to the license text and write it. In fact, such details are still known so we can let the user choose within list items.
-The *licenses.py* file lists main licenses we can meet during audits. Each entry in this dictionary has a license name in SPDX short-identifier format and the URL pointing to the license text. Thus these details will be added in the THIRD-PARTY file.
+The *configuration.py* file lists main licenses we can meet during audits. Each entry in this dictionary has a license name in SPDX short-identifier format and the URL pointing to the license text. Thus these details will be added in the THIRD-PARTY file.
+
+It contains also shared configuration between scripts.

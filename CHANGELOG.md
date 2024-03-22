@@ -5,7 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.16.0..dev)
+## [Unreleased](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.17.0..dev)
+
+## [2.17.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.17.0..2.16.0) - 2024-03-22
+
+### Added
+
+- [Licenses Inventory] Upgrade to version v4.0.4 ([#136](https://github.com/Orange-OpenSource/floss-toolbox/issues/136))
+
+### Changed
+
+- [Licenses Inventory] Update dependency pytests to v8.1.1
+- [Utils] Default values for THIRD_PARTY generator script, shared configuration with prompt script
 
 ## [2.16.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.16.0..2.15.0) - 2024-03-16
 

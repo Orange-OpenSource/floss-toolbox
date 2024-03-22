@@ -10,9 +10,19 @@
 # Authors: See CONTRIBUTORS.txt
 # Software description: A toolbox of scripts to help work of forges admins and open source referents
 
-# Version.............: 1.0.0
+# Version.............: 1.1.0
 # Since...............: 12/03/2024
 # Description.........: Just to list managed licenses and share values between scripts
+
+# Some configuration
+# ------------------
+
+DEFAULT_PROMPT_RESULT_FILE = "components.csv.result"
+DEFAULT_PROMPT_RESULT_FILE_DELIMITER = ";"
+DEFAULT_AVOID_FIELD_SYMBOL = "?"
+
+# Licenses to manage
+# ------------------
 
 # Please refer to https://opensource.org/licenses or https://spdx.org/licenses/
 # Use SPDX short identifier as key, URL of license text as value

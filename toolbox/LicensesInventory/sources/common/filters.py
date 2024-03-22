@@ -16,6 +16,8 @@ import os
 from .names import CName
 from .datas import CData
 from .files import CFile
+from .comments import CComment
+from .data_in_blocks import CDataInBlock
 
 class CFilter:
 
@@ -23,76 +25,103 @@ class CFilter:
         self.ins_name = CName()
         self.ins_data = CData()
         self.ins_config = None
-        self.the_contents = dict()
+
         self.the_heads = dict()
-        self.the_foots = dict()
+        self.the_foot = dict()
         self.the_URLs = dict()
         self.the_filenames = dict()
         self.the_commands = dict()
+        self.the_contents = dict()
+        self.the_platform_to_treat = list()
+        self.the_contents_on_error = dict()
 
     def get_content_by_name(self, ins_name):
-        print('\t➡️  Getting content by name...')
         result = dict()
 
-        ins_file = CFile()
-        the_files = ins_file.get_the_files(self.ins_config.path_dependencies, self.ins_config.the_filenames)
+        for filename in self.ins_config.the_filenames:
+            platform = self.get_platform(filename)
+            self.the_platform_to_treat.append(platform)
 
+        path = self.ins_config.path_dependencies
+        if os.path.isdir(path) == False:
+            print('No path to extract the dependencies.')
+            return dict()
+
+        the_files = list()
+        for filename in self.ins_config.the_filenames:
+            the_files += CFile().get_the_files_by_names(self.ins_config.path_dependencies, filename)
         if len(the_files) == 0:
-            raise Exception('\t💥  Unable to go further, missing data (files for the filter) to process.')
+            msg = 'No file to extract the dependencies.'
+            print(msg)
+            return dict()
 
-        content_gradle = list()
-        content_package_json = list()
-        content_roast = list()
-        content_go = list()
-        content_flutter = list()
-        content_swift = list()
-        content_cocoapods = list()
-        content_elm_lang = list()
-
+        # extract the contents
         for file in the_files:
             the_fields = os.path.split(file)
             path = the_fields[0]
             filename = the_fields[1]
+            platform = self.get_platform(filename)
 
-            if ins_name.gradle.lower() in filename.lower():
-                content_gradle += ins_file.read_text_file (path, filename)
-            elif ins_name.package_json.lower() == filename.lower():
-                content_package_json += ins_file.read_text_file (path, filename)
-            elif ins_name.roast.lower() == filename.lower():
-                content_roast += ins_file.read_text_file (path, filename)
-            elif ins_name.go.lower() == filename.lower():
-                content_go += ins_file.read_text_file (path, filename)
-            elif ins_name.flutter.lower() == filename.lower():
-                content_flutter += ins_file.read_text_file (path, filename)
-            elif ins_name.swift.lower() == filename.lower():
-                content_swift += ins_file.read_text_file (path, filename)
-            elif ins_name.cocoapods.lower() == filename.lower():
-                content_cocoapods += ins_file.read_text_file (path, filename)
-            elif ins_name.elm_lang == filename:    
-                content_elm_lang += ins_file.read_text_file (path, filename)
+            the_lines = CFile().read_text_file (path, filename)
+            the_lines = self.clean(the_lines, platform)
 
-        if len(content_gradle) > 0:
-            result[ins_name.gradle] = content_gradle
-        if len(content_package_json) > 0:
-            result[ins_name.package_json] = content_package_json
-        if len(content_roast) > 0:
-            result[ins_name.roast] = content_roast
-        if len(content_go) > 0:
-            result[ins_name.go] = content_go
-        if len(content_flutter) > 0:
-            result[ins_name.flutter] = content_flutter
-        if len(content_swift) > 0:
-            result[ins_name.swift] = content_swift
-        if len(content_cocoapods) > 0:
-            result[ins_name.cocoapods] = content_cocoapods
-        if len(content_elm_lang) > 0:
-            result[ins_name.elm_lang] = content_elm_lang
+            s = len(the_lines)
+            if s == 0:
+                continue
 
-        print('\t\t✅ Getting content by name... OK!')
+            data_found = False
+            for line in the_lines:
+                if line != str():
+                    data_found = True
+                    break
+
+            if data_found == True:
+                if platform in result.keys():
+                    result[platform] += the_lines
+                else:
+                    result[platform] = the_lines
+
         return result
 
+    def get_content_on_error_by_platform(self):
+        result = dict()
+
+        path_errors = self.ins_config.path_errors
+        if os.path.isdir(path_errors) == False:
+            print('No path to extract the dependencies on error.')
+            return dict()
+
+        the_platform = self.the_platform_to_treat
+        if len(self.the_platform_to_treat) == 0:
+            the_platform = CName().get_the_platforms()
+        for platform in the_platform:
+            try:
+                filename_errors = self.ins_config.model_for_errors_file.replace('[platform]', platform)
+                the_lines = CFile().read_text_file (path_errors, filename_errors)
+                the_lines = self.clean(the_lines, platform)
+                result[platform] = the_lines
+            except Exception as e:
+                pass
+
+        return result
+
+    def get_platform(self, filename):
+            if self.ins_name.gradle.lower() in filename.lower():
+                return self.ins_name.gradle
+            if self.ins_name.package_json.lower() == filename.lower():
+                return self.ins_name.package_json
+            if self.ins_name.roast.lower() == filename.lower():
+                return self.ins_name.roast
+            if self.ins_name.go.lower() == filename.lower():
+                return self.ins_name.go
+            if self.ins_name.flutter.lower() == filename.lower():
+                return self.ins_name.flutter
+            if self.ins_name.swift.lower() == filename.lower():
+                return self.ins_name.swift
+            if self.ins_name.cocoapods.lower() == filename.lower():
+                return self.ins_name.cocoapods
+
     def get_the_heads_by_name(self, ins_name):
-        print('\t➡️  Getting the heads by name...')
         result = dict()
 
         result[ins_name.gradle] = ['dependencies {']
@@ -110,39 +139,34 @@ class CFilter:
         result[ins_name.swift] = ['dependencies: [']
         result[ins_name.cocoapods] = None
 
-        #elm_lang
         quote = '\"'
         a = quote + 'dependencies' + quote + ': {'
         b = quote + 'test-dependencies' + quote + ': {'
         c = quote + 'dev-dependencies' + quote + ': {'
-        result[ins_name.elm_lang] = [a, b, c]
+        #result[ins_name.elm_lang] = [a, b, c]
 
-        print('\t\t✅ Getting the heads by name... OK!')
         return result
 
-    def get_the_foots_by_name(self, ins_name):
-        print('\t➡️  Getting the foots by name...')
+    def get_the_foot_by_name(self, ins_name):
         result = dict()
 
-        foot = '}'
+        feet = '}'
         comma = ','
-        result[ins_name.gradle] = [foot, foot + comma]
-        result[ins_name.package_json] = [foot, foot + comma]
+        result[ins_name.gradle] = [feet, feet + comma]
+        result[ins_name.package_json] = [feet, feet + comma]
         result[ins_name.roast] = [str()]
         result[ins_name.go] = [')']
         result[ins_name.flutter] = [str()]
         result[ins_name.swift] = [']', '],']
         result[ins_name.cocoapods] = None
-        result[ins_name.elm_lang] = [foot, foot + comma]
+        #result[ins_name.elm_lang] = [foot, foot + comma]
 
-        print('\t\t✅ Getting the foots by name... OK!')
         return result
 
     def get_the_URLs_by_name(self, ins_name):
-        print('\t➡️  Getting the URLs by name...')
         result = dict()
 
-        # maven central
+        # gradle
         result[ins_name.version_for_maven_central] = "https://search.maven.org/solrsearch/select?q=g:[namespace]%20AND%20a:[component]"
         result[ins_name.maven_central] = "https://search.maven.org/remotecontent?filepath=[namespace]/[component]/[version]/[component]-[version].pom"
         result[ins_name.github] = "https://api.github.com/search/repositories?q=[component]"
@@ -155,16 +179,14 @@ class CFilter:
         result[ins_name.flutter] = 'https://pub.dev/packages/[component]'
         result[ins_name.swift] = str()
         result[ins_name.cocoapods] = 'https://cocoapods.org/pods/[component]'
-        result[ins_name.elm_lang] = 'https://package.elm-lang.org/packages/[component]/latest/about'
+        #result[ins_name.elm_lang] = 'https://package.elm-lang.org/packages/[component]/latest/about'
 
-        print('\t\t✅ Getting the URLs by name... OK!')
         return result
 
     def get_the_filenames_by_name(self, ins_name):
-        print('\t➡️  Getting the filenames by name...')       
         result = dict()
 
-        # maven central
+        # gradle
         result[ins_name.maven_central] = '[component]_maven_central.pom'
         result[ins_name.version_for_maven_central] = 'version_[component].json'
         result[ins_name.github] = '[component]_github.json'
@@ -177,87 +199,67 @@ class CFilter:
         result[ins_name.flutter] = '[component].html'
         result[ins_name.swift] = '[component].html'
         result[ins_name.cocoapods] = '[component].html'
-        result[ins_name.elm_lang] = '[component].html'
+        #result[ins_name.elm_lang] = '[component].html'
 
-        print('\t\t✅ Getting the filenames by name... OK!')
-        return result
-
-    def manage_the_comments(self, the_lines, i):
-        line = the_lines[i]
-        line = line.strip()
-
-        # simple comment
-        if len(line) == 0:
-            return -1
-        if line[0] == '#':
-            return i
-
-        if len(line) < 2:
-            return -1
-        my_string = line[0:2]
-        if my_string == self.ins_data.the_comments[0]:
-            return i
-
-        # complex comment
-        if my_string == self.ins_data.the_comments[1]:
-            while self.ins_data.the_comments[2] not in the_lines[i]:
-                i += 1
-            return i
-
-        return -1
-
-    def delete_the_comments(self, the_lines):
-        print('\t➡️  Deleting the comments...')   
-        result = list()
-
-        i = 0
-        while i < len(the_lines):
-            j = self.manage_the_comments(the_lines, i)
-            if j == -1:
-                result.append(the_lines[i])
-            else:
-                i = j + 0
-            i += 1
-
-        print('\t\t✅ Deleting the comments... OK!')
         return result
 
     def clean(self, the_lines, platform):
-        print('\t➡️  Cleaning...')        
         result = list()
 
         for line in the_lines:
-            if platform != self.ins_name.flutter:
-                line = line.strip()
-            if platform != self.ins_name.roast and platform != self.ins_name.flutter:
-                if line == str():
-                    continue
-            line = line.replace(self.ins_data.old_quote, self.ins_data.quote)
-            result.append(line)
+            my_line = line.replace(self.ins_data.old_quote, self.ins_data.quote)
+            result.append(my_line)
 
-        print('\t\t✅ Cleaning... OK!')
+        result = CComment().delete(result)
+
+        return result
+
+    def get_the_data(self, the_lines_by_platform):
+        result = dict()
+
+        for platform, the_lines in the_lines_by_platform.items():
+            if platform == self.ins_name.cocoapods:
+                result[platform] = the_lines
+                continue
+
+            heads = self.the_heads[platform]
+            foot = self.the_foot[platform]
+            ends_with_feet = False
+            if (platform == self.ins_name.flutter) or (platform == self.ins_name.roast):
+                ends_with_feet = True
+            data_with_head = False
+            if platform == CName().gradle:
+                data_with_head = True
+            the_new_lines = CDataInBlock(heads, foot).get(the_lines, ends_with_feet, data_with_head)
+            result[platform] = the_new_lines
+
         return result
 
     def prepare(self, ins_config):
-        print('\t➡️  Preparing CFilter...')
         self.ins_config = ins_config
+
+        # data in ini file
+        if ins_config.path_licenses == str():
+            raise Exception('The path to store the licenses is not precised in the ini file.')
+        if os.path.isdir(ins_config.path_licenses) == False:
+            raise Exception('The path to store the licenses does not exist.')
+
+        try:
+            ins_config.number_of_errors_max = int(ins_config.number_of_errors_max)
+        except Exception as e:
+            raise Exception('The number of authorized errors is not valid in the ini file.')
 
         # to get the data
         self.the_heads = self.get_the_heads_by_name(self.ins_name)
-        self.the_foots = self.get_the_foots_by_name(self.ins_name)
+        self.the_foot = self.get_the_foot_by_name(self.ins_name)
 
         # to download the licenses
         self.the_URLs = self.get_the_URLs_by_name(self.ins_name)
         self.the_filenames = self.get_the_filenames_by_name(self.ins_name)
 
         # others
-        self.the_contents = self.get_content_by_name(self.ins_name)
-        print('\t\t✅ Preparing CFilter... OK!')
+        the_content_by_platform = self.get_content_by_name(self.ins_name)
+        the_content_on_error_by_platform = self.get_content_on_error_by_platform()
 
-    def filter(self, the_lines, platform):
-        result = list()
-
-        the_lines = self.clean(the_lines, platform)
-        result = self.delete_the_comments(the_lines)
-
-        return result
+        self.the_contents = self.get_the_data(the_content_by_platform)
+        self.the_contents_on_error = the_content_on_error_by_platform
