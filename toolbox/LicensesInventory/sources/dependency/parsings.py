@@ -11,8 +11,9 @@
 # Authors: See CONTRIBUTORS.txt
 # Software description: A toolbox of scripts to help work of forges admins and open source referents
 
-from ..common import CData
+from ..common import CData, CDataInBlock
 from ..common import CName
+
 
 class CParsing:
 
@@ -49,8 +50,9 @@ class CParsing:
     def manage_gradle(self, the_lines):
         result = list()
 
-        for line in the_lines:
-            # head at the end
+        for tmp in the_lines:
+            line = tmp.strip()
+            if line == str(): continue
             if line[-1] == self.ins_data.head:
                 continue
 
@@ -101,6 +103,9 @@ class CParsing:
 
             # extract the values
             the_values = the_values.replace(self.ins_data.quote, '')
+            p = the_values.find('//')
+            if p > -1:
+                the_values = the_values[:p]
             the_fields = the_values.split(':')
             s = len(the_fields)
             namespace = ''
@@ -128,11 +133,10 @@ class CParsing:
 
             # check the quotes
             component = the_fields[0]
-            component = component.lstrip()
-            component = component.rstrip()
+            component = component.strip()
             if component[0] != self.ins_data.quote or component[-1] != self.ins_data.quote:
                 continue
-            component = component.replace(self.ins_data.quote, '')
+            component = component.replace(self.ins_data.quote, str())
             #version = the_fields[1]
             my_list = [component]
             result.append(my_list)
@@ -163,6 +167,25 @@ class CParsing:
                     result.append(my_list)
 
             i += 1
+
+        return result
+
+    def manage_roast(self, the_lines):
+        result = list()
+
+        separator = ' = '
+        head = '[[package]]'
+        for line in the_lines:
+                if line.strip().find('name') != 0:
+                    continue
+
+                the_fields = line.split(separator)
+                if len(the_fields) == 2:
+                    component = the_fields[1]
+                    component = component.strip()
+                    component = component.replace(self.ins_data.quote, str())
+                    my_list = [component]
+                    result.append(my_list)
 
         return result
 
@@ -252,36 +275,33 @@ class CParsing:
     def get_data_for_flutter(self, the_lines):
         result = list()
 
-        the_lines = self.extract_the_blocks_for_flutter(the_lines)
-        indent_mini = self.get_min_of_indent(the_lines)
-        if indent_mini == 0: return result
         space = ' '
         tabulation = '\t'
-
+        the_prefixes = [space, space + space, tabulation]
         for i in range(0, len(the_lines)):
             line = the_lines[i]
-
-            #character after the indent
-            if (line[indent_mini] == space) or (line[indent_mini] == tabulation):
+            if ':' not in line:
                 continue
 
-            # good data
-            if ':' not in line: continue
-            new_line = line.strip()
-            the_fields = new_line.split(':')
-            component = the_fields[0]
+            to_treat = False
+            if line[0] == tabulation:
+                if line[1] not in the_prefixes:
+                    to_treat = True
+            elif line[0] == space:
+                if line[1] not in the_prefixes:
+                    to_treat = True
+                elif line[1] == space:
+                    if line[2] not in the_prefixes:
+                        to_treat = True
 
-            version = the_fields[1]
-            version = version.strip()
-            dependency_found = False
-            if version.lower() == 'any':
-                dependency_found = True
-            elif self.version_valid(version) == True:
-                dependency_found = True
+            if to_treat == False:
+                continue
 
-            if dependency_found == True:
-                my_list = [component]
-                result.append(my_list)
+            value = the_lines[i].strip()
+            p = value.find(':')
+            value = value[:p]
+            my_list = [value]
+            result.append(my_list)
 
         return result
 
@@ -289,10 +309,11 @@ class CParsing:
         result = list()
 
         for line in the_lines:
-            new_line = line.replace(' ', '')
-            if '//indirect' in new_line:
+            line_with_indirect = line.replace(' ', '')
+            if '//indirect' in line_with_indirect:
                 continue
-            new_line = line.lstrip()
+
+            new_line = line.strip()
             the_fields = new_line.split(' ')
             component = the_fields[0]
             my_list = [component]
@@ -303,20 +324,30 @@ class CParsing:
     def manage_swift(self, the_lines):
         result = list()
 
+        prefix = '.package'
+        quote = '\"'
         for line in the_lines:
-            p = line.find('.package')
-            if p != 0: continue
+            p = line.find(prefix)
+            if p < 0: continue
+
             p = line.find('url:')
             if p < 0: continue
             line = line[p:]
 
-            p = line.find('\"')
+            p = line.find(quote)
             line = line[p+1:]
-            p = line.find('\"')
+            p = line.find(quote)
             line = line[:p]
 
             component = line.strip()
-            if component.find('https') != 0: continue
+            the_websites = ['https://github.com', 'http://github.com']
+            website_found = False
+            for website in the_websites:
+                if component.find(website) == 0:
+                    website_found = True
+                    break
+            if website_found == False: continue
+
             my_list = [component]
             result.append(my_list)
 
@@ -352,38 +383,35 @@ class CParsing:
 
         return result
 
+    def get_the_dependencies_on_error(self, platform, the_lines_on_error, separator_between_fields_in_file):
+        the_dependencies_on_error = list()
 
-    def get_the_values(self, language, the_lines, ins_filter):
+        for line in the_lines_on_error:
+            if separator_between_fields_in_file in line:
+                the_values = line.split(separator_between_fields_in_file)
+                the_dependencies_on_error.append(the_values[1:])
+
+        return the_dependencies_on_error
+
+    def route(self, language, the_lines, ins_filter):
         result = list()
 
         self.the_lines = the_lines
         ins_name = CName()
 
         if language == ins_name.gradle:
-            r = self.get_data(0, 1)
-            the_lines, i = r
             result = self.manage_gradle(the_lines)
         elif language == ins_name.package_json:
-            r = self.get_data(0, 1)
-            the_lines, i = r
             result = self.manage_package_json(the_lines)
         elif language == ins_name.roast:
-            result = self.get_data_for_each_block(the_lines)
+            result = self.manage_roast(the_lines)
         elif language == ins_name.go:
-            r = self.get_data(0, 1)
-            the_lines, i = r
             result = self.manage_go(the_lines)
         elif language == ins_name.flutter:
             result = self.get_data_for_flutter(the_lines)
         elif language == ins_name.swift:
-            r = self.get_data(0, 1)
-            the_lines, i = r
             result = self.manage_swift(the_lines)
         elif language == ins_name.cocoapods:
             result = self.get_data_for_cocoapods(the_lines)
-        elif language == ins_name.elm_lang:
-            r = self.get_data(0, 1)
-            the_lines, i = r
-            result = self.manage_elm_lang(the_lines)
 
         return result

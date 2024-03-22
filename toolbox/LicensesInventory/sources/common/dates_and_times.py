@@ -11,13 +11,12 @@
 # Authors: See CONTRIBUTORS.txt
 # Software description: A toolbox of scripts to help work of forges admins and open source referents
 
-from .data_in_blocks import *
-from .comments import *
-from .dates_and_times import *
-from .date_from_requests_retry_after import *
-from .names import *
-from .datas import *
-from .files import *
-from .filters import *
-from .choices import *
-from .prompts import *
+import datetime
+
+
+class CDate:
+    def __init__(self):
+        self.prefix_for_date = 'Date: '
+
+    def get_date_and_time(self):
+        return str(datetime.datetime.today().replace(microsecond = 0).isoformat())

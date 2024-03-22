@@ -15,7 +15,7 @@ import json
 import xmltodict
 from bs4 import BeautifulSoup
 import bs4
-
+import html
 from sources.common import CData
 
 space = ' '
@@ -29,109 +29,93 @@ class CParsing:
         content = str()
         with open(file, 'rt', encoding='utf-8') as f:
             content = f.read()
+        #content = content.replace('\n', str())
+        content = html.unescape(content)
         return content
 
-    def get_license_with_html(self, file):
-        result = None
+    def b_get_license_with_html(self, file):
+        result = list()
 
         html_code = self.get_content(file)
         soup = BeautifulSoup(html_code, 'html.parser')
 
-        text = str()
-        for i in range(1, 10):
-            my_head = 'h' + str(i)
-            for head in soup.find_all(my_head):
-                if 'license' not in head.text.lower(): continue
+        the_a = soup.find_all()
 
-                license = head.next_sibling
-                while type(license) != bs4.element.Tag:
-                    license = license.next_sibling
-
-                first_found = False
-                if text == str():
-                    first_found = True
-                tmp = license.text
-                tmp = tmp.replace('\n', str())
-                tmp = tmp.strip()
-                if first_found == True:
-                    text = tmp
-                else:
-                    my_tmp = tmp.lower()
-                    my_text = text.lower()
-                    if (my_tmp != my_text) and(my_tmp not in my_text):
-                        text = text + ' ' + tmp
-
-        if text == str(): text = None
-        return [text]
-
-    def get_license_for_go_github(self, file):
+    def get_license_with_html(self, file):
         result = list()
 
-        content = self.get_content(file)
-        p = content.find('License')
-        if p < 0: return None
-        content = content[p+1:]
-        p = content.find('</svg>')
-        if p < 0: return None
-        content = content[p+1:]
-        p = content.find('>')
-        if p < 0: return None
-        content = content[p+1:]
-        p = content.find('<')
-        if p < 0: return None
-        content = content[0:p]
-        license = content.strip()
+        html_code = self.get_content(file)
+        soup = BeautifulSoup(html_code, 'html.parser')
 
-        return [license]
+        i = 1
+        while i < 11:
+            v = 'h' + str(i)
+            the_heads = soup.find_all(v)
+            for head in the_heads:
+                if 'license' not in head.get_text().lower(): continue
+                the_siblings = head.next_siblings
+                for sibling in the_siblings:
+                    if type(sibling) == bs4.element.Tag:
+                        return [sibling.get_text().strip()]
+
+            i += 1
+
+        return result
 
     def get_license_for_go(self, file):
-        result = list()
+        the_values_for_license = list()
 
         content = self.get_content(file)
         p = content.find('license')
-        if p < 0: return None
+        if p < 0: return the_values_for_license
         content = content[p+1:]
         p = content.find('gtmc=')
-        if p < 0: return None
+        if p < 0: return the_values_for_license
         content = content[p+1:]
         p = content.find('>')
-        if p < 0: return None
+        if p < 0: return the_values_for_license
         content = content[p+1:]
         p = content.find('</a>')
-        if p < 0: return None
+        if p < 0: return the_values_for_license
         content = content[0:p]
-        license = content.strip()
+        text = content.strip()
+        the_values_for_license.append(text)
 
-        return [license]
+        return the_values_for_license
 
     def get_license_for_roast(self, file):
-        result = list()
+        the_values_for_license = list()
 
         content = self.get_content(file)
         p = content.find('license')
-        if p < 0: return None
+        if p < 0: return the_values_for_license
         content = content[p:]
         p = content.find('\"')
-        if p < 0: return None
+        if p < 0: return the_values_for_license
         content = content[p + 1:]
         p = content.find('\"')
-        if p < 0: return None
+        if p < 0: return the_values_for_license
         content = content[p + 1:]
         p = content.find('\"')
-        if p < 0: return None
+        if p < 0: return the_values_for_license
         content = content[:p]
-        license = content.strip()
+        text = content.strip()
+        the_values_for_license.append(text)
 
-        return [license]
+        return the_values_for_license
 
     def get_license_for_github(self, file):
-        the_data = list()
+        result = list()
 
         data = None
         try:
             with open(file, encoding='utf-8') as f: 
                 data = f.readlines()
+        except Exception as e:
+            print('Error: reading the content of the downloaded file to json.\n\t' + file)
+            return result
 
+        try:
             #convert to json
             line = str()
             if len(data) == 1:
@@ -140,28 +124,30 @@ class CParsing:
                 for v in data:
                     line += v
             data = json.loads(line)
-
         except Exception as e:
-            print('💥  Error: converting the content of the downloaded file to json.')
-            return None
+            print('Error: converting the content of the downloaded file to json.')
+            return result
 
             if data['total_count' ] > 500000:
-                return None
+                return result
 
+        component = str()
         try:
             component = data['items'][0]['name']
             component = component.strip()
         except Exception as e:
-            component = 'None'
+            component = str()
 
+        license = str()
         try:
             license = data['items'][0]['license']['name']
             license = license.strip()
         except Exception as e:
-            license = 'None'
+            license = str()
 
-        the_data = [component, license]
-        return the_data
+        result.append(component)
+        result.append(license)
+        return result
 
     def get_license_for_maven_central(self, file):
         result = list()

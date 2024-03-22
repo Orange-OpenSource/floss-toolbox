@@ -11,13 +11,11 @@
 # Authors: See CONTRIBUTORS.txt
 # Software description: A toolbox of scripts to help work of forges admins and open source referents
 
-from .data_in_blocks import *
-from .comments import *
-from .dates_and_times import *
-from .date_from_requests_retry_after import *
-from .names import *
-from .datas import *
-from .files import *
-from .filters import *
-from .choices import *
-from .prompts import *
+
+class CChoice:
+
+    def __init__(self):
+        self.all = 'all'
+        self.only_the_dependencies_on_error = 'only_the_dependencies_on_error'
+        self.only_the_new_dependencies = 'only_the_new_dependencies'
+        self.quit = 'quit'

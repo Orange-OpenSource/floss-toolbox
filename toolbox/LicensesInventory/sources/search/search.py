@@ -17,6 +17,7 @@ from sources.common import CName, CFile
 from .downloads import CDownload
 from .parsings import CParsing
 
+
 class CSearch:
     """
     Get the licenses: for each platform and for each component
@@ -26,45 +27,42 @@ class CSearch:
         self.ins_name = CName()
         self.ins_download = CDownload()
         self.ins_parsing = CParsing()
+        #self.ins_filter = None
+        #self.ins_config = None
+        self.ins_file = CFile()
+        self.the_dependencies_on_error_by_platform = None
 
-    def get_the_licenses_for_others(self, platform, dependency):
-        print('\t➡️  Getting the licenses for others...')
-        bad_result = [None]
+    def get_license_for_others(self, platform, dependency):
+        the_values_for_license = list()
 
         component = dependency[0]
         the_key_and_dependency = dict()
         the_key_and_dependency[self.ins_name.component] = component
-        file = self.ins_download.get_file(platform, the_key_and_dependency)
-        if file == None: return bad_result
+        file = self.ins_download.get_file(platform, the_key_and_dependency, None)
+        if file == None: return the_values_for_license
 
-        result = bad_result
         if platform == self.ins_name.roast:
-            result = self.ins_parsing.get_license_for_roast(file)
+            the_values_for_license = self.ins_parsing.get_license_for_roast(file)
         else:
-            result = self.ins_parsing.get_license_with_html(file)
+            the_values_for_license = self.ins_parsing.get_license_with_html(file)
 
-        if result == None:
-            result = bad_result
+        return the_values_for_license
 
-        print('\t\t✅ Getting the licenses for others... OK!')            
-        return result
-
-    def get_the_licenses_for_gradle(self, platform, dependency):
-        print('\t➡️  Getting the licenses for Gradle...')
-        bad_result = [None]
+    def get_license_for_gradle(self, platform, dependency):
+        the_values_for_license = list()
 
         component = dependency[0]
+        namespace = None
+        if len(dependency) > 1:
+            namespace = dependency[1]
 
         platform = self.ins_name.github
         the_key_and_dependency = dict()
         the_key_and_dependency[self.ins_name.component] = component
-        file = self.ins_download.get_file(platform, the_key_and_dependency)
+        file = self.ins_download.get_file(platform, the_key_and_dependency, namespace)
         if file != None:
-            license_github = self.ins_parsing.get_license_for_github(file)
-            if license_github != None:
-                return license_github
-
-        return bad_result
+            the_values_for_license = self.ins_parsing.get_license_for_github(file)
+            return the_values_for_license
 
     def maven_central_does_not_work():
         # maven central
@@ -73,7 +71,7 @@ class CSearch:
         if (namespace != str()) and (namespace != None):
             platform = self.ins_name.version_for_maven_central
             the_key_and_dependency[self.ins_name.namespace] = namespace
-            file = self.ins_download.get_file(platform, the_key_and_dependency)
+            file = self.ins_download.get_file(platform, the_key_and_dependency, None)
             if file == None:
                 return bad_result
             version= self.ins_parsing.extract_version_for_maven_central(file)
@@ -88,7 +86,7 @@ class CSearch:
             new_namespace = namespace.replace('.', '/')
             the_key_and_dependency[self.ins_name.namespace] = new_namespace
             the_key_and_dependency[self.ins_name.version] = version
-            file = self.ins_download.get_file(platform, the_key_and_dependency)
+            file = self.ins_download.get_file(platform, the_key_and_dependency, None)
             if file == None:
                 return bad_result
             license_central = self.ins_parsing.get_license_for_maven_central(file)
@@ -96,9 +94,8 @@ class CSearch:
                 return bad_result
             return license_central
 
-    def get_the_licenses_for_go(self, platform, dependency):
-        print('\t➡️  Getting the licenses for Go...')
-        bad_result = [None]
+    def get_license_for_go(self, platform, dependency):
+        the_values_for_license = list()
 
         component = dependency[0]
 
@@ -109,52 +106,84 @@ class CSearch:
 
         the_key_and_dependency = dict()
         the_key_and_dependency[self.ins_name.component] = component
-        file = self.ins_download.get_file(platform, the_key_and_dependency)
-        if file != None:
-            license = [str()]
-            if platform == self.ins_name.go_github:
-                license = self.ins_parsing.get_license_for_go_github(file)
-            elif platform == self.ins_name.go:
-                license = self.ins_parsing.get_license_for_go(file)
-            if license != None:
-                return license
+        file = self.ins_download.get_file(platform, the_key_and_dependency, None)
+        if file == None:
+            return the_values_for_license
 
-        return bad_result
+        the_values_for_license = self.ins_parsing.get_license_with_html(file)
+
+        return the_values_for_license
+
+    def extract_the_licenses(self, platform, the_dependencies, number_of_errors_max):
+        the_licenses = list()
+        the_errors = list()
+
+        to_treat = True
+        number_of_errors = 0
+        for i_dependency in range(0, len(the_dependencies)):
+            dependency = the_dependencies[i_dependency]
+            component = dependency[0]
+
+            if number_of_errors == number_of_errors_max:
+                to_treat = False
+
+            the_values_for_license = list()
+            if to_treat == True:
+                print(platform, ':', component)
+                if platform == self.ins_name.gradle:
+                    the_values_for_license = self.get_license_for_gradle(platform, dependency)
+                elif platform == self.ins_name.go:
+                    the_values_for_license = self.get_license_for_go(platform, dependency)
+                elif platform != None:
+                    the_values_for_license = self.get_license_for_others(platform, dependency)
+
+            error_code = int(self.ins_download.error_code)
+            if error_code < 300:
+                number_of_errors = 0
+                the_licenses.append(dependency + the_values_for_license)
+            else:
+                field_error_code = ['error code = ' + self.ins_download.error_code]
+                if to_treat == False:
+                    dependency += ['successive authorized errors at ' + str(number_of_errors)]
+                else:
+                    number_of_errors += 1
+                the_errors.append(field_error_code + dependency)
+
+        if to_treat == False:
+            if self.ins_download.next_date != None:
+                text = 'retry after ' + self.ins_download.next_date
+                text += ' - in ' + self.ins_download.delay
+                the_errors.insert(0, [text])
+
+        return (the_licenses, the_errors)
+
+    def get_the_platforms(self, a, b):
+        the_platforms = list(a.keys())
+        the_platforms += list(b.keys())
+
+        # delete the duplicated platforms
+        d = dict()
+        for p in the_platforms:
+            d[p] = str()
+        the_platforms = list(d.keys())
+
+        return the_platforms
 
     def get_the_licenses(self, the_dependencies_by_platform, ins_config, ins_filter):
-        print('\t➡️  Getting the licenses for some...')
         result = dict()
-        on_error = dict()
+        result_on_error = dict()
 
-        self.ins_filter = ins_filter
         self.ins_download.ins_filter = ins_filter
-        ins_file = CFile()
 
         for platform, the_dependencies in the_dependencies_by_platform.items():
-            the_licenses = list()
             sub_folder = platform.replace('.', '_')
             self.ins_download.path_licenses = os.path.join(ins_config.path_licenses, sub_folder)
-            ins_file.check_the_directory(self.ins_download.path_licenses, True, False)
-            for i_dependency in range(0, len(the_dependencies)):
-                dependency = the_dependencies[i_dependency]
-                license = dependency[:]
-                print(dependency[0], ':', platform)
-                r = None
-                if platform == self.ins_name.gradle:
-                    r = self.get_the_licenses_for_gradle(platform, dependency)
-                elif platform == self.ins_name.go:
-                    r = self.get_the_licenses_for_go(platform, dependency)
-                else:
-                    r = self.get_the_licenses_for_others(platform, dependency)
-                error_code = int(self.ins_download.error_code)
-                if error_code == 403:
-                    on_error[platform] = the_dependencies[i_dependency:]
-                    break # the_dependencies
-                if error_code > 299:
-                    r = ['error code=' + str(error_code)]
-                    r = ['error code=' + str(error_code)]
-                license += r
-                the_licenses.append(license)
-            result[platform] = the_licenses
 
-        return (result, on_error)
+            r =self.extract_the_licenses(platform, the_dependencies, ins_config.number_of_errors_max)
+            the_licenses, the_errors = r
+            if len(the_licenses) > 0:
+                result[platform] = the_licenses
+            if len(the_errors) > 0:
+                result_on_error[platform] = the_errors
+
+        return (result, result_on_error)
