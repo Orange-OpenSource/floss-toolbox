@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- [Utils] Add licenses names for third-party generator and prompt scripts and new licenses ([#141](https://github.com/Orange-OpenSource/floss-toolbox/issues/141))
 - [Utils] Add RSALv2 license in third-party generator scripts ([#139](https://github.com/Orange-OpenSource/floss-toolbox/issues/139))
 
 ## [2.17.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.17.0..2.16.0) - 2024-03-22
