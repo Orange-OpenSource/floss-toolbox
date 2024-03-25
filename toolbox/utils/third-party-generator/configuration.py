@@ -47,7 +47,8 @@ LICENSES = {
     "FSL-1.1-Apache-2.0": "https://fsl.software/",                  # Functional Source License, Version 1.1, Apache 2.0 Future License
     "FSL-1.1-MIT": "https://fsl.software/",                         # Functional Source License, Version 1.1, MIT Future License
     "RSALv2": "https://redis.com/legal/rsalv2-agreement/",          # Redis Source Available License 2.0
-    "prosperity-2.0 ": "https://github.com/licensezero/prosperity-public-license/blob/v2.0.0/LICENSE.mustache" # Prosperity Public License 2.0
-    "Unlicense": "https://unlicense.org/"                           # The Unlicense
+    "prosperity-2.0 ": "https://github.com/licensezero/prosperity-public-license/blob/v2.0.0/LICENSE.mustache", # Prosperity Public License 2.0
+    "Unlicense": "https://unlicense.org/",                          # The Unlicense
+    "Hippocratic-2.1": "https://spdx.org/licenses/Hippocratic-2.1.html" # Hippocratice License 2.1
 }
 LICENSES_NAMES = list(LICENSES)
