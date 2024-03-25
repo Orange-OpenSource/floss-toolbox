@@ -50,6 +50,7 @@ LICENSES = {
     "prosperity-2.0 ": "https://github.com/licensezero/prosperity-public-license/blob/v2.0.0/LICENSE.mustache", # Prosperity Public License 2.0
     "Unlicense": "https://unlicense.org/",                          # The Unlicense
     "Hippocratic-2.1": "https://spdx.org/licenses/Hippocratic-2.1.html", # Hippocratice License 2.1
-    "BSD-3-Clause-No-Military-License": "https://spdx.org/licenses/BSD-3-Clause-No-Military-License.html" # BSD 3-Clause No Military License
+    "BSD-3-Clause-No-Military-License": "https://spdx.org/licenses/BSD-3-Clause-No-Military-License.html", # BSD 3-Clause No Military License
+    "BSD-3-Clause-No-Nuclear-License": "https://spdx.org/licenses/BSD-3-Clause-No-Nuclear-License.html" # BSD 3-Clause No Nuclear License
 }
 LICENSES_NAMES = list(LICENSES)
