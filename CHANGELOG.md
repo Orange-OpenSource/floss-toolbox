@@ -5,7 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.17.0..dev)
+## [Unreleased](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.18.0..dev)
+
+## [2.18.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.18.0..2.17.0) - 2024-03-25
+
+### Changed
+
+- [Utils] Add licenses names for third-party generator and prompt scripts and new licenses ([#141](https://github.com/Orange-OpenSource/floss-toolbox/issues/141))
+- [Utils] Add RSALv2 license in third-party generator scripts ([#139](https://github.com/Orange-OpenSource/floss-toolbox/issues/139))
 
 ## [2.17.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.17.0..2.16.0) - 2024-03-22
 

@@ -10,7 +10,7 @@
 # Authors: See CONTRIBUTORS.txt
 # Software description: A toolbox of scripts to help work of forges admins and open source referents
 
-# Version.............: 3.0.0
+# Version.............: 3.1.0
 # Since...............: 12/03/2024
 # Description.........: Builds a third-party Markdown file based on a CSV file and a delimiter
 
@@ -83,10 +83,11 @@ requirements of the relevant license of the Third Party Software they are using.
             
             unique_computed_components.add(name) 
             repository = component_fields[1]
-            license_name = component_fields[2]
+            license_identifier = component_fields[2]
             copyright = component_fields[3]
             version = component_fields[4]
-            license_url = LICENSES[license_name]
+            license_name = LICENSES[license_identifier][0]
+            license_url = LICENSES[license_identifier][1]
             component_entry = """## {name}
 """.format(name=name)
             
@@ -107,7 +108,7 @@ Copyright {copyright}
                 print(f"- No copyright defined for component '{name}'")
 
             component_entry += """
-**{name}** is distributed under the terms and conditions of the [{license} License]({url}).
+**{name}** is distributed under the terms and conditions of the [{license}]({url}).
 You may download the source code on the [following website]({repository}).""".format(name=name, license=license_name, url=license_url, repository=repository)
             result_file.write(component_entry)
             result_file.write("\n\n")
