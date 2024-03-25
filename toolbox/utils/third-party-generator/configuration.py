@@ -10,7 +10,7 @@
 # Authors: See CONTRIBUTORS.txt
 # Software description: A toolbox of scripts to help work of forges admins and open source referents
 
-# Version.............: 1.2.0
+# Version.............: 1.3.0
 # Since...............: 12/03/2024
 # Description.........: Just to list managed licenses and share values between scripts
 
@@ -46,6 +46,7 @@ LICENSES = {
     "BUSL-1.1": "https://spdx.org/licenses/BUSL-1.1.html",          # Business Source License 1.1
     "FSL-1.1-Apache-2.0": "https://fsl.software/",                  # Functional Source License, Version 1.1, Apache 2.0 Future License
     "FSL-1.1-MIT": "https://fsl.software/",                         # Functional Source License, Version 1.1, MIT Future License
-    "RSALv2": "https://redis.com/legal/rsalv2-agreement/"           # Redis Source Available License 2.0
+    "RSALv2": "https://redis.com/legal/rsalv2-agreement/",          # Redis Source Available License 2.0
+    "prosperity-2.0 ": "https://github.com/licensezero/prosperity-public-license/blob/v2.0.0/LICENSE.mustache" # Prosperity Public License 2.0
 }
 LICENSES_NAMES = list(LICENSES)
