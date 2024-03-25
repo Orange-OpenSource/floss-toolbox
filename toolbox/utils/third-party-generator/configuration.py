@@ -27,7 +27,7 @@ DEFAULT_AVOID_FIELD_SYMBOL = "?"
 # Please refer to https://opensource.org/licenses or https://spdx.org/licenses/
 # Use SPDX short identifier as key, full name and URL of license text as values
 LICENSES = {
-    "Other": ["Other", "<to be completed>"], # If not listed bellow in this exact SPDX short identifier
+    "Other": ["Other", "<to be completed>"], # If not listed bellow in a known exact SPDX short identifier
 
     "Apache-2.0": ["Apache 2.0 License", "https://opensource.org/license/apache-2-0"],
     "MIT": ["MIT License", "https://opensource.org/license/mit"],
