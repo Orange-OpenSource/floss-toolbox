@@ -15,6 +15,7 @@ Table of Contents
          * [List conributors from Git history](#list-contributors-from-git-history)
          * [Extract email adress from Git history](#extract-email-address-from-git-history)
          * [Count lines of code in a directory](#count-lines-of-code-in-a-directory)
+         * [Check if sources have headers](#check-if-sources-have-headers)
 
 # The "diver" of source code and commits
 
@@ -212,4 +213,20 @@ bash lines-count.sh --folder "absolute/path/to/target"
 
 # To compute metrics for a remote repository to clone at given URL
 bash lines-count.sh --url "HTTP-or-SSH-URL-of-Git-repository"
+```
+
+### Check if sources have headers
+
+_Keywords: #headers #sources #SPDX_
+
+It is possible to run a scan in a project to check wether or not the source files contain (in fact start by) some header text.
+For example it is a good practice or mandatory to have headers in sources files with legal mentions, and sometimes some headers can be missing.
+The *check-sources-heaers.rb* script will text a raw text file (without useless new lines or whitespaces), and generate some templates using commnets symbols. If will look for source files in the project, and check if files start by the decorated version of the text, i.e. the template.
+
+```shell
+# Run the script to scan the given folder and using the given raw text template
+ruby check-sources-headers.rb --folder data/project --template data/template.txt
+
+# Or also display more debug traces
+ruby check-sources-headers.rb --folder data/project --template data/template.txt --debug
 ```
