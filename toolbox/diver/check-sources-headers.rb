@@ -18,16 +18,33 @@ VERSION = "1.0.0"
 CONFORM_FILES_FILE = "data/conform-files.txt"
 NOT_CONFORM_FILES_FILE = "data/not-conform-files.txt"
 
+$arguments = {}
+$arguments[:debug] = false
+$arguments[:keep] = false
+
 # ---------
 # Functions
 # ---------
 
-$arguments = {}
-$arguments[:debug] = false
-
 # Just for debugging
 def debug(message)
     STDOUT.puts message if $arguments[:debug]
+end
+
+# User prompts
+def ask_yes_no(question)
+    STDOUT.puts "#{question} (yes/y/no/n)"
+    loop do
+      answer = gets.chomp.downcase
+      case answer
+      when 'yes', 'y'
+        return true
+      when 'no', 'n'
+        return false
+      else
+        STDOUT.puts "Please enter 'yes', 'y', 'no' or 'n'"
+      end
+    end
 end
 
 # To update log files
@@ -46,6 +63,14 @@ end
 # @return [String] The path of the decorated file
 def decorated_template(path, extension, append_to_top, prepend_to_each_line, append_to_end)
     modified_path = "#{path}#{extension}"
+    if File.exist?(modified_path)
+        if $arguments[:keep]
+            return modified_path
+        elsif ask_yes_no("✋  The template at '#{modified_path}' already exists, do you want to keep it? You may have put modifications inside.")
+            STDOUT.puts "🆗  Ok, no override"
+            return modified_path
+        end
+    end
     File.open(path, 'r') do |original_file|
       File.open(modified_path, 'w') do |modified_file|
         modified_file.puts(append_to_top)
@@ -114,6 +139,9 @@ OptionParser.new do |parameters|
     parameters.on("-d", "--debug", "Display more debug traces") do |argument|
         $arguments[:debug] = true
     end
+    parameters.on("-k", "--keep", "Keep old generated templates") do |argument|
+        $arguments[:keep] = true
+    end
     parameters.on("-v", "--version", "Prints the version of this software") do
         puts VERSION
         exit
@@ -147,6 +175,8 @@ STDOUT.puts "🆗  Ok, will iterate on each source file inside '#{$arguments[:fo
 conform_files = Set.new
 not_conform_files = Set.new
 n = 0
+
+start_time = Time.now
 
 # Define the rules you want to accept for each programming language.
 # Do not forget several comments symbols can be used for one language.
@@ -269,8 +299,9 @@ log(conform_files, CONFORM_FILES_FILE)
 
 number_of_files = Dir[File.join($arguments[:folder], '**', '*')].count { |file| File.file?(file) }
 STDOUT.puts "💪  Made #{n} controls"
-STDOUT.puts "👉  There are #{conform_files.length} unique files (out of #{number_of_files}) where template has been found"
-STDOUT.puts "👉  There are #{not_conform_files.length} unique files (out of #{number_of_files}) where template was not found"
+STDOUT.puts "👉  There are #{conform_files.length} unique files in managed programming language (out of #{number_of_files}) where template has been found"
+STDOUT.puts "👉  There are #{not_conform_files.length} unique files in managed programming language (out of #{number_of_files}) where template was not found"
 
-# TODO: Compute comptuation time
-# NOTE/ Template : no remaining space nor empty lines
+end_time = Time.now
+elapsed_time = end_time - start_time
+STDOUT.puts "⏳  Elapsed time: #{elapsed_time} seconds"
