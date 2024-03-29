@@ -232,6 +232,12 @@ ruby check-sources-headers.rb --folder data/project --template data/template.txt
 
 # Or keep the previous generated templates (i.e. decorated raw header files)
 ruby check-sources-headers.rb --folder data/project --template data/template.txt --keep
+
+# Or exclude from scans a directory (e.g. generated files, docs, etc)
+ruby check-sources-headers.rb --folder data/project --template data/template.txt --exclude data/project/directory/to/exclude
+
+# Or use all these parameters!
+ruby check-sources-headers.rb --folder data/ods-ios --template data/template-ods_ios.txt --debug --keep --exclude data/project/directory/to/exclude
 ```
 
 The *check_source_headers.rb* script will generate as much templates as managed programming languages rules.
@@ -240,4 +246,4 @@ The generated template is named using the basic file name, e.g. if you give to t
 Thus, supposing some previous file with that name exist, the script will ask you if you want to keep it or not.
 You may want to get rid of it because it was for a previous run. But you may want to keep it because you saw some rules for a specific programming language are not really fulfilled (specially with whitespaces), so you would like to use your own custom template file.
 
-**In a nutshel, if it failed the first time, use your custom template file instead of using rules with comment symbols defined in the script.**
+**In a nutshell, if it failed the first time, use your custom template file (--keep) instead of using rules with comment symbols defined in the script.**

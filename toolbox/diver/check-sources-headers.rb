@@ -21,6 +21,7 @@ NOT_CONFORM_FILES_FILE = "data/not-conform-files.txt"
 $arguments = {}
 $arguments[:debug] = false
 $arguments[:keep] = false
+$arguments[:exclude] = nil
 
 # ---------
 # Functions
@@ -87,6 +88,7 @@ end
 #
 # @param path [String] The path to the dirctory to process
 # @param template [String] Path to the template file to look for
+# @param excluding [String] Path to directory to not scan, can be undefined
 # @param conform_files [Array] Array updated between calls containing all conform files
 # @param not_conform_files [Array] Array updated between calls containing all not conform files
 # @param extension [String] The extension of sources files to check
@@ -94,7 +96,7 @@ end
 # @param prepend_to_each_line [String] The string to prepend to each line in the file.
 # @param append_to_end [String] The string to append to the end of the file.
 # @return [Int] Number of iterated files
-def check_for_sources(path, template, conform_files, not_conform_files, extension, append_to_top, prepend_to_each_line, append_to_end)
+def check_for_sources(path, template, excluding, conform_files, not_conform_files, extension, append_to_top, prepend_to_each_line, append_to_end)
     sources_files = Dir.glob("#{path}/**/*#{extension}")
     markup = extension.upcase
     if sources_files.length == 0
@@ -105,6 +107,10 @@ def check_for_sources(path, template, conform_files, not_conform_files, extensio
     decorated_template = decorated_template(template, markup, append_to_top, prepend_to_each_line, append_to_end)
     decorated_template_content = File.read(decorated_template)
     sources_files.each do |source_file|
+        if !excluding.nil? && !excluding.empty? && source_file.start_with?(excluding)
+            debug("🛑  #{source_file} is in the excluded directory '#{excluding}'")
+            next
+        end
         source_file_content = File.read(source_file)
         if source_file_content.start_with?(decorated_template_content) # Or maybe "contains" to get rid of shebang and or env definitions?
             debug("✅  #{source_file} starts with the template")
@@ -136,6 +142,11 @@ OptionParser.new do |parameters|
             $arguments[:template] = argument
         end
     end
+    parameters.on("-e", "--exclude FOLDER", String, "Path to FOLDER to exclude from scans") do |argument|
+        unless argument.to_s.strip.empty?
+            $arguments[:exclude] = argument
+        end
+    end    
     parameters.on("-d", "--debug", "Display more debug traces") do |argument|
         $arguments[:debug] = true
     end
@@ -166,11 +177,15 @@ if !File.exist?($arguments[:template])
     STDERR.puts "Error: Template file is not a file"
 end
 
+if !$arguments[:exclude].nil? && !$arguments[:exclude].to_s.strip.empty? && !File.directory?($arguments[:exclude])
+    STDERR.puts "Error: Folder to exclude is not a directory"
+end
+
 STDOUT.puts "🆗  Ok, will iterate on each source file inside '#{$arguments[:folder]}' looking for template at '#{$arguments[:template]}'"
 
-# -----------------------
-# 2) Process source files
-# -----------------------
+# ----------------------------------------------------
+# 2) Process source files with your own specific rules
+# ----------------------------------------------------
 
 conform_files = Set.new
 not_conform_files = Set.new
@@ -183,111 +198,111 @@ start_time = Time.now
 # For intermediate or closing symbols, some additional whitespaces can be added to have things vertically aligned.
 
 # C / C++ - With additional whitespaces
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".c",  "/*", " * ", " */")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".cpp",  "/*", " * ", " */")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".h",  "/*", " * ", " */")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".c",  "/*", " * ", " */")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".cpp",  "/*", " * ", " */")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".h",  "/*", " * ", " */")
 
 # C / C++ - Without additional whitespaces
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".c",  "/*", "*", "*/")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".cpp",  "/*", "*", "*/")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".h",  "/*", "*", "*/")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".c",  "/*", "*", "*/")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".cpp",  "/*", "*", "*/")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".h",  "/*", "*", "*/")
 
 # C# 
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".cs",  "//", "// ", "//")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".cs",  "//", "// ", "//")
 
 # CSS - With additional whitespaces
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".css",  "/*", " * ", " */")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".css",  "/**", " * ", " */")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".css",  "/*", " * ", " */")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".css",  "/**", " * ", " */")
 
 # CSS - Without additional whitespaces
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".css",  "/*", "*", "*/")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".css",  "/**", "*", "*/")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".css",  "/*", "*", "*/")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".css",  "/**", "*", "*/")
 
 # Dart
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".dart",  "//", "// ", "//")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".dart",  "/*", " * ", " */")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".dart",  "//", "// ", "//")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".dart",  "/*", " * ", " */")
 
 # Elm
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".elm",  "--", "-- ", "--")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".elm",  "{-", "   ", "-}")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".elm",  "--", "-- ", "--")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".elm",  "{-", "   ", "-}")
 
 # Fortran
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".FOR",  "C", "C ", "C")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".FOR",  "C", "C ", "C")
 
 # Go - With additional whitespaces
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".go",  "//", "// ", "//")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".go",  "//", "// ", "//")
 
 # Go - Without additional whitespaces
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".go",  "//", "//", "//")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".go",  "//", "//", "//")
 
 # Groovy - With additional whitespaces
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".groovy",  "//", "// ", "//")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".groovy",  "/**", " * ", " */")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".groovy",  "/*", " * ", " */")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".groovy",  "//", "// ", "//")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".groovy",  "/**", " * ", " */")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".groovy",  "/*", " * ", " */")
 
 # HTML - With additional whitespaces
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".html",  "<!--", " ", "-->")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".html",  "<!--", " ", "-->")
 
 # HTML - Without additional whitespaces
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".html",  "<!--", "", "-->")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".html",  "<!--", "", "-->")
 
 # Java - With additional whitespaces
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".java",  "//", "// ", "//")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".java",  "/**", " * ", " */")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".java",  "/*", " * ", " */")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".java",  "//", "// ", "//")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".java",  "/**", " * ", " */")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".java",  "/*", " * ", " */")
 
 # JavaScript - With additional whitespaces
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".cjs",  "//", "// ", "//")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".js",  "//", "// ", "//")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".cjs",  "//", "// ", "//")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".js",  "//", "// ", "//")
 
 # JavaScript - Without additional whitespaces
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".cjs",  "//", "//", "//")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".js",  "//", "//", "//")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".cjs",  "//", "//", "//")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".js",  "//", "//", "//")
 
 # Kotlin - With additional whitespaces
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".kt",  "/*", " * ", " */")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".kt",  "//", "// ", "//")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".kts",  "/*", " * ", " */")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".kts",  "//", "// ", "//")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".kt",  "/*", " * ", " */")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".kt",  "//", "// ", "//")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".kts",  "/*", " * ", " */")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".kts",  "//", "// ", "//")
 
 # Lua
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".lua",  "--", "-- ", "--")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".lua",  "--", "-- ", "--")
 
 # Objective-C
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".m",  "//", "// ", "//")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".m",  "//", "// ", "//")
 
 # Objective-C - With additional whitespaces
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".m",  "/*", " * ", " */")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".m",  "/*", " * ", " */")
 
 # Objective-C - Without additional whitespaces
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".m",  "/*", "*", "*/")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".m",  "/*", "*", "*/")
 
 # PHP
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".php",  "//", "// ", "//")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".php",  "/*", " * ", " */")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".php",  "#", "# ", "#")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".php",  "//", "// ", "//")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".php",  "/*", " * ", " */")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".php",  "#", "# ", "#")
 
 # Python
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".py",  "#", "# ", "#")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".py",  "#", "# ", "#")
 
 # R
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".R",  "#", "# ", "#")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".R",  "#", "# ", "#")
 
 # Ruby
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".rb",  "#", "# ", "#")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".rb",  "#", "# ", "#")
 
 # Rust
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".rs",  "/*", " * ", " */")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".rs",  "/*", " * ", " */")
 
 # Shell
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".sh",  "#", "# ", "#")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".sh",  "#", "# ", "#")
 
 # Swift
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".swift",  "//", "// ", "//")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".swift",  "//", "// ", "//")
 
 # TypeScript
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".ts",  "//", "// ", "//")
-n += check_for_sources($arguments[:folder], $arguments[:template], conform_files, not_conform_files, ".tsx",  "//", "// ", "//")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".ts",  "//", "// ", "//")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".tsx",  "//", "// ", "//")
 
 # ----------
 # 3) Results
