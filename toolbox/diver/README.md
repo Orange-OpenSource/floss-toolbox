@@ -215,13 +215,13 @@ bash lines-count.sh --folder "absolute/path/to/target"
 bash lines-count.sh --url "HTTP-or-SSH-URL-of-Git-repository"
 ```
 
-### Check if sources have headers
+### Check if headers exist in sources using templates
 
 _Keywords: #headers #sources #SPDX_
 
 It is possible to run a scan in a project to check wether or not the source files contain (in fact start by) some header text.
 For example it is a good practice or mandatory to have headers in sources files with legal mentions, and sometimes some headers can be missing.
-The *check-sources-headers.rb* script will text a raw text file (without useless new lines or whitespaces), and generate some templates using commnets symbols. If will look for source files in the project, and check if files start by the decorated version of the text, i.e. the template.
+The *check-sources-headers.rb* script will take a raw text file (without useless new lines or whitespaces), and generate some templates using comments symbols. If will look for source files in the project, and check if files start by the decorated version of the text, i.e. the template.
 
 ```shell
 # Run the script to scan the given folder and using the given raw text template
@@ -241,9 +241,66 @@ ruby check-sources-headers.rb --folder data/ods-ios --template data/template-ods
 ```
 
 The *check_source_headers.rb* script will generate as much templates as managed programming languages rules.
-For example, if there are rules about CSS, it will create a template for the specific rules for CSS. But if there are several rules for CSS, the tempalte will be overriden.
+For example, if there are rules about CSS, it will create a template for the specific rules for CSS. But if there are several rules for CSS, the template will be overriden each time.
 The generated template is named using the basic file name, e.g. if you give to the script a "template.txt" file, for CSS the script will build a "template.txt.CSS" file. For Swift, it will be "template.txt.SWIFT" (always extension uppercased).
 Thus, supposing some previous file with that name exist, the script will ask you if you want to keep it or not.
 You may want to get rid of it because it was for a previous run. But you may want to keep it because you saw some rules for a specific programming language are not really fulfilled (specially with whitespaces), so you would like to use your own custom template file.
 
 **In a nutshell, if it failed the first time, use your custom template file (--keep) instead of using rules with comment symbols defined in the script.**
+
+For example, for a template file name *template-ods_ios.txt* with the content bellow:
+```text
+Software Name: Orange Design System
+SPDX-FileCopyrightText: Copyright (c) Orange SA
+SPDX-License-Identifier: MIT
+
+This software is distributed under the MIT license,
+the text of which is available at https://opensource.org/license/MIT/
+or see the "LICENSE" file for more details.
+
+Authors: See CONTRIBUTORS.txt
+Software description: A SwiftUI components library with code examples for Orange Design System
+```
+
+And in the Ruby script the following rule for Ruby programming language:
+```ruby
+check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".rb",  "#", "# ", "#")
+```
+
+The Ruby template checked at the beginning of files is:
+
+```text
+#
+# Software Name: Orange Design System
+# SPDX-FileCopyrightText: Copyright (c) Orange SA
+# SPDX-License-Identifier: MIT
+#
+# This software is distributed under the MIT license,
+# the text of which is available at https://opensource.org/license/MIT/
+# or see the "LICENSE" file for more details.
+#
+# Authors: See CONTRIBUTORS.txt
+# Software description: A SwiftUI components library with code examples for Orange Design System
+#
+```
+
+But with the following rule without special symbols to open and close the header, the tempalte will be a bit different:
+
+```ruby
+check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".rb",  "", "# ", "")
+```
+
+```text
+# Software Name: Orange Design System
+# SPDX-FileCopyrightText: Copyright (c) Orange SA
+# SPDX-License-Identifier: MIT
+# 
+# This software is distributed under the MIT license,
+# the text of which is available at https://opensource.org/license/MIT/
+# or see the "LICENSE" file for more details.
+# 
+# Authors: See CONTRIBUTORS.txt
+# Software description: A SwiftUI components library with code examples for Orange Design System
+```
+
+This case is more interesting if you use the same symbol for first, last and intermediate lines (or if you use only monoline comment symbol).

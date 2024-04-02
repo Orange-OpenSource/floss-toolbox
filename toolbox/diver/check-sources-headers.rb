@@ -74,11 +74,11 @@ def decorated_template(path, extension, append_to_top, prepend_to_each_line, app
     end
     File.open(path, 'r') do |original_file|
       File.open(modified_path, 'w') do |modified_file|
-        modified_file.puts(append_to_top)
+        modified_file.puts(append_to_top) if !append_to_top.empty?
         original_file.each_line do |line|
           modified_file.puts(prepend_to_each_line + line.chomp)
         end
-        modified_file.puts(append_to_end)
+        modified_file.puts(append_to_end) if !append_to_end.empty?
       end
     end
     return modified_path
@@ -289,7 +289,7 @@ n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:e
 n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".R",  "#", "# ", "#")
 
 # Ruby
-n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".rb",  "#", "# ", "#")
+n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".rb",  "", "# ", "")
 
 # Rust
 n += check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".rs",  "/*", " * ", " */")
