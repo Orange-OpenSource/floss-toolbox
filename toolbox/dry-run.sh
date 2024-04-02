@@ -12,7 +12,7 @@
 
 # Since...............: 08/03/2021
 # Description.........: Make a dry-run of the project to check if everything is ready to use
-# Version.............: 3.1.0
+# Version.............: 3.2.0
 
 set -eu
 
@@ -97,8 +97,10 @@ echo -e "\n---------------------------------"
 echo "Assertions for the Utils features"
 echo "---------------------------------"
 
+CheckIfFileExists "_shared/licenses.py"
 RunDryRunInFolder "utils/text-generator"
 RunDryRunInFolder "utils/third-party-generator"
+RunDryRunInFolder "utils/reuse"
 
 # Licenses Inventory tool
 # -----------------------

@@ -5,6 +5,8 @@ toolbox/utils/text-generator/_templates/new-GitHub-repository-contributors.fr.te
 toolbox/utils/third-party-generator/components.csv.result
 toolbox/utils/third-party-generator/THIRD-PARTY.md.result
 toolbox/utils/third-party-generator/__pycache__
+toolbox/utils/_/__pycache__/
+toolbox/utils/reuse/.reuse/
 toolbox/LicensesInventory/.pytest_cache
 toolbox/LicensesInventory/sources/__pycache__
 toolbox/LicensesInventory/sources/*/__pycache__
