@@ -15,6 +15,7 @@ Table of Contents
          * [List conributors from Git history](#list-contributors-from-git-history)
          * [Extract email adress from Git history](#extract-email-address-from-git-history)
          * [Count lines of code in a directory](#count-lines-of-code-in-a-directory)
+         * [Check if sources have headers](#check-if-sources-have-headers)
 
 # The "diver" of source code and commits
 
@@ -212,4 +213,155 @@ bash lines-count.sh --folder "absolute/path/to/target"
 
 # To compute metrics for a remote repository to clone at given URL
 bash lines-count.sh --url "HTTP-or-SSH-URL-of-Git-repository"
+```
+
+### Check if headers exist in sources using templates
+
+_Keywords: #headers #sources #SPDX_
+
+It is possible to run a scan in a project to check wether or not the source files contain (in fact start by) some header text.
+For example it is a good practice or mandatory to have headers in sources files with legal mentions, and sometimes some headers can be missing.
+The *check-sources-headers.rb* script will take a raw text file (without useless new lines or whitespaces), and generate some templates using comments symbols. If will look for source files in the project, and check if files start by the decorated version of the text, i.e. the template.
+
+```shell
+# Run the script to scan the given folder and using the given raw text template
+ruby check-sources-headers.rb --folder data/project --template data/template.txt
+
+# Or also display more debug traces
+ruby check-sources-headers.rb --folder data/project --template data/template.txt --debug
+
+# Or keep the previous generated templates (i.e. decorated raw header files)
+ruby check-sources-headers.rb --folder data/project --template data/template.txt --keep
+
+# Or exclude from scans a directory (e.g. generated files, docs, etc)
+ruby check-sources-headers.rb --folder data/project --template data/template.txt --exclude data/project/directory/to/exclude
+
+# Or use all these parameters!
+ruby check-sources-headers.rb --folder data/ods-ios --template data/template-ods_ios.txt --debug --keep --exclude data/project/directory/to/exclude
+```
+
+The *check_source_headers.rb* script will generate as much templates as managed programming languages rules.
+For example, if there are rules about CSS, it will create a template for the specific rules for CSS. But if there are several rules for CSS, the template will be overriden each time.
+The generated template is named using the basic file name, e.g. if you give to the script a "template.txt" file, for CSS the script will build a "template.txt.CSS" file. For Swift, it will be "template.txt.SWIFT" (always extension uppercased).
+Thus, supposing some previous file with that name exist, the script will ask you if you want to keep it or not.
+You may want to get rid of it because it was for a previous run. But you may want to keep it because you saw some rules for a specific programming language are not really fulfilled (specially with whitespaces), so you would like to use your own custom template file.
+
+**In a nutshell, if it failed the first time, use your custom template file (--keep) instead of using rules with comment symbols defined in the script.**
+
+For example, for a template file name *template-ods_ios.txt* with the content bellow:
+```text
+Software Name: Orange Design System
+SPDX-FileCopyrightText: Copyright (c) Orange SA
+SPDX-License-Identifier: MIT
+
+This software is distributed under the MIT license,
+the text of which is available at https://opensource.org/license/MIT/
+or see the "LICENSE" file for more details.
+
+Authors: See CONTRIBUTORS.txt
+Software description: A SwiftUI components library with code examples for Orange Design System
+```
+
+And in the Ruby script the following rule for Ruby programming language:
+```ruby
+check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".rb",  "#", "# ", "#")
+```
+
+The Ruby template checked at the beginning of files is:
+
+```text
+#
+# Software Name: Orange Design System
+# SPDX-FileCopyrightText: Copyright (c) Orange SA
+# SPDX-License-Identifier: MIT
+#
+# This software is distributed under the MIT license,
+# the text of which is available at https://opensource.org/license/MIT/
+# or see the "LICENSE" file for more details.
+#
+# Authors: See CONTRIBUTORS.txt
+# Software description: A SwiftUI components library with code examples for Orange Design System
+#
+```
+
+But with the following rule without special symbols to open and close the header, the tempalte will be a bit different:
+
+```ruby
+check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclude], conform_files, not_conform_files, ".rb",  "", "# ", "")
+```
+
+```text
+# Software Name: Orange Design System
+# SPDX-FileCopyrightText: Copyright (c) Orange SA
+# SPDX-License-Identifier: MIT
+# 
+# This software is distributed under the MIT license,
+# the text of which is available at https://opensource.org/license/MIT/
+# or see the "LICENSE" file for more details.
+# 
+# Authors: See CONTRIBUTORS.txt
+# Software description: A SwiftUI components library with code examples for Orange Design System
+```
+
+This case is more interesting if you use the same symbol for first, last and intermediate lines (or if you use only monoline comment symbol).
+
+### Generate a CONTRIBUTORS file
+
+We may want to have a CONTRIBUTORS.txt or AUTHORS.txt files containing all the people names who worked or still work on the project.
+To do so, we can use the VCS history as a source of truh ; e.g. Git as SCM.
+The *generate-contributors-file.py* Python script will use Git commands to get logs, and build a CONTRIBUTORS file in the project with some notice
+and the list of all entities (first name, uppercased lastname, email).
+However, the user will have to deal namesakes and only might want to remove some bots accounts.
+
+To run it:
+
+```shell
+python3.8 generate-contributors-file.py --target /path/to/myt/git/based/project
+```
+
+For example it will output a file with such content:
+
+```text
+# This is the official list of people have contributed code to 
+# this repository.
+#
+# Names should be added to this file like so:
+#     Individual's name <submission email address>
+#     Individual's name <submission email address> <email2> <emailN>
+#
+# An entry with multiple email addresses specifies that the
+# first address should be used in the submit logs and
+# that the other addresses should be recognized as the
+# same person.
+
+# Please keep the list sorted.
+
+renovate[bot] <29139666+renovate[bot]@users.noreply.github.com> 
+BarryAllen <barry.allen@star.labs> 
+Lex LUTHOR <100863844+lluthor@users.noreply.github.com>
+Bruce WAYNE <batman@gmail.com>
+Bruce WAYNE <bruce.waybe@wayneenterprise.com>
+```
+
+In the example above, we can see that the Renovate bot commit has been processed (maybe a line to remove), *BarryAllen* failed to configure his Git environment (because he types to fast on his keyboard we can suppose), the commit from GitHub Web UI of *Lex Luthor* has been picked and *Bruce WAYNE* used two addresses.
+
+Maybe a better file after fixes could be (after manual cleaning):
+
+```text
+# This is the official list of people have contributed code to 
+# this repository.
+#
+# Names should be added to this file like so:
+#     Individual's name <submission email address>
+#     Individual's name <submission email address> <email2> <emailN>
+#
+# An entry with multiple email addresses specifies that the
+# first address should be used in the submit logs and
+# that the other addresses should be recognized as the
+# same person.
+
+# Please keep the list sorted.
+Barry ALLEN <barry.allen@star.labs> 
+Lex LUTHOR <lex.luthor@lex.corp>
+Bruce WAYNE <bruce.wayne@wayneenterprise.com> <batman@gmail.com>
 ```

@@ -73,3 +73,14 @@ Copyright (c) 2012 Martin Blech and individual contributors.
 
 *xmltodict* is distributed under the terms and conditions of the [MIT License](https://opensource.org/license/MIT).
 You may download the source code on the [following website](https://github.com/martinblech/xmltodict).
+
+## For "reuse" bucket
+
+### reuse-tool
+
+Version 3.0.1
+
+Copyright (c) Free Software Foundation Europe
+
+*reuse-tool* is distributed under the terms and conditions of the [GNU General Public License version 3 or later](https://opensource.org/license/gpl-3-0).
+You may download the source code on the [following website](https://github.com/fsfe/reuse-tool).

@@ -10,8 +10,8 @@
 # Authors: See CONTRIBUTORS.txt
 # Software description: A toolbox of scripts to help work of forges admins and open source referents
 
-# Since...............: 12/03/2024
-# Description.........: Make a dry-run of the utils features to check if everything is ready to use
+# Since...............: 03/04/2024
+# Description.........: Make a dry-run of the reuse features to check if everything is ready to use
 # Version.............: 1.0.0
 
 set -eu
@@ -65,10 +65,9 @@ echo "---------------------------------"
 echo -e "\nCheck files..."
 
 CheckIfFileExists "./README.md"
+CheckIfFileExists "./update-sources-header.py"
+CheckIfFileExists "./requirements.txt"
 CheckIfFileExists "../_/licenses.py"
-CheckIfFileExists "./configuration.py"
-CheckIfFileExists "./third-party-prompt.py"
-CheckIfFileExists "./third-party-generator.py"
 
 # Runtimes and tools
 # ------------------
@@ -79,6 +78,9 @@ echo "-----------------------"
 
 echo -e "\nCheck for Python3..."
 CheckIfRuntimeExists "Python3" "python3 --version" "3.8.5"
+
+echo -e "\nCheck for reuse-tool..."
+CheckIfRuntimeExists "reuse-tool" "reuse --version" "3.0.1"
 
 # Conclusion
 # ----------
