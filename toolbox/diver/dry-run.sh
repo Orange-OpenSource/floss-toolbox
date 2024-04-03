@@ -12,7 +12,7 @@
 
 # Since...............: 10/03/2023
 # Description.........: Make a dry-run of the diver module to check if everything is ready to use
-# Version.............: 1.2.0
+# Version.............: 1.3.0
 
 set -eu
 
@@ -116,6 +116,7 @@ CheckIfFileExists "./find-credits-in-files.sh"
 CheckIfFileExists "./find-missing-developers-in-git-commits.sh"
 CheckIfFileExists "./list-contributors-in-history.sh"
 CheckIfFileExists "./lines-count.sh"
+CheckIfFileExists "./generate-contributors-file.py"
 
 echo -e "\nCheck utilitary scripts..."
 CheckIfFileExists "./utils/extract-contributors-lists.rb"
@@ -147,6 +148,9 @@ CheckIfRuntimeExists "git" "git --version" "2.32.0"
 
 echo -e "\nCheck for cloc..."
 CheckIfRuntimeExists "cloc" "cloc --version" "1.88"
+
+echo -e "\nCheck for Python3..."
+CheckIfRuntimeExists "Python3" "python3 --version" "3.8.5"
 
 # Conclusion
 # ----------
