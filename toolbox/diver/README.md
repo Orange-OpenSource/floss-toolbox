@@ -345,7 +345,7 @@ Bruce WAYNE <bruce.waybe@wayneenterprise.com>
 
 In the example above, we can see that the Renovate bot commit has been processed (maybe a line to remove), *BarryAllen* failed to configure his Git environment (because he types to fast on his keyboard we can suppose), the commit from GitHub Web UI of *Lex Luthor* has been picked and *Bruce WAYNE* used two addresses.
 
-Maybe a better file after fixes could be:
+Maybe a better file after fixes could be (after manual cleaning):
 
 ```text
 # This is the official list of people have contributed code to 
@@ -363,5 +363,5 @@ Maybe a better file after fixes could be:
 # Please keep the list sorted.
 Barry ALLEN <barry.allen@star.labs> 
 Lex LUTHOR <lex.luthor@lex.corp>
-Bruce WAYNE <bruce.waybe@wayneenterprise.com> <batman@gmail.com>
+Bruce WAYNE <bruce.wayne@wayneenterprise.com> <batman@gmail.com>
 ```

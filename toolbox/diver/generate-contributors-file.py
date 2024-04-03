@@ -27,7 +27,6 @@ import time
 NORMAL_EXIT_CODE = 0
 BAD_ARGUMENTS_EXIT_CODE = 1
 BAD_PRECONDITION_EXIT_CODE = 2
-UNEXPECTED_RESULT_EXIT_CODE=  3
 
 # Check arguments
 # ---------------
