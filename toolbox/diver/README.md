@@ -304,3 +304,64 @@ check_for_sources($arguments[:folder], $arguments[:template], $arguments[:exclud
 ```
 
 This case is more interesting if you use the same symbol for first, last and intermediate lines (or if you use only monoline comment symbol).
+
+### Generate a CONTRIBUTORS file
+
+We may want to have a CONTRIBUTORS.txt or AUTHORS.txt files containing all the people names who worked or still work on the project.
+To do so, we can use the VCS history as a source of truh ; e.g. Git as SCM.
+The *generate-contributors-file.py* Python script will use Git commands to get logs, and build a CONTRIBUTORS file in the project with some notice
+and the list of all entities (first name, uppercased lastname, email).
+However, the user will have to deal namesakes and only might want to remove some bots accounts.
+
+To run it:
+
+```shell
+python3.8 generate-contributors-file.py --target /path/to/myt/git/based/project
+```
+
+For example it will output a file with such content:
+
+```text
+# This is the official list of people have contributed code to 
+# this repository.
+#
+# Names should be added to this file like so:
+#     Individual's name <submission email address>
+#     Individual's name <submission email address> <email2> <emailN>
+#
+# An entry with multiple email addresses specifies that the
+# first address should be used in the submit logs and
+# that the other addresses should be recognized as the
+# same person.
+
+# Please keep the list sorted.
+
+renovate[bot] <29139666+renovate[bot]@users.noreply.github.com> 
+BarryAllen <barry.allen@star.labs> 
+Lex LUTHOR <100863844+lluthor@users.noreply.github.com>
+Bruce WAYNE <batman@gmail.com>
+Bruce WAYNE <bruce.waybe@wayneenterprise.com>
+```
+
+In the example above, we can see that the Renovate bot commit has been processed (maybe a line to remove), *BarryAllen* failed to configure his Git environment (because he types to fast on his keyboard we can suppose), the commit from GitHub Web UI of *Lex Luthor* has been picked and *Bruce WAYNE* used two addresses.
+
+Maybe a better file after fixes could be (after manual cleaning):
+
+```text
+# This is the official list of people have contributed code to 
+# this repository.
+#
+# Names should be added to this file like so:
+#     Individual's name <submission email address>
+#     Individual's name <submission email address> <email2> <emailN>
+#
+# An entry with multiple email addresses specifies that the
+# first address should be used in the submit logs and
+# that the other addresses should be recognized as the
+# same person.
+
+# Please keep the list sorted.
+Barry ALLEN <barry.allen@star.labs> 
+Lex LUTHOR <lex.luthor@lex.corp>
+Bruce WAYNE <bruce.wayne@wayneenterprise.com> <batman@gmail.com>
+```

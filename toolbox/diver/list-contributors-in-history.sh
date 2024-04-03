@@ -247,4 +247,5 @@ echo "Reports available in $REPORT_METRIC_FILE:"
 cat $REPORT_METRIC_FILE
 
 echo -e "\nEnd of $SCRIPT_NAME\n"
+echo "NOTE: Maybe the script called generate-contributors-file.py is more interesting for you"
 NormalExit

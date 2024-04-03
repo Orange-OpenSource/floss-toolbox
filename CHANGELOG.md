@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- [Diver] Generate CONTRIBUTORS file using Git history ([#148](https://github.com/Orange-OpenSource/floss-toolbox/issues/148))
 - [Utils] Apply SPDX headers to sources with REUSE tool ([#146](https://github.com/Orange-OpenSource/floss-toolbox/issues/146))
 - [Diver] Check headers of sources files ([#101](https://github.com/Orange-OpenSource/floss-toolbox/issues/101))
 
