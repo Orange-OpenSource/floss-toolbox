@@ -17,6 +17,7 @@
 import argparse
 import os
 import shutil
+import subprocess
 import sys
 import time
 
@@ -57,7 +58,8 @@ print(f"✏️  Creating folder '{TEMP_FOLDER}' with internal stuff in target")
 os.makedirs(TEMP_FOLDER_FULL_PATH, exist_ok=True)
 
 # Check if Git repository is empty (check if there are at least 1 commit in the logs)
-command_result = os.system("git log --oneline -1 > /dev/null 2>&1 | wc -l")
+command_result_output = subprocess.check_output("git log --oneline -1 > /dev/null 2>&1 | wc -l", shell=True)
+command_result = int(command_result_output.decode().strip())
 if command_result == "0":
     printf("💥 Error: Target is a git repository without any commit, that's weird")
     sys.exit(BAD_PRECONDITION_EXIT_CODE)
@@ -73,6 +75,10 @@ git_log_command = """
 touch {log_file} && cd {target} && git log --all --format="%aN <%aE>" | sort | uniq | awk '{{if ($2 !~ /@/) {{print $1, toupper($2), $3}} else {{print $1, $2, $3}}}}' | sort -k2 > {log_file}
 """.format(target=target, log_file=GIT_LOG_TEMP_FILE_PATH)
 os.system(git_log_command)
+
+contributors_count_output = subprocess.check_output("cat {log_file} | wc -l".format(log_file=GIT_LOG_TEMP_FILE_PATH), shell=True)
+contributors_count = int(contributors_count_output.decode().strip())
+print(f"👉 Found maybe {contributors_count} contributors")
 
 # Add notice in file
 final_file_name = "CONTRIBUTORS.new.txt"
