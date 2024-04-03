@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- [Utils] Apply SPDX headers to sources with REUSE tool ([#146](https://github.com/Orange-OpenSource/floss-toolbox/issues/146))
 - [Diver] Check headers of sources files ([#101](https://github.com/Orange-OpenSource/floss-toolbox/issues/101))
 
 ## [2.18.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.18.0..2.17.0) - 2024-03-25

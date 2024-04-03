@@ -40,6 +40,7 @@ LICENSES = {
 
     "GPL-2.0": ["GNU General Public License version 2", "https://opensource.org/license/gpl-2-0"],
     "GPL-3.0-only": ["GNU General Public License version 3", "https://opensource.org/license/gpl-3-0"],
+    "GPL-3.0-or-later": ["GNU General Public License version 3 or later", "https://opensource.org/license/gpl-3-0"],
     "AGPL-3.0-only": ["GNU Affero General Public License version 3", "https://opensource.org/license/agpl-v3"],
     
     "SSPL-1.0": ["Server Side Public License v1", "https://spdx.org/licenses/SSPL-1.0.html"],

@@ -97,7 +97,6 @@ echo -e "\n---------------------------------"
 echo "Assertions for the Utils features"
 echo "---------------------------------"
 
-CheckIfFileExists "_shared/licenses.py"
 RunDryRunInFolder "utils/text-generator"
 RunDryRunInFolder "utils/third-party-generator"
 RunDryRunInFolder "utils/reuse"

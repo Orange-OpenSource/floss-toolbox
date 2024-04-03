@@ -134,6 +134,8 @@ os.system(reuse_tool_scan_command)
 # No use of --year for our own needs
 
 print(f'🆗 Formatting task is completed!')
+print(f'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 print(f'✋ But BEWARE, you MUST check your sources diff and ensure you modified ONLY the files you ARE ALLOWED TO modify and keep external copyrights')
+print(f'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 
 sys.exit(EXIT_OK)

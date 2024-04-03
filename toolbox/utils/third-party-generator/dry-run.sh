@@ -65,7 +65,8 @@ echo "---------------------------------"
 echo -e "\nCheck files..."
 
 CheckIfFileExists "./README.md"
-CheckIfFileExists "./licenses.py"
+CheckIfFileExists "./_/licenses.py"
+CheckIfFileExists "./configuration.py"
 CheckIfFileExists "./third-party-prompt.py"
 CheckIfFileExists "./third-party-generator.py"
 
