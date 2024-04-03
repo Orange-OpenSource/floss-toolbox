@@ -127,7 +127,7 @@ template_file.close()
 # Run the tool
 print("✏️  Running REUSE tool command")
 reuse_tool_scan_command="""
-cd {target} && reuse annotate --template="{template}" --skip-unrecognised --copyright="{copyrightOwner}" --copyright-style="spdx" --exclude-year --license="{licenseName}" --recursive ./
+cd {target} && reuse annotate --template="{template}" --merge-copyrights --skip-unrecognised --copyright="{copyrightOwner}" --copyright-style="spdx" --exclude-year --license="{licenseName}" --recursive ./
 """.format(target=target, template=TEMPLATE_NAME, copyrightOwner=company, licenseName=license_identifier)
 os.system(reuse_tool_scan_command)
 # No use of "contributors" REUSE parameter because already listed in CONTRIBUTORS.txt file (supposed to be for our own case, change it if needed with '--contributor')

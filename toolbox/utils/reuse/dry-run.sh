@@ -67,7 +67,7 @@ echo -e "\nCheck files..."
 CheckIfFileExists "./README.md"
 CheckIfFileExists "./update-sources-header.py"
 CheckIfFileExists "./requirements.txt"
-CheckIfFileExists "./_/licenses.py"
+CheckIfFileExists "../_/licenses.py"
 
 # Runtimes and tools
 # ------------------
