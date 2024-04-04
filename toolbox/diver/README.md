@@ -365,3 +365,13 @@ Barry ALLEN <barry.allen@star.labs>
 Lex LUTHOR <lex.luthor@lex.corp>
 Bruce WAYNE <bruce.wayne@wayneenterprise.com> <batman@gmail.com>
 ```
+
+### List contributions by contributors
+
+Sometimes we have to check contributions and contributors so as to list who did what, e.g. if subcontractors or interns made commits on some repository.
+The *list-contributions-by-contributors.sh* script will extract all authors of commits, and then create file with all contributions for each author.
+Thus it will make easier to see who did what.
+
+```shell
+bash list-contributions-by-contributors.sh --project /path/to/git/repository
+```

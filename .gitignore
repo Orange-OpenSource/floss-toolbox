@@ -1,5 +1,6 @@
 toolbox/github/data
 toolbox/diver/data
+toolbox/diver/.floss-toolbox/data
 toolbox/gitlab/data
 toolbox/utils/text-generator/_templates/new-GitHub-repository-contributors.fr.template.txt.result
 toolbox/utils/third-party-generator/components.csv.result
