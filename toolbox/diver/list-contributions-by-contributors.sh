@@ -20,7 +20,6 @@
 #       0 - normal exit
 #       1 - problem with given parameters
 #       2 - problem with preconditions (e.g. files to use by the script)
-#       3 - problem with a command
 #
 
 #set -euxo pipefail
