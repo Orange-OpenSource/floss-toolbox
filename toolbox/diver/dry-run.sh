@@ -117,6 +117,7 @@ CheckIfFileExists "./find-missing-developers-in-git-commits.sh"
 CheckIfFileExists "./list-contributors-in-history.sh"
 CheckIfFileExists "./lines-count.sh"
 CheckIfFileExists "./generate-contributors-file.py"
+CheckIfFileExists "./list-contributions-by-contributors.sh"
 
 echo -e "\nCheck utilitary scripts..."
 CheckIfFileExists "./utils/extract-contributors-lists.rb"

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.19.0..dev)
 
+### Added
+
+- [Diver] List all contributions by contributors ([#153](https://github.com/Orange-OpenSource/floss-toolbox/issues/153))
+
 ### Fixed
 
 - [Utils] Fix missing import in configuration.py
