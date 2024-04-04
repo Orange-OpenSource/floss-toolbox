@@ -5,7 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.19.0..dev)
+## [Unreleased](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.20.0..dev)
+
+## [2.20.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.20.0..2.19.0) - 2024-04-04
+
+### Added
+
+- [Diver] List all contributions by contributors ([#153](https://github.com/Orange-OpenSource/floss-toolbox/issues/153))
+
+### Fixed
+
+- [Utils] Fix missing import in configuration.py
 
 ## [2.19.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.19.0..2.18.0) - 2024-04-03
 

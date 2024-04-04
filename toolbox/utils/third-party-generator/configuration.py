@@ -10,10 +10,11 @@
 # Authors: See CONTRIBUTORS.txt
 # Software description: A toolbox of scripts to help work of forges admins and open source referents
 
-# Version.............: 3.0.0
+# Version.............: 3.0.1
 # Since...............: 12/03/2024
 # Description.........: Just to list managed licenses and share values between scripts
 
+import sys
 sys.path.append('../_')
 from licenses import *
 
