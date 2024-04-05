@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.20.0..dev)
 
+### Added
+
+- Bug and feature request templates, and other files for the hygiene of the project
+
 ## [2.20.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.20.0..2.19.0) - 2024-04-04
 
 ### Added
