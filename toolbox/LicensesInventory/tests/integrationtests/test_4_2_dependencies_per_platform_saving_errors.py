@@ -25,6 +25,9 @@ class TestDependencies(unittest.TestCase):
 
     """
     Tests with real data
+    Before to test the saving of the dependencies on error, in integrationtests, delete the files in:
+     licenses_with_errors
+     licenses_with_retry_after
     """
 
     @classmethod
@@ -53,7 +56,6 @@ class TestDependencies(unittest.TestCase):
             return
         self.assertEqual(7, len(the_dependencies_by_platform))
 
-        number = 2
         number = 2
         the_d = the_dependencies_by_platform[CName().cocoapods]
         self.assertEqual(number, len(the_d))

@@ -25,6 +25,9 @@ class TestDependencies(unittest.TestCase):
 
     """
     Tests with real data
+    Before to test the saving of the dependencies on error, in integrationtests, delete the files in:
+     licenses_with_errors
+     licenses_with_retry_after
     """
 
     @classmethod
@@ -52,6 +55,7 @@ class TestDependencies(unittest.TestCase):
         the_dependencies_by_platform = ins_dependencies.get_the_dependencies(ins_filter)
         if the_dependencies_by_platform == None:
             return
+            
         # requests
         import requests
         response = requests.models.Response
