@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- English template for email text generation about GitHub newcomers
 - Bug and feature request templates, and other files for the hygiene of the project
 
 ### Changed
