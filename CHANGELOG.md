@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- [Diver] Missing execution permission for extract-emails-from-history.sh ([#171](https://github.com/Orange-OpenSource/floss-toolbox/issues/171))
 - [Diver] Failed to process repositories at path with whitespaces ([#172](https://github.com/Orange-OpenSource/floss-toolbox/issues/172))
 
 ## [2.20.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.20.0..2.19.0) - 2024-04-04
