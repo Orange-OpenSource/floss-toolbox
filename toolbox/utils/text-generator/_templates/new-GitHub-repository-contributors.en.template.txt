@@ -1,0 +1,67 @@
+Hi!
+
+The GitHub users below will be added with permissions "%FORGE_ADDED_USERS_PERMISSION%" to the GitHub repository "%FORGE_REPO_NAME%" [1]:
+%FORGE_ADDED_HANDLES_LIST%.
+Normally these rights will be sufficient but we invite you to contact us if this is not the case, providing the appropriate arguments.
+
+The users have been added to a GitHub team ("%FORGE_REPO_TEAM_NAME%"), but this is for our internal needs on the administrators side.
+This team, for the same reasons, was added with "%FORGE_REPO_TEAM_PERMISSION%" rights to the repository, you will have to leave things as they are.
+The users have been added to our mailing list of public software forge users (low frequency of emails sent) (%RESSOURCE_MAILING_LIST_FORGE_USERS%).
+
+Users should soon receive email invitations for several topics:
+- Join the Group's GitHub organization (%FORGE_ORG_NAME%);
+- Join the repository (%FORGE_REPO_NAME%).
+
+GitHub accounts must follow the rules below, this only takes a few minutes and it is essential to do so.
+The administrators of the organization do not have control over the accounts, their owners must take charge of them, a mandatory condition for using the repositories.
+1. Have your first and last name clearly displayed;
+2. Display your company in the “company” field (e.g. “Orange”);
+3. Display your membership in the GitHub organization (see this documentation [2]);
+4. Add your professional email address among the email addresses in your GitHub account ; please note, your account is personal, do not put your professional email address as the "primary" address.
+
+Please note that only internal people (permanent contracts, apprentices, doctoral students) are affected by the above-mentioned criteria, and not subcontractors and interns who cannot join the organization (but can be added to the repositories).
+
+Concerning your future contributions, we will ask you to be vigilant in your Git configuration (first and last name correctly entered in the "user.name", professional email address correctly entered in the "user.email").
+We will also ask you to apply the DCO (signed-off option from your Git client).
+For external users, if you have an Orange email address, you must use it. Otherwise it will be your employer email address.
+
+Obviously, you should take the greatest care with your commits, and be vigilant about fixing vulnerabilities and secrets leaks.
+
+By default people will have "%FORGE_ADDED_USERS_PERMISSION%" rights, we only authorize the "admin" right on a case-by-case basis taking into account the possibilities of this permission.
+We reserve the right to withdraw these rights at any time without notice if individuals do not follow the rules.
+
+As a reminder, the GitHub ToS [3] do not allow having multiple free GitHub accounts, and Orange does not provide any GitHub account to its employees, so you will need to use your personal GitHub account to contribute if you have one.
+For more information, we invite you to consult this document [4] which covers the points to be addressed concerning your GitHub accounts.
+
+Also don't forget to sign your commits with signoff [5] (cryptographic signatures via GPG are not required but nothing prevents you from doing so).
+It will also be necessary to be vigilant regarding Dependabot alerts [6] and leaks of secrets detectable via gitleaks [7].
+
+Also remember to have the source file headers up to date [8] and to maintain the file listing third-party dependencies if necessary [9].
+Adding third-party apps or GitHub Actions to repositories is subject to validation by the organization's administrators, let us know when you make such requests as we only have fragmentary information.
+For this topic or any questions, you can contact us via %RESSOURCE_MAILING_LIST_ADMINS%.
+
+To go further, we have:
+- a %TOOL_CHAT_NAME% space for chatting [10];
+- a %TOOL_DOCS_NAME% space dedicated to open source [11];
+- a %TOOL_DOCS_NAME% space dedicated to intellectual property [12];
+- an internal website [11];
+- an external website [12];
+- a showcase site for GitHub [13].
+
+Remaining available,
+
+[1] %FORGE_REPO_URL%
+[2] https://docs.github.com/fr/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-your-membership-in-organizations/publicizing-or-hiding-organization-membership
+[3] https://docs.github.com/en/site-policy/github-terms/github-terms-of-service#3-account-requirements
+[4] %RESSOURCE_DOC_GITHUB-ACCOUNT-SETTINGS%
+[5] %RESSOURCE_DOC_COMMITS-SIGNING%
+[6] %RESSOURCE_DOC_DEPENDABOT%
+[7] %RESSOURCE_DOC_GITLEAKS%
+[8] %RESSOURCE_DOC_ABOUT_HEADERS%
+[9] %RESSOURCE_DOC_ABOUT_THIRD-PARTY%
+[10] %TOOL_CHAT_LINK%
+[11] %TOOL_DOCS_OPENSOURCE_LINK%
+[12] %TOOL_DOCS_IPJD_LINK%
+[11] %RESSOURCES_WEB_INTERNAL-SITE%
+[12] %RESSOURCES_WEB_PUBLIC-SITE%
+[13] %RESSOURCES_WEB_GITHUB-SITE%

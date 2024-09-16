@@ -6,13 +6,14 @@
 AUTHORS.txt @pylapp
 CHANGELOG.md @pylapp
 CITATION.cff @pylapp
-CODE_OF_CONDUCT.md @pylapp
-CODE_OF_CONFLICT.md @pylapp
-CONTRIBUTORS.txt @pylapp
+DCO.txt @pylapp
+gitleaks.toml @pylapp
 LICENSE.txt @pylapp
 README.md @pylapp
-DCO.txt @pylapp
-SECURITY.md @pylapp
+renovate.json @pylapp
+THIRD-PARTY.md @pylapp
+
+.github/ @pylapp
 
 # Toolbox
 

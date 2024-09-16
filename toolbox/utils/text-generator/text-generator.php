@@ -13,14 +13,14 @@
 
 # Since...............: 29/02/2024
 # Description.........: Generates a text based on a template and a list of variables to replace
-# Version.............: 1.0.0
+# Version.............: 1.0.1
 
 // -------------
 // Configuration
 // -------------
 
 // Script version
-$VERSION = "1.0.0";
+$VERSION = "1.0.1";
 
 // Error codes
 $EXIT_OK = 0;
@@ -92,7 +92,7 @@ if (!$writeResult) {
     echo "Error: Something wrong occured during writing process".PHP_EOL;
     exit($ERROR_DURING_OUTPUT);
 } else {
-    echo "The final file has been created / update at '$destinationName'".PHP_EOL;
+    echo "The final file has been created or updated at '$destinationName'".PHP_EOL;
     exit($EXIT_OK);
 }
 ?>

@@ -40,7 +40,6 @@ class TestDependencies(unittest.TestCase):
 
         ins_config = CConfig()
         ins_config.path = self.path_data
-        ins_config.filename = "config.ini"
         ins_config.get_the_config()
 
         ins_filter = CFilter()

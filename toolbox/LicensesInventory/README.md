@@ -4,6 +4,7 @@ Table of Contents
 =================		
    * [Licenses inventory](#licenses-inventory)
       * [Disclaimer](#disclaimer)
+      * [Developer notice](#developer-notice)
       * [What the tool does](#what-the-tool-does)
       * [Prerequisites](#prerequisites)
       * [Fill the configuration file](#fill-the-configuration-file)
@@ -38,6 +39,31 @@ The tool searches a license for each dependency found in the files to treat.
 
 **This is an experimental feature designed and implemented by a blind colleague, you must always keep in mind our [Code of Conduct](https://github.com/Orange-OpenSource/floss-toolbox/blob/dev/CODE_OF_CONDUCT.md) for any issues nor comments, and be benevolent and kind.
 This is mandatory.**
+
+## Developer notice
+
+- Unit tests: in *tests/unittests*
+- Integration tests: in *tests/integrationtests*
+- To test the main: in *sources/test_main.py*
+    with the data in *sources/data_to_test_main*
+
+Do not delete the file 'to_add_this_folder_to_git.tmp' in:
+    real_data/licenses*
+    real_data/no_file
+
+For integrationtest/test_3_print:
+- you have to uncomment the first line in the test method to see the displays
+- the test does not pass: it is normal, it tests the displaying after testing, you have to comment this line: the test will pass
+
+After executing of the integration tests:
+- delete the directories 'real_data/licenses*'
+- execute the following commands:
+
+```shell
+    git checkout tests\integrationtests\real_data\licenses
+    git checkout tests\integrationtests\real_data\licenses_with_errors
+    git checkout tests\integrationtests\real_data\licenses_with_retry_after
+```
 
 ## What the tool does
 
@@ -79,11 +105,11 @@ For example:
 # Where to find the package manager files above, must be defined, target must exist
 path to parse = /absolute/path/to/project_to_test
 # The name of the package manager file to process stored above, must be defined
-the filenames = go.mod
+the filenames = go.mod, build.gradle, build.gradle.kts, package.json
 # For outputs, must be defined, target must exists
 path to store the licenses = /absolute/path/to/project_to_test-licences
 # Erros maangement if requests failed
-number of authorized successive errors = 1
+number of authorized successive errors = 2
 ```
 
 where:
@@ -112,7 +138,7 @@ python3 -m pytest -s tests/integrationtests/*.py
 python3 -m pytest tests/unittests/*.py
 ```
 
-To run the unit tests, you must get the assets attached as artificats to [the release you got](https://github.com/Orange-OpenSource/floss-toolbox/releases).
+To run the unit tests, you must get the assets attached as artifacts to [the release you got](https://github.com/Orange-OpenSource/floss-toolbox/releases).
 For integration tests, get the *real_data* folder in the *integrationtests* folder and move it to the same folder in your project.
 For unit tests, get the *data* folder in the *unittests* folder and move it to the same folder in your project.
 
