@@ -10,7 +10,7 @@
 # Authors: See CONTRIBUTORS.txt
 # Software description: A toolbox of scripts to help work of forges admins and open source referents
 
-# Version.............: 1.0.0
+# Version.............: 1.0.1
 # Since...............: 03/04/2023
 # Description.........: Using the Git history, generates a CONTRIBUTORS.md file
 
@@ -56,7 +56,7 @@ GIT_LOG_TEMP_FILE_PATH = TEMP_FOLDER_FULL_PATH + "/" + GIT_LOG_TEMP_FILE
 print(f"✏️  Creating folder '{TEMP_FOLDER}' with internal stuff in target")
 os.makedirs(TEMP_FOLDER_FULL_PATH, exist_ok=True)
 
-# Check if Git repository is empty (check if there are at least 1 commit in the logs)
+# Check if Git repository is empty (check if there is at least 1 commit in the logs)
 command_result_output = subprocess.check_output("git log --oneline -1 > /dev/null 2>&1 | wc -l", shell=True)
 command_result = int(command_result_output.decode().strip())
 if command_result == "0":
@@ -67,15 +67,15 @@ else:
 
 # Dump Git logs
 print("✏️  Dumping Git logs")
-# Create the log file, go to targetn and run the git command
-# Format the output to have first name, last name (upercased) and email, sorted alphabetically ascending
-# Deal also the case where we only have one value between first and last name
+# Create the log file, go to target, and run the git command.
+# Format the output to have first name, last name (upercased) and email, sorted ascending alphabetically.
+# Deal also the case where we only have one value between first and last name.
 git_log_command = """
-touch {log_file} && cd {target} && git log --all --format="%aN <%aE>" | sort | uniq | awk '{{if ($2 !~ /@/) {{print $1, toupper($2), $3}} else {{print $1, $2, $3}}}}' | sort -k2 > {log_file}
+touch "{log_file}" && cd "{target}" && git log --all --format="%aN <%aE>" | sort | uniq | awk '{{if ($2 !~ /@/) {{print $1, toupper($2), $3}} else {{print $1, $2, $3}}}}' | sort -k2 > "{log_file}"
 """.format(target=target, log_file=GIT_LOG_TEMP_FILE_PATH)
 os.system(git_log_command)
 
-contributors_count_output = subprocess.check_output("cat {log_file} | wc -l".format(log_file=GIT_LOG_TEMP_FILE_PATH), shell=True)
+contributors_count_output = subprocess.check_output("cat '{log_file}' | wc -l".format(log_file=GIT_LOG_TEMP_FILE_PATH), shell=True)
 contributors_count = int(contributors_count_output.decode().strip())
 print(f"👉 Found maybe {contributors_count} contributors")
 
