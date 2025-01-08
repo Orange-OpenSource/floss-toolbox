@@ -11,6 +11,7 @@ This directory contains several files samples you can use or pick and update for
 7. **bug_report.yml**: GitHub issue template for bug report, here focused on mobile apps, to place in .github folder
 8. **feature_request.yml**: GitHub issue template for feature request, to place in .github folder
 9. **THIRD_PARTY.md**: File listing third-party elements
+10. **NOTICE.txt**: If some files are for example proprietary but are still versionned and accessible (inspired by [OUDS iOS file](https://github.com/Orange-OpenSource/ouds-ios/blob/develop/NOTICE.txt))
 
 Some templates are missing because very dependant to the project, but here are some resources:
 
