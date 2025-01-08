@@ -12,7 +12,7 @@ body:
       label: Prerequisites
       description: Take a couple minutes to help our maintainers work faster.
       options:
-        - label: I have [searched the backlog]({project-issues-url}) for duplicate or closed feature requests # TODO: Update issues URL
+        - label: I have [searched the backlog]({project-issues-url}) for duplicate or closed issues # TODO: Update issues URL
           required: true
   - type: input
     id: device
