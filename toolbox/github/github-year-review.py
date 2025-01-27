@@ -11,23 +11,47 @@
 # Authors: See CONTRIBUTORS.txt
 # Software description: A toolbox of scripts to help work of forges admins and open source referents
 
-import requests
+import argparse
 from collections import Counter, defaultdict
 from datetime import datetime
-import time
+import requests
 import sys
-import argparse
+import time
 
 # Configuration - GitHub
 # ----------------------
 
+# To create the GitHub Personal Access Token for the organization: https://github.com/settings/personal-access-tokens
 GITHUB_PAT = "" # TODO: Use .env 
 ORGANIZATION_NAME = "Orange-OpenSource"
+
+# Configuration - Tunning
+# -----------------------
+
+# Number of top programming languages in use to extract
+TOP_N_PROG_LANG = 5
+
+# Number of programming languages the least used to extract
+TOP_N_LEAST_PROG_LANG = 5
+
+# Number of top licenses in use to extract
+TOP_N_LICENSES = 5
+
+# Number of top contributors over all years
+TOP_N_CONTRIBUTORS_OVERALL = 10
+
+# Number of top contributors over the specified year
+TOP_N_CONTRIBUTORS_FOR_YEAR = 10
+
+# Number of top repositories with the highest commits
+TOP_N_REPOS_MOST_COMMITS = 5
 
 # Configuration - Tool
 # --------------------
 
 VERSION = "1.0.0"
+
+ERROR_BAD_PREREQUISITES = 1
 
 # Configuration - Endpoints
 # -------------------------
@@ -50,22 +74,22 @@ def get_repositories():
     Returns:
         list: A list of repository dictionaries.
     """
-    print("Debug: Fetching repositories...")
+    print("🔨 Fetching repositories...")
     repos = []
     page = 1
     while True:
         response = requests.get(f"{GITHUB_API_URL}?page={page}&per_page=100", headers=HEADERS)
         if response.status_code != 200:
-            print("Debug: Failed to fetch repositories, status code:", response.status_code)
+            print("❌ Failed to fetch repositories, status code:", response.status_code)
             break  # Troubles with GitHub API maybe, exit
         data = response.json()
         if not data:
-            print("Debug: No more repositories to fetch.")
+            print("🔨 No more repositories to fetch.")
             break  # No more data, exit.
         repos.extend(data)
-        print(f"Debug: Fetched {len(data)} repositories from page {page}.")
+        print(f"🔨 Fetched {len(data)} repositories from page {page}.")
         page += 1
-    print("Debug: Total repositories fetched:", len(repos))
+    print("🔨 Total repositories fetched:", len(repos))
     return repos
 
 def get_commits_count(repo_full_name, year):
@@ -78,7 +102,7 @@ def get_commits_count(repo_full_name, year):
     Returns:
         int: The number of commits in the specified year.
     """
-    print(f"Debug: Fetching commits for repository: {repo_full_name}...")
+    print(f"🔨 Fetching commits for repository: {repo_full_name}...")
     commits_url = f"https://api.github.com/repos/{repo_full_name}/commits"
     commits_count = 0
     page = 1
@@ -90,18 +114,17 @@ def get_commits_count(repo_full_name, year):
     while True:
         response = requests.get(f"{commits_url}?page={page}&per_page=100&since={since}&until={until}", headers=HEADERS)
         if response.status_code != 200:
-            print("Debug: Failed to fetch commits, status code:", response.status_code)
-            break  # Exit loop if the response is not successful
+            print("❌ Failed to fetch commits, status code:", response.status_code)
+            break  # Troubles with GitHub API maybe, exit
         data = response.json()
         if not data:
-            print("Debug: No more commits to fetch for repository:", repo_full_name)
-            break  # Exit loop if no more data is returned
-        commits_count += len(data)  # Count the number of commits in the current page
-        print(f"Debug: Fetched {len(data)} commits from page {page}.")
-        page += 1  # Move to the next page
-    print(f"Debug: Total commits fetched for repository {repo_full_name}: {commits_count}")
+            print("🔨 No more commits to fetch for repository:", repo_full_name)
+            break  # No more data, exit
+        commits_count += len(data)
+        print(f"🔨 Fetched {len(data)} commits from page {page}.")
+        page += 1
+    print(f"🔨 Total commits fetched for repository {repo_full_name}: {commits_count}")
     return commits_count
-
 
 def get_members():
     """Fetch all members of the organization.
@@ -109,22 +132,22 @@ def get_members():
     Returns:
         list: A list of member dictionaries.
     """
-    print("Debug: Fetching organization members...")
+    print("🔨 Fetching organization members...")
     members = []
     page = 1
     while True:
         response = requests.get(f"{ORG_MEMBERS_URL}?page={page}&per_page=100", headers=HEADERS)
         if response.status_code != 200:
-            print("Debug: Failed to fetch members, status code:", response.status_code)
-            break  # Exit loop if the response is not successful
+            print("❌ Failed to fetch members, status code:", response.status_code)
+            break  # Troubles with GitHub API maybe, exit
         data = response.json()
         if not data:
-            print("Debug: No more members to fetch.")
-            break  # Exit loop if no more data is returned
+            print("🔨 No more members to fetch.")
+            break  # No more data, exit
         members.extend(data)  # Add the fetched members to the list
-        print(f"Debug: Fetched {len(data)} members from page {page}.")
+        print(f"🔨 Fetched {len(data)} members from page {page}.")
         page += 1  # Move to the next page
-    print("Debug: Total members fetched:", len(members))
+    print("🔨 Total members fetched:", len(members))
     return members
 
 def get_outside_collaborators():
@@ -133,22 +156,22 @@ def get_outside_collaborators():
     Returns:
         list: A list of outside collaborator dictionaries.
     """
-    print("Debug: Fetching outside collaborators...")
+    print("🔨 Fetching outside collaborators...")
     collaborators = []
     page = 1
     while True:
         response = requests.get(f"{OUTSIDE_COLLABORATORS_URL}?page={page}&per_page=100", headers=HEADERS)
         if response.status_code != 200:
-            print("Debug: Failed to fetch outside collaborators, status code:", response.status_code)
+            print("❌ Failed to fetch outside collaborators, status code:", response.status_code)
             break  # Exit loop if the response is not successful
         data = response.json()
         if not data:
-            print("Debug: No more outside collaborators to fetch.")
+            print("🔨 No more outside collaborators to fetch.")
             break  # Exit loop if no more data is returned
-        collaborators.extend(data)  # Add the fetched collaborators to the list
-        print(f"Debug: Fetched {len(data)} outside collaborators from page {page}.")
-        page += 1  # Move to the next page
-    print("Debug: Total outside collaborators fetched:", len(collaborators))
+        collaborators.extend(data)
+        print(f"🔨 Fetched {len(data)} outside collaborators from page {page}.")
+        page += 1
+    print("🔨 Total outside collaborators fetched:", len(collaborators))
     return collaborators
 
 def analyze_repositories(repos, year, count_commits):
@@ -181,7 +204,7 @@ def analyze_repositories(repos, year, count_commits):
         - least_used_languages (list): 3 least used programming languages.
         - largest_projects (dict): Largest project for each programming language.
     """
-    print("Debug: Analyzing repositories...")
+    print("🔨 Analyzing repositories...")
     total_repos = len(repos)  # Total number of repositories
     archived_repos = sum(1 for repo in repos if repo['archived'])  # Count archived repositories
     forked_repos = sum(1 for repo in repos if repo['fork'])  # Count forked repositories
@@ -209,7 +232,7 @@ def analyze_repositories(repos, year, count_commits):
                 largest_projects[repo['language']] = {'name': repo['full_name'], 'size': repo['size']}
 
     # Get the top 5 languages used
-    top_languages = languages.most_common(5)
+    top_languages = languages.most_common(TOP_N_PROG_LANG)
     total_lines = {lang: 0 for lang, _ in top_languages}
     
     # Estimate total lines of code for top languages
@@ -221,11 +244,11 @@ def analyze_repositories(repos, year, count_commits):
     year_repos = sum(1 for repo in repos if datetime.strptime(repo['created_at'], '%Y-%m-%dT%H:%M:%SZ').year == year)
 
     # Count forks created by the organization (i.e., forks of other repositories)
-    organization_forks = sum(1 for repo in repos if repo['fork'] and 'source' in repo and repo['source']['owner']['login'] == ORGANIZATION_NAME)
+    organization_forks = sum(1 for repo in repos if repo['fork'])
 
     # Count licenses used in the repositories
     licenses = Counter(repo['license']['name'] for repo in repos if repo['license'])
-    top_licenses = licenses.most_common(5)
+    top_licenses = licenses.most_common(TOP_N_LICENSES)
 
     # Calculate total commits across all repositories if enabled
     total_commits = 0
@@ -233,7 +256,9 @@ def analyze_repositories(repos, year, count_commits):
 
     if count_commits:
         for index, repo in enumerate(repos, start=1):
-            if not repo['fork'] and not repo['archived']:  # Only count commits for non-forked and non-archived repositories
+            # Only count commits for non-forked and non-archived repositories
+            # Some forks are for exmaple from linux project, to much noise in the data
+            if not repo['fork'] and not repo['archived']: 
                 # Get commits for the specified year
                 commits_count = get_commits_count(repo['full_name'], year)
                 total_commits += commits_count
@@ -257,21 +282,21 @@ def analyze_repositories(repos, year, count_commits):
                         if year == datetime.strptime(commit_date, '%Y-%m-%dT%H:%M:%SZ').year:
                             yearly_contributor_commits[author] += 1  # Contributions for the specified year
                     page += 1
-                print(f"Debug: Analyzing repository {index}/{total_repos}")
+                print(f"🔨 Analyzing repository {index}/{total_repos}")
 
-    # Get the top 5 contributors overall
-    top_contributors_overall = sorted(total_contributor_commits.items(), key=lambda x: x[1], reverse=True)[:5]
+    # Get the top N contributors overall
+    top_contributors_overall = sorted(total_contributor_commits.items(), key=lambda x: x[1], reverse=True)[:TOP_N_CONTRIBUTORS_OVERALL]
 
-    # Get the top 10 contributors for the specified year
-    top_contributors_yearly = sorted(yearly_contributor_commits.items(), key=lambda x: x[1], reverse=True)[:10]
+    # Get the top N contributors for the specified year
+    top_contributors_yearly = sorted(yearly_contributor_commits.items(), key=lambda x: x[1], reverse=True)[:TOP_N_CONTRIBUTORS_FOR_YEAR]
 
-    # Get the top 3 repositories with the most commits
-    top_repos = sorted(commits_per_repo.items(), key=lambda x: x[1], reverse=True)[:3]
+    # Get the top N repositories with the most commits
+    top_repos = sorted(commits_per_repo.items(), key=lambda x: x[1], reverse=True)[:TOP_N_REPOS_MOST_COMMITS]
 
-    # Get the 3 least used programming languages
-    least_used_languages = sorted(languages.items(), key=lambda x: x[1])[:3]
+    # Get the N least used programming languages
+    least_used_languages = sorted(languages.items(), key=lambda x: x[1])[:TOP_N_LEAST_PROG_LANG]
 
-    print("Debug: Analysis complete.")
+    print("🔨 Analysis complete.")
     return {
         "total_repos": total_repos,
         "archived_repos": archived_repos,
@@ -285,15 +310,13 @@ def analyze_repositories(repos, year, count_commits):
         "top_licenses": top_licenses,
         "year_repos": year_repos,
         "organization_forks": organization_forks,
-        "total_commits": total_commits,  # Include total commits in the return
-        "top_repos": top_repos,  # Top 3 repositories by commits
-        "top_contributors_overall": top_contributors_overall,  # Top 5 contributors overall
-        "top_contributors_yearly": top_contributors_yearly,  # Top 10 contributors for the year
-        "least_used_languages": least_used_languages,  # 3 least used programming languages
-        "largest_projects": largest_projects  # Largest project for each language
+        "total_commits": total_commits,
+        "top_repos": top_repos,
+        "top_contributors_overall": top_contributors_overall,
+        "top_contributors_yearly": top_contributors_yearly,
+        "least_used_languages": least_used_languages,
+        "largest_projects": largest_projects
     }
-
-
 
 def get_total_members():
     """Get the total number of members including outside collaborators.
@@ -301,11 +324,11 @@ def get_total_members():
     Returns:
         int: Total number of members in the organization.
     """
-    print("Debug: Fetching total members...")
+    print("🔨 Fetching total members...")
     members = get_members()
     outside_collaborators = get_outside_collaborators()
     total = len(members) + len(outside_collaborators)
-    print("Debug: Total members including outside collaborators:", total)
+    print("🔨 Total members including outside collaborators:", total)
     return total
 
 def estimate_private_members(total_members, visible_members):
@@ -319,7 +342,7 @@ def estimate_private_members(total_members, visible_members):
         int: Estimated number of private members.
     """
     private_members = total_members - visible_members
-    print("Debug: Estimated private members:", private_members)
+    print("🔨 Estimated private members:", private_members)
     return private_members
 
 def main():
@@ -327,12 +350,12 @@ def main():
 
     # Check if the GitHub token and organization name are defined
     if GITHUB_PAT is None:
-        print("Error: GitHub token is not defined. Please set the GITHUB_PAT environment variable.")
-        sys.exit(1)
+        print("❌ Error: GitHub token is not defined. Please set the GITHUB_PAT environment variable.")
+        sys.exit(ERROR_BAD_PREREQUISITES)
 
     if ORGANIZATION_NAME is None or ORGANIZATION_NAME.strip() == "":
-        print("Error: Organization name is not defined. Please set the ORGANIZATION_NAME variable.")
-        sys.exit(1)
+        print("❌ Error: Organization name is not defined. Please set the ORGANIZATION_NAME variable.")
+        sys.exit(ERROR_BAD_PREREQUISITES)
 
     # Parse command-line arguments
     parser = argparse.ArgumentParser(description=f"Analyze GitHub organization repositories (Version: {VERSION}).")
@@ -340,11 +363,11 @@ def main():
     parser.add_argument("--count-commits", action='store_true', help="Enable commit counting in the analysis.")
     args = parser.parse_args()
 
-    start_time = time.time()  # Start timing
+    start_time = time.time()
 
-    repos = get_repositories()  # Fetch all repositories
-    total_members = get_total_members()  # Total members including outside collaborators
-    visible_members = len(get_members())  # Members visible through the API
+    repos = get_repositories()
+    total_members = get_total_members()
+    visible_members = len(get_members())
 
     # Analyze repositories for the specified year
     analysis = analyze_repositories(repos, args.year, args.count_commits)
@@ -356,54 +379,57 @@ def main():
     elapsed_time = time.time() - start_time
 
     # Print the analysis results
-    print("\nAnalysis Results:")
-    print("Total Repositories:", analysis["total_repos"])
-    print("Archived Repositories:", analysis["archived_repos"])
-    print("Forked Repositories:", analysis["forked_repos"])
-    print("Non-Forked Repositories:", analysis["non_forked_repos"])
-    print("Total Forks:", analysis["total_forks"])
-    print("Most Stars Repository:", analysis["most_stars_repo"]["name"] if analysis["most_stars_repo"] else "N/A")
-    print("Most Forks Repository:", analysis["most_forks_repo"]["name"] if analysis["most_forks_repo"] else "N/A")
-    print("Top Languages:", analysis["top_languages"])
-    print("Total Lines of Code for Top Languages:", analysis["total_lines"])
-    print("Top Licenses:", analysis["top_licenses"])
-    print("Total Members in Organization (including outside collaborators):", total_members)
-    print("Visible Members:", visible_members)
-    print("Estimated Private Members:", private_members_count)
-    print("Repositories Created in", args.year, ":", analysis["year_repos"])
-    print("Forks Created by the Organization:", analysis["organization_forks"])
-    print("Total Commits Across All Repositories:", analysis["total_commits"])  # Print total commits
+    print("\n-----------------------")
+    print("Analysis results below:\n")
+    print("👉 Total repositories:", analysis["total_repos"], "\n")
+    print("👉 Archived repositories:", analysis["archived_repos"], "\n")
+    print("👉 Forked repositories:", analysis["forked_repos"], "\n")
+    print("👉 Non-forked repositories:", analysis["non_forked_repos"], "\n")
+    print("👉 Total forks:", analysis["total_forks"], "\n")
+    print("👉 Most stars repository:", analysis["most_stars_repo"]["name"] if analysis["most_stars_repo"] else "N/A", "\n")
+    print("👉 Most forks repository:", analysis["most_forks_repo"]["name"] if analysis["most_forks_repo"] else "N/A", "\n")
+    print("👉 Top languages:", analysis["top_languages"], "\n")
+    print("👉 Total lines of code for toplanguages:", analysis["total_lines"], "\n")
+    print("👉 Top licenses:", analysis["top_licenses"], "\n")
+    print("👉 Total members in organization (including outside collaborators):", total_members, "\n")
+    print("👉 Visible members:", visible_members, "\n")
+    print("👉 Estimated private members:", private_members_count, "\n")
+    print("👉 Repositories created in", args.year, ":", analysis["year_repos"], "\n")
+    print("👉 Forks created by the organization:", analysis["organization_forks"], "\n")
 
-    # Print top 3 repositories by commits
-    print("\nTop 3 Repositories by Commits:")
-    for repo, commits in analysis["top_repos"]:
-        print(f"{repo}: {commits} commits")
+    if args.count_commits:
+        print("👉 Total commits across all repositories:", analysis["total_commits"]) 
 
-    # Print top 5 contributors overall
-    print("\nTop 5 Contributors Overall:")
-    for contributor, commits in analysis["top_contributors_overall"]:
-        print(f"{contributor}: {commits} commits")
+        # Print top repositories by commits
+        print(f"\n💪 Top {TOP_N_REPOS_MOST_COMMITS} repositories by commits:")
+        for repo, commits in analysis["top_repos"]:
+            print(f"\t{repo}: {commits} commits")
 
-    # Print top 10 contributors for the specified year
-    print("\nTop 10 Contributors for the Year:")
-    for contributor, commits in analysis["top_contributors_yearly"]:
-        print(f"{contributor}: {commits} commits")
+        # Print top 5 contributors overall
+        print(f"\n💪 Top {TOP_N_CONTRIBUTORS_OVERALL} contributors overall:")
+        for contributor, commits in analysis["top_contributors_overall"]:
+            print(f"\t{contributor}: {commits} commits")
 
+        # Print top 10 contributors for the specified year
+        print(f"\n💪 Top {TOP_N_CONTRIBUTORS_FOR_YEAR} contributors for the year:")
+        for contributor, commits in analysis["top_contributors_yearly"]:
+            print(f"\t{contributor}: {commits} commits")
+    
     # Print the 3 least used programming languages
-    print("\n3 Least Used Programming Languages:")
+    print(f"💪 {TOP_N_LEAST_PROG_LANG} least used programming languages:")
     for lang, count in analysis["least_used_languages"]:
-        print(f"{lang}: {count} repositories")
+        print(f"\t{lang}: {count} repositories")
 
     # Print the largest project for each of the top programming languages
-    print("\nLargest Project for Each Top Programming Language:")
+    print("\n💪 Largest project for each top programming language:")
     for lang, _ in analysis["top_languages"]:
         if lang in analysis["largest_projects"]:
             largest_project = analysis["largest_projects"][lang]
-            print(f"{lang}: {largest_project['name']} (Size: {largest_project['size']} KB)")
+            print(f"\t{lang}: {largest_project['name']} (Size: {largest_project['size']} KB)")
         else:
-            print(f"{lang}: Only forks available.")
+            print(f"\t{lang}: Only forks available.")
 
-    print(f"Elapsed Time: {elapsed_time:.2f} seconds")  # Print elapsed time
+    print(f"\n⌛ Elapsed Time: {elapsed_time:.2f} seconds")  # Print elapsed time
 
 if __name__ == "__main__":
     main()
