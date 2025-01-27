@@ -238,7 +238,7 @@ pip install -r requirements.txt
 python3.8 github-year-review.py --year 2024
 
 # For year 20°24 and commits counts computing (can be time expansive)
-python3.8 github-year-review.py --year 2024 --count-commit
+python3.8 github-year-review.py --year 2024 --count-commits
 ```
 
 # Play with GitHub CLI (GH)
