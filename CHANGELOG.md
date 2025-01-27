@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- GitHub and GitLab year review ([#181](https://github.com/Orange-OpenSource/floss-toolbox/issues/181))
 - Samples for common files to add in projects ([#184](https://github.com/Orange-OpenSource/floss-toolbox/issues/184))
 
 ## [2.21.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.21.0..2.20.0) - 2024-09-164
