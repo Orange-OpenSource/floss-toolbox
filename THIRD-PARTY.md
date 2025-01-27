@@ -27,6 +27,15 @@ Copyright (c) 2009-2017 Wynn Netherland, Adam Stacoviak, Erik Michaels-Ober
 *octokit.rb* is distributed under the terms and conditions of the [MIT License](https://opensource.org/license/MIT).
 You may download the source code on the [following website](https://github.com/octokit/octokit.rb).
 
+### python-dotenv
+
+Version 1.0.1
+
+Copyright (c) 2014, Saurabh Kumar (python-dotenv), 2013, Ted Tieken (django-dotenv-rw), 2013, Jacob Kaplan-Moss (django-dotenv)
+
+*python-dotenv* is distributed under the terms and conditions of the [BSD 3-Clause License](https://opensource.org/license/BSD-3-clause).
+You may download the source code on the [following website](https://github.com/theskumar/python-dotenv).
+
 ### Ruby Git
 
 Version 1.18.0
