@@ -12,7 +12,7 @@
 
 # Since...............: 10/03/2023
 # Description.........: Make a dry-run of the gitlab module to check if everything is ready to use
-# Version.............: 1.1.0
+# Version.............: 1.2.0
 
 set -eu
 
@@ -96,6 +96,10 @@ CheckIfFileExists "./GitLabWizard.sh"
 CheckIfFileExists "./utils/dump-git-repositories-from-gitlab.sh"
 CheckIfFileExists "../github/utils/extract-repos-field-from-json.py" # Stored in github folder but used by dump-git-repositories-from-gitlab.sh
 CheckIfFileExists "../github/utils/count-leaks-nodes.py" # Stored in github folder but used by check-leaks-from-gitlab.sh
+
+CheckIfFileExists "./gitlab-year-review.py"
+CheckIfFileExists "./requirements.txt"
+CheckIfFileExists "./.env" # Warning: not versioned but mandatory for Python script above
 
 # Runtimes and tools
 # ------------------

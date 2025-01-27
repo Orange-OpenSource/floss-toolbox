@@ -7,6 +7,7 @@ Table of Contents
       * [Features](#features)			
          * [Make a backup of organization repositories](#make-a-backup-of-organization-repositories)			
          * [Check if there are leaks in organisation repositories (using gitleaks)](#check-if-there-are-leaks-in-organisation-repositories-using-gitleaks)			
+         * [Make a year review of the GitLab organization](#make-a-year-review-of-the-gitlab-organization)
 
 # Play with GitLab web API
 
@@ -76,3 +77,26 @@ You need to define in the _configuration.rb_ files the GitLab organisation ID at
 You have to also define the location to store clones at **REPOSITORIES_CLONE_LOCATION_PATH** and the access token at **GILAB_PERSONAL_ACCESS_TOKEN**.
 
 **You should also have your _git_ environment ready i.e. add your SSH private key if you clone by SSH for example. _gh_ must be installed, and _python3_ be ready. Obviously _gitleaks_ must be installed**
+
+### Make a year review of the GitLab organization
+
+_Keywords: #organisation #GitLab #KPI #year #review_
+
+You will need to define a *.env* file with the GitLab API token for key *GITLAB_API_TOKEN*, the organization name and some settings.
+Here the organization name is *Orange-OpenSource*, replace with your own and add the suitable token.
+
+See for example:
+```text
+GITLAB_API_TOKEN=your-api-token
+ORGANIZATION_NAME=Orange-OpenSource
+```
+
+Run the following command to compute a year review of the organization
+
+```shell
+# Do not forget to install dependencies
+pip install -r requirements.txt
+
+# For year 2024
+python3.8 gitlab-year-review.py --year 2024
+```

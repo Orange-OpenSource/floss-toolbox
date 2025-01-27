@@ -68,7 +68,7 @@ HEADERS = {
     "Authorization": f"token {GITHUB_API_TOKEN}"
 }
 
-# Tools
+# Services
 # --------
 
 def check_prerequisites():
@@ -387,6 +387,9 @@ def estimate_private_members(total_members, visible_members):
     print("🔨 Estimated private members:", private_members)
     return private_members
 
+# Services - Main
+# ---------------
+
 def main():
     """Main function to execute the analysis."""
 
@@ -466,6 +469,9 @@ def main():
             print(f"\t{lang}: Only forks available.")
 
     print(f"\n⌛ Elapsed Time: {elapsed_time:.2f} seconds")  # Print elapsed time
+
+# Services - Run
+# --------------
 
 if __name__ == "__main__":
     main()
