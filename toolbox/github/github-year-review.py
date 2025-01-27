@@ -235,7 +235,7 @@ def analyze_repositories(repos, year, count_commits):
         - total_lines (dict): Total lines of code for the top programming languages.
         - top_licenses (list): List of the top licenses used in repositories.
         - year_repos (int): Number of repositories created in the specified year.
-        - organization_forks (int): Number of forks created by the organization.
+        - organization_forks_year (int): Number of forks created by the organization the given year.
         - total_commits (int): Total number of commits across all repositories.
         - top_repos (list): Top 3 repositories by commits.
         - top_contributors_overall (list): Top 5 contributors overall.
@@ -251,6 +251,9 @@ def analyze_repositories(repos, year, count_commits):
 
     # Total forks count from all repositories
     total_forks = sum(repo['forks_count'] for repo in repos)
+
+    # Number of forks created the given year
+    organization_forks_year = sum(1 for repo in repos if repo['fork'] and datetime.strptime(repo['created_at'], '%Y-%m-%dT%H:%M:%SZ').year == year)
 
     # Stars count and identifying the most starred and forked repositories
     stars_count = sum(repo['stargazers_count'] for repo in repos)
@@ -348,7 +351,7 @@ def analyze_repositories(repos, year, count_commits):
         "total_lines": total_lines,
         "top_licenses": top_licenses,
         "year_repos": year_repos,
-        "organization_forks": organization_forks,
+        "organization_forks_year": organization_forks_year,
         "total_commits": total_commits,
         "top_repos": top_repos,
         "top_contributors_overall": top_contributors_overall,
@@ -421,13 +424,13 @@ def main():
     print("👉 Most stars repository:", analysis["most_stars_repo"]["name"] if analysis["most_stars_repo"] else "N/A", "\n")
     print("👉 Most forks repository:", analysis["most_forks_repo"]["name"] if analysis["most_forks_repo"] else "N/A", "\n")
     print("👉 Top languages:", analysis["top_languages"], "\n")
-    print("👉 Total lines of code for toplanguages:", analysis["total_lines"], "\n")
+    print("👉 Total lines of code for topl anguages:", analysis["total_lines"], "\n")
     print("👉 Top licenses:", analysis["top_licenses"], "\n")
     print("👉 Total members in organization (including outside collaborators):", total_members, "\n")
     print("👉 Visible members:", visible_members, "\n")
     print("👉 Estimated private members:", private_members_count, "\n")
     print("👉 Repositories created in", args.year, ":", analysis["year_repos"], "\n")
-    print("👉 Forks created by the organization:", analysis["organization_forks"], "\n")
+    print("👉 Forks created by the organization in", args.year, ":", analysis["organization_forks_year"], "\n")
 
     if args.count_commits:
         print("👉 Total commits across all repositories:", analysis["total_commits"]) 
