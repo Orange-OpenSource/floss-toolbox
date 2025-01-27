@@ -20,43 +20,41 @@ import requests
 import sys
 import time
 
-# Configuration - GitHub
-# ----------------------
-
-# Load env variables to get secrets
-load_dotenv()
-
-# To create the GitHub Personal Access Token for the organization: https://github.com/settings/personal-access-tokens
-GITHUB_API_TOKEN = os.getenv("GITHUB_API_TOKEN")
-ORGANIZATION_NAME = "Orange-OpenSource"
-
-# Configuration - Tunning
-# -----------------------
-
-# Number of top programming languages in use to extract
-TOP_N_PROG_LANG = 5
-
-# Number of programming languages the least used to extract
-TOP_N_LEAST_PROG_LANG = 5
-
-# Number of top licenses in use to extract
-TOP_N_LICENSES = 5
-
-# Number of top contributors over all years
-TOP_N_CONTRIBUTORS_OVERALL = 10
-
-# Number of top contributors over the specified year
-TOP_N_CONTRIBUTORS_FOR_YEAR = 10
-
-# Number of top repositories with the highest commits
-TOP_N_REPOS_MOST_COMMITS = 5
-
 # Configuration - Tool
 # --------------------
 
 VERSION = "1.0.0"
 
 ERROR_BAD_PREREQUISITES = 1
+
+# Configuration - Load
+# --------------------
+
+load_dotenv()
+
+# Configuration - GitHub
+# ----------------------
+
+# To create the GitHub Personal Access Token for the organization: https://github.com/settings/personal-access-tokens
+GITHUB_API_TOKEN = os.getenv("GITHUB_API_TOKEN")
+# Organization to scan
+ORGANIZATION_NAME =  os.getenv("ORGANIZATION_NAME")
+
+# Configuration - Tunning
+# -----------------------
+
+# Number of top programming languages in use to extract
+TOP_N_PROG_LANG = os.getenv("TOP_N_PROG_LANG")
+# Number of programming languages the least used to extract
+TOP_N_LEAST_PROG_LANG = os.getenv("TOP_N_LEAST_PROG_LANG")
+# Number of top licenses in use to extract
+TOP_N_LICENSES = os.getenv("TOP_N_LICENSES")
+# Number of top contributors over all years
+TOP_N_CONTRIBUTORS_OVERALL = os.getenv("TOP_N_CONTRIBUTORS_OVERALL")
+# Number of top contributors over the specified year
+TOP_N_CONTRIBUTORS_FOR_YEAR = os.getenv("TOP_N_CONTRIBUTORS_FOR_YEAR")
+# Number of top repositories with the highest commits
+TOP_N_REPOS_MOST_COMMITS = os.getenv("TOP_N_REPOS_MOST_COMMITS")
 
 # Configuration - Endpoints
 # -------------------------
@@ -72,6 +70,42 @@ HEADERS = {
 
 # Tools
 # --------
+
+def check_prerequisites():
+    """Check if all configuration elements have been laoded through .env file.
+    If not, exists.
+    """
+    if GITHUB_API_TOKEN is None:
+        print("❌ Error: GitHub token is not defined. Please set the GITHUB_API_TOKEN environment variable.")
+        sys.exit(ERROR_BAD_PREREQUISITES)
+
+    if ORGANIZATION_NAME is None or ORGANIZATION_NAME.strip() == "":
+        print("❌ Error: Organization name is not defined. Please set the ORGANIZATION_NAME variable.")
+        sys.exit(ERROR_BAD_PREREQUISITES)
+
+    if TOP_N_PROG_LANG is None or TOP_N_PROG_LANG.strip() == "":
+        print("❌ Error: TOP_N_PROG_LANG is not defined. Please set the TOP_N_PROG_LANG variable.")
+        sys.exit(ERROR_BAD_PREREQUISITES)
+
+    if TOP_N_LEAST_PROG_LANG is None or TOP_N_LEAST_PROG_LANG.strip() == "":
+        print("❌ Error: TOP_N_LEAST_PROG_LANG name is not defined. Please set the TOP_N_LEAST_PROG_LANG variable.")
+        sys.exit(ERROR_BAD_PREREQUISITES)
+
+    if TOP_N_LICENSES is None or TOP_N_LICENSES.strip() == "":
+        print("❌ Error: TOP_N_LICENSES name is not defined. Please set the TOP_N_LICENSES variable.")
+        sys.exit(ERROR_BAD_PREREQUISITES)
+
+    if TOP_N_CONTRIBUTORS_OVERALL is None or TOP_N_CONTRIBUTORS_OVERALL.strip() == "":
+        print("❌ Error: TOP_N_CONTRIBUTORS_OVERALL name is not defined. Please set the TOP_N_CONTRIBUTORS_OVERALL variable.")
+        sys.exit(ERROR_BAD_PREREQUISITES)
+
+    if TOP_N_CONTRIBUTORS_FOR_YEAR is None or TOP_N_CONTRIBUTORS_FOR_YEAR.strip() == "":
+        print("❌ Error: TOP_N_CONTRIBUTORS_FOR_YEAR name is not defined. Please set the TOP_N_CONTRIBUTORS_FOR_YEAR variable.")
+        sys.exit(ERROR_BAD_PREREQUISITES)
+
+    if TOP_N_REPOS_MOST_COMMITS is None or TOP_N_REPOS_MOST_COMMITS.strip() == "":
+        print("❌ Error: TOP_N_REPOS_MOST_COMMITS name is not defined. Please set the TOP_N_REPOS_MOST_COMMITS variable.")
+        sys.exit(ERROR_BAD_PREREQUISITES)
 
 def get_repositories():
     """Fetch all repositories for the organization.
@@ -237,7 +271,7 @@ def analyze_repositories(repos, year, count_commits):
                 largest_projects[repo['language']] = {'name': repo['full_name'], 'size': repo['size']}
 
     # Get the top 5 languages used
-    top_languages = languages.most_common(TOP_N_PROG_LANG)
+    top_languages = languages.most_common(int(TOP_N_PROG_LANG))
     total_lines = {lang: 0 for lang, _ in top_languages}
     
     # Estimate total lines of code for top languages
@@ -253,7 +287,7 @@ def analyze_repositories(repos, year, count_commits):
 
     # Count licenses used in the repositories
     licenses = Counter(repo['license']['name'] for repo in repos if repo['license'])
-    top_licenses = licenses.most_common(TOP_N_LICENSES)
+    top_licenses = licenses.most_common(int(TOP_N_LICENSES))
 
     # Calculate total commits across all repositories if enabled
     total_commits = 0
@@ -290,16 +324,16 @@ def analyze_repositories(repos, year, count_commits):
                 print(f"🔨 Analyzing repository {index}/{total_repos}")
 
     # Get the top N contributors overall
-    top_contributors_overall = sorted(total_contributor_commits.items(), key=lambda x: x[1], reverse=True)[:TOP_N_CONTRIBUTORS_OVERALL]
+    top_contributors_overall = sorted(total_contributor_commits.items(), key=lambda x: x[1], reverse=True)[:int(TOP_N_CONTRIBUTORS_OVERALL)]
 
     # Get the top N contributors for the specified year
-    top_contributors_yearly = sorted(yearly_contributor_commits.items(), key=lambda x: x[1], reverse=True)[:TOP_N_CONTRIBUTORS_FOR_YEAR]
+    top_contributors_yearly = sorted(yearly_contributor_commits.items(), key=lambda x: x[1], reverse=True)[:int(TOP_N_CONTRIBUTORS_FOR_YEAR)]
 
     # Get the top N repositories with the most commits
-    top_repos = sorted(commits_per_repo.items(), key=lambda x: x[1], reverse=True)[:TOP_N_REPOS_MOST_COMMITS]
+    top_repos = sorted(commits_per_repo.items(), key=lambda x: x[1], reverse=True)[:int(TOP_N_REPOS_MOST_COMMITS)]
 
     # Get the N least used programming languages
-    least_used_languages = sorted(languages.items(), key=lambda x: x[1])[:TOP_N_LEAST_PROG_LANG]
+    least_used_languages = sorted(languages.items(), key=lambda x: x[1])[:int(TOP_N_LEAST_PROG_LANG)]
 
     print("🔨 Analysis complete.")
     return {
@@ -353,14 +387,7 @@ def estimate_private_members(total_members, visible_members):
 def main():
     """Main function to execute the analysis."""
 
-    # Check if the GitHub token and organization name are defined
-    if GITHUB_API_TOKEN is None:
-        print("❌ Error: GitHub token is not defined. Please set the GITHUB_API_TOKEN environment variable.")
-        sys.exit(ERROR_BAD_PREREQUISITES)
-
-    if ORGANIZATION_NAME is None or ORGANIZATION_NAME.strip() == "":
-        print("❌ Error: Organization name is not defined. Please set the ORGANIZATION_NAME variable.")
-        sys.exit(ERROR_BAD_PREREQUISITES)
+    check_prerequisites()
 
     # Parse command-line arguments
     parser = argparse.ArgumentParser(description=f"Analyze GitHub organization repositories (Version: {VERSION}).")
@@ -419,7 +446,7 @@ def main():
         print(f"\n💪 Top {TOP_N_CONTRIBUTORS_FOR_YEAR} contributors for the year:")
         for contributor, commits in analysis["top_contributors_yearly"]:
             print(f"\t{contributor}: {commits} commits")
-            print(f"\n")
+        print(f"\n")
     
     # Print the 3 least used programming languages
     print(f"💪 {TOP_N_LEAST_PROG_LANG} least used programming languages:")
