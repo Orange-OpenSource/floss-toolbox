@@ -14,6 +14,8 @@
 import argparse
 from collections import Counter, defaultdict
 from datetime import datetime
+from dotenv import load_dotenv
+import os
 import requests
 import sys
 import time
@@ -21,8 +23,11 @@ import time
 # Configuration - GitHub
 # ----------------------
 
+# Load env variables to get secrets
+load_dotenv()
+
 # To create the GitHub Personal Access Token for the organization: https://github.com/settings/personal-access-tokens
-GITHUB_PAT = "" # TODO: Use .env 
+GITHUB_API_TOKEN = os.getenv("GITHUB_API_TOKEN")
 ORGANIZATION_NAME = "Orange-OpenSource"
 
 # Configuration - Tunning
@@ -62,7 +67,7 @@ OUTSIDE_COLLABORATORS_URL = f"https://api.github.com/orgs/{ORGANIZATION_NAME}/ou
 
 HEADERS = {
     "Accept": "application/vnd.github.v3+json",
-    "Authorization": f"token {GITHUB_PAT}"
+    "Authorization": f"token {GITHUB_API_TOKEN}"
 }
 
 # Tools
@@ -349,8 +354,8 @@ def main():
     """Main function to execute the analysis."""
 
     # Check if the GitHub token and organization name are defined
-    if GITHUB_PAT is None:
-        print("❌ Error: GitHub token is not defined. Please set the GITHUB_PAT environment variable.")
+    if GITHUB_API_TOKEN is None:
+        print("❌ Error: GitHub token is not defined. Please set the GITHUB_API_TOKEN environment variable.")
         sys.exit(ERROR_BAD_PREREQUISITES)
 
     if ORGANIZATION_NAME is None or ORGANIZATION_NAME.strip() == "":
@@ -414,6 +419,7 @@ def main():
         print(f"\n💪 Top {TOP_N_CONTRIBUTORS_FOR_YEAR} contributors for the year:")
         for contributor, commits in analysis["top_contributors_yearly"]:
             print(f"\t{contributor}: {commits} commits")
+            print(f"\n")
     
     # Print the 3 least used programming languages
     print(f"💪 {TOP_N_LEAST_PROG_LANG} least used programming languages:")

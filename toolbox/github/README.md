@@ -208,6 +208,24 @@ Permissions will be set to "read".
 bash GitHubWizard.sh set-teams-permissions-to-read
 ```
 
+### Make a year review of the GitHub organization
+
+_Keywords: #organisation #GitHub #KPI #year #review_
+
+You will need to define a *.env* file with the GitHub API token for key *GITHUB_API_TOKEN*.
+Run the following command to compute a year review of the organization
+
+```shell
+# Do not forget to install dependencies
+pip install -r requirements.txt
+
+# For year 2024
+python3.8 github-year-review.py --year 2024
+
+# For year 20°24 and commits counts computing (can be time expansive)
+python3.8 github-year-review.py --year 2024 --count-commit
+```
+
 # Play with GitHub CLI (GH)
 
 ## Prerequisites
