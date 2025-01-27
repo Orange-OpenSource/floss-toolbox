@@ -12,7 +12,7 @@
 
 # Since...............: 10/03/2023
 # Description.........: Make a dry-run of the github module to check if everything is ready to use
-# Version.............: 1.2.0
+# Version.............: 1.3.0
 
 set -eu
 
@@ -107,6 +107,10 @@ CheckIfFileExists "./utils/GitHubFacade.rb"
 CheckIfFileExists "./utils/GitHubWrapper.rb"
 CheckIfFileExists "./utils/GitWrapper.rb"
 CheckIfFileExists "./utils/IO.rb"
+
+CheckIfFileExists "./github-year-review.py"
+CheckIfFileExists "./requirements.txt"
+CheckIfFileExists "./.env" # Warning: not versioned but mandatory for Python script above
 
 # Runtimes and tools
 # ------------------

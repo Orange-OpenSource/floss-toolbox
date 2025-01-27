@@ -19,6 +19,7 @@ Table of Contents
          * [Get repositories which seems to be empty or have not enough files](#get-repositories-which-seems-to-be-empty-or-have-not-enough-files)
          * [Define users permissions for all projects to "push"](#define-users-permissions-for-all-projects-to-push)
          * [Define teams permissions for all projects to "push"](#define-teams-permissions-for-all-projects-to-push)
+         * [Make a year review of the GitHub organization](#make-a-year-review-of-the-github-organization)
    * [Play with GitHub CLI (GH)](#play-with-github-cli-gh)
       * [Prerequisites](#prerequisites-1)
       * [Prepare project](#prepare-project-1)
@@ -206,6 +207,38 @@ Permissions will be set to "read".
 
 ```shell
 bash GitHubWizard.sh set-teams-permissions-to-read
+```
+
+### Make a year review of the GitHub organization
+
+_Keywords: #organisation #GitHub #KPI #year #review_
+
+You will need to define a *.env* file with the GitHub API token for key *GITHUB_API_TOKEN*, the organization name and some settings.
+Here the organization name is *Orange-OpenSource*, replace with your own and add the suitable token.
+
+See for example:
+```text
+GITHUB_API_TOKEN=your-token
+ORGANIZATION_NAME=Orange-OpenSource
+TOP_N_PROG_LANG=5
+TOP_N_LEAST_PROG_LANG=5
+TOP_N_LICENSES=5
+TOP_N_CONTRIBUTORS_OVERALL=10
+TOP_N_CONTRIBUTORS_FOR_YEAR=10
+TOP_N_REPOS_MOST_COMMITS=5
+```
+
+Run the following command to compute a year review of the organization
+
+```shell
+# Do not forget to install dependencies
+pip install -r requirements.txt
+
+# For year 2024
+python3.8 github-year-review.py --year 2024
+
+# For year 20°24 and commits counts computing (can be time expansive)
+python3.8 github-year-review.py --year 2024 --count-commits
 ```
 
 # Play with GitHub CLI (GH)
