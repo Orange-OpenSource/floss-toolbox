@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.22.0..dev)
 
+### Added
+
+- GitLab Python script to update permissions
+
 ## [2.22.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.22.0..2.21.0) - 2025-01-27
 
 ### Added

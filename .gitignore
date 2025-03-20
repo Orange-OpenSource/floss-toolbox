@@ -6,6 +6,7 @@ toolbox/diver/.floss-toolbox/data
 
 toolbox/gitlab/data
 toolbox/gitlab/.env
+toolbox/gitlab/utils/.env
 
 toolbox/utils/text-generator/_templates/new-GitHub-repository-contributors.fr.template.txt.result
 toolbox/utils/third-party-generator/components.csv.result
