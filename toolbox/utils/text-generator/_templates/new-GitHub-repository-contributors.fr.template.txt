@@ -49,6 +49,8 @@ Pour aller plus loin, nous avons :
 - un site web externe [12] ;
 - un site vitrine pour GitHub [13].
 
+Enfin, votre usage de GitHub implique le respect de la charte [14].
+
 Restant à disposition,
  
 [1] %FORGE_REPO_URL%
@@ -66,3 +68,4 @@ Restant à disposition,
 [11] %RESSOURCES_WEB_INTERNAL-SITE%
 [12] %RESSOURCES_WEB_PUBLIC-SITE%
 [13] %RESSOURCES_WEB_GITHUB-SITE%
+[14] %RESSOURCE_DOC_CHARTER%

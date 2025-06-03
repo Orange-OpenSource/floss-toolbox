@@ -48,6 +48,8 @@ To go further, we have:
 - an external website [12];
 - a showcase site for GitHub [13].
 
+In the end, using GitHub implies to be compliant with the charter [14].
+
 Remaining available,
 
 [1] %FORGE_REPO_URL%
@@ -65,3 +67,4 @@ Remaining available,
 [11] %RESSOURCES_WEB_INTERNAL-SITE%
 [12] %RESSOURCES_WEB_PUBLIC-SITE%
 [13] %RESSOURCES_WEB_GITHUB-SITE%
+[14] %RESSOURCE_DOC_CHARTER%
