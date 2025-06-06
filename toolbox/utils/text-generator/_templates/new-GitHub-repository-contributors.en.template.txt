@@ -68,3 +68,5 @@ Remaining available,
 [12] %RESSOURCES_WEB_PUBLIC-SITE%
 [13] %RESSOURCES_WEB_GITHUB-SITE%
 [14] %RESSOURCE_DOC_CHARTER%
+
+[This email is automatically generated]

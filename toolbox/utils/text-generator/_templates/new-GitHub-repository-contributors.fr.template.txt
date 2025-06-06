@@ -69,3 +69,5 @@ Restant à disposition,
 [12] %RESSOURCES_WEB_PUBLIC-SITE%
 [13] %RESSOURCES_WEB_GITHUB-SITE%
 [14] %RESSOURCE_DOC_CHARTER%
+
+[Ce courrier electronique est généré automatiquement]

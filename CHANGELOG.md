@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Updare template for text generation (note about generated text)
 - Update template for text generation (reference to internal charter)
 
 ## [2.22.0](https://github.com/Orange-OpenSource/floss-toolbox/compare/2.22.0..2.21.0) - 2025-01-27
