@@ -10,7 +10,7 @@
 # Authors: See CONTRIBUTORS.txt
 # Software description: A toolbox of scripts to help work of forges admins and open source referents
 
-# Version.............: 1.2.0
+# Version.............: 1.3.0
 # Since...............: 26/04/2021
 # Description.........: Received from arguments a feature to launch using GitHub API.
 # Loads configuration elements from configuration.rb, writes outputs using FileManager.rb and calls GitHubWrapper.rb for requests
@@ -54,7 +54,7 @@ if ARGV.length <= 0
 end
 feature_to_run=ARGV[0]
 
-if feature_to_run != "get-members-2fa-disabled" && feature_to_run != "get-all-members" && feature_to_run != "get-members-without-company" && feature_to_run != "get-projects-without-team" && feature_to_run != "get-users-with-bad-email" && feature_to_run != "get-users-with-bad-fullname" && feature_to_run != "get-projects-conformity" && feature_to_run != "get-projects-without-licenses" && feature_to_run != "get-empty-projects" && feature_to_run != "set-users-permissions-to-push" && feature_to_run != "set-teams-permissions-to-push" && feature_to_run != "set-teams-permissions-to-read"
+if feature_to_run != "get-members-2fa-disabled" && feature_to_run != "get-all-members" && feature_to_run != "get-members-without-company" && feature_to_run != "get-projects-without-team" && feature_to_run != "get-users-with-bad-email" && feature_to_run != "get-users-with-bad-fullname" && feature_to_run != "get-projects-conformity" && feature_to_run != "get-projects-without-licenses" && feature_to_run != "get-empty-projects" && feature_to_run != "set-users-permissions-to-push" && feature_to_run != "set-teams-permissions-to-push" && feature_to_run != "set-teams-permissions-to-read" && feature_to_run != "downgrade-user-permissions-if-admin"
     Log.error "Unknown feature. Exit now."
     exit $EXIT_UNKNOWN_FEATURE
 end
@@ -273,6 +273,15 @@ end
 if feature_to_run == "set-teams-permissions-to-read"
     Log.log "Updating all repositories with new permissions for teams..."
     GitHubWrapper.set_permissions_for_teams(client, $GITHUB_ORGANIZATION_NAME, "pull")
+    Log.log "Task completed! Exits now."
+    exit $EXIT_OK
+end
+
+# FEATURE: downgrade-user-permissions-if-admin
+# For all projects, mvoe to 'admin' permission to 'maintain' for each user
+if feature_to_run == "downgrade-user-permissions-if-admin"
+    Log.log "Updating all repositories with permission downgrade from admin to maintain..."
+    GitHubWrapper.change_permissions_for_users(client, $GITHUB_ORGANIZATION_NAME, "admin", "maintain")
     Log.log "Task completed! Exits now."
     exit $EXIT_OK
 end

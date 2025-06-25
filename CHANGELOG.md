@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Feature to change permission for everyone absed on other permission (Orange-OpenSource/floss-toolbox#197)
 - GitLab Python script to update permissions
 
 ### Changed

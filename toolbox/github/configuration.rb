@@ -10,7 +10,7 @@
 # Software description: A toolbox of scripts to help work of forges admins and open source referents
 
 # Allow debug message or not
-$LOG_DEBUG = false
+$LOG_DEBUG = true
 
 # GitHub organization
 # -------------------
@@ -19,7 +19,7 @@ $LOG_DEBUG = false
 $GITHUB_PERSONAL_ACCESS_TOKEN = ""
 
 # Name of the organization name you want to deal with so as to request the GitHub API
-$GITHUB_ORGANIZATION_NAME = ""
+$GITHUB_ORGANIZATION_NAME = "Orange-OpenSource"
 
 # Accurate list of users which are admins (i.e. GitHub organization owners), with login separated by ;
 $GITHUB_ORGANIZATION_ADMINS = ""
@@ -39,8 +39,8 @@ $REQUEST_DELAY_IN_SECONDS = 0.5
 # Results returned in one page (GitHub pagination), max 100
 $RESULTS_PER_PAGE = 100
 
-# Expected numer of pages to use to load all elements (i.e. if 250 projects, we need 3 pages with 100 items per page)
-$EXPECTED_PAGE_COUNT = 3
+# Expected numer of pages to use to load all elements (i.e. if 398 projects, we need 4 pages with 100 items per page)
+$EXPECTED_PAGE_COUNT = 5
 
 # Result files
 # ------------

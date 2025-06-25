@@ -14,8 +14,9 @@
 # Description.........: Received from arguments a feature to launch and gives it to the Ruby wizard.
 # Parses the RUBY_CONFIGURATION_FILE to get the GitHub personal acces token to set as Ruby env. variable (OCTOKIT_ACCESS_TOKEN).
 
-#set -euxo pipefail
-VERSION="1.5.0"
+set -euo pipefail # set -euxo pipefail
+
+VERSION="1.6.0"
 
 # Common files
 # ------------
@@ -55,6 +56,7 @@ UsageAndExit(){
     echo -e "\t set-users-permissions-to-push..................: For all projects update each user permission to 'push' except for teams and administrators"
     echo -e "\t set-teams-permissions-to-push..................: For all projects update each team permission to 'push'"
     echo -e "\t set-teams-permissions-to-read..................: For all projects update each team permission to 'read'"
+    echo -e "\t downgrade-user-permissions-if-admin............: For all projects update each suer from 'admin' to 'maintain''"
     echo -e "\t backup-all-repositories-from-org...............: Dump all repositories in GitHub to a specific location in the disk"
     echo -e "\t vulnerabilities-alerts-for-all-repositories....: Check if there are vulnerabilities alerts in repositories of the defined organisation"
     echo -e "\t look-for-leaks.................................: Checks with gitleaks if there are leaks in all repositories"
@@ -90,7 +92,7 @@ if [ -z "$feature_to_run" ]; then
 fi
 
 # TODO: Refactor this line. Some day. I have a very big screen. Haven't you?
-if [ $feature_to_run != "get-members-2fa-disabled" -a $feature_to_run != "get-all-members" -a $feature_to_run != "get-members-without-company" -a $feature_to_run != "get-projects-without-team" -a $feature_to_run != "get-users-with-bad-email" -a $feature_to_run != "get-users-with-bad-fullname" -a $feature_to_run != "get-projects-conformity" -a $feature_to_run != "get-projects-without-licenses" -a $feature_to_run != "get-empty-projects" -a $feature_to_run != "set-users-permissions-to-push" -a $feature_to_run != "set-teams-permissions-to-push" -a $feature_to_run != "set-teams-permissions-to-read" -a $feature_to_run != "backup-all-repositories-from-org" -a $feature_to_run != "vulnerabilities-alerts-for-all-repositories" -a $feature_to_run != "look-for-leaks" ]; then
+if [ $feature_to_run != "get-members-2fa-disabled" -a $feature_to_run != "get-all-members" -a $feature_to_run != "get-members-without-company" -a $feature_to_run != "get-projects-without-team" -a $feature_to_run != "get-users-with-bad-email" -a $feature_to_run != "get-users-with-bad-fullname" -a $feature_to_run != "get-projects-conformity" -a $feature_to_run != "get-projects-without-licenses" -a $feature_to_run != "get-empty-projects" -a $feature_to_run != "set-users-permissions-to-push" -a $feature_to_run != "set-teams-permissions-to-push" -a $feature_to_run != "set-teams-permissions-to-read" -a $feature_to_run != "downgrade-user-permissions-if-admin" -a $feature_to_run != "backup-all-repositories-from-org" -a $feature_to_run != "vulnerabilities-alerts-for-all-repositories" -a $feature_to_run != "look-for-leaks" ]; then
     echo "ERROR: '$feature_to_run' is unknown feature. Exit now"
     UsageAndExit
     exit $EXIT_UNKNOWN_FEATURE

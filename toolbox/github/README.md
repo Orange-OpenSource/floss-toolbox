@@ -18,6 +18,7 @@ Table of Contents
          * [Get repositories which seems to be unconform (i.e. missing files)](#get-repositories-which-seems-to-be-unconform-ie-missing-files)
          * [Get repositories which seems to be empty or have not enough files](#get-repositories-which-seems-to-be-empty-or-have-not-enough-files)
          * [Define users permissions for all projects to "push"](#define-users-permissions-for-all-projects-to-push)
+         * [Downgrade users permissions for all projects from admin to maintain](#downgrade-users-permissions-for-all-projects-from-admin-to-maintain)
          * [Define teams permissions for all projects to "push"](#define-teams-permissions-for-all-projects-to-push)
          * [Make a year review of the GitHub organization](#make-a-year-review-of-the-github-organization)
    * [Play with GitHub CLI (GH)](#play-with-github-cli-gh)
@@ -185,6 +186,17 @@ Permissions will be set to "push", i.e. "write".
 
 ```shell
 bash GitHubWizard.sh set-users-permissions-to-push
+```
+
+### Downgrade users permissions for all projects from admin to maintain
+
+_Keywords: #organisation #GitHub #permissions #members #admin #maintain_
+
+Run the following command to update rights of all users except GitHub teams and GitHub administrators, for all projects.
+Permissions will be set to "maintain" if before "admin".
+
+```shell
+bash GitHubWizard.sh downgrade-user-permissions-if-admin
 ```
 
 ### Define teams permissions for all projects to "push"

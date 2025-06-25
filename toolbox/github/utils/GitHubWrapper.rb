@@ -253,11 +253,23 @@ module GitHubWrapper
     # +repository_full_name+:: The full name identifier of the repository to get, like 'organization/project-name'
     # +user_login+:: The login of the user
     def self.add_collaborator_to_repository_with_write_permission(octokit_client, repository_full_name, user_login)
+        return self.add_collaborator_to_repository_with_permission(octokit_client, repository_full_name, user_login, "push")
+    end
+
+    ##
+    # Using the given Octokit client, for the repository which has that name, adds the user who has this login as a collaborator with the fiven permission level.
+    # If the user was already added, just changes its permission level.
+    # +octokit_client+:: The Octokit client to use to request the GitHub web API
+    # +repository_full_name+:: The full name identifier of the repository to get, like 'organization/project-name'
+    # +user_login+:: The login of the user
+    # +new_permission+:: The permission for the user
+    def self.add_collaborator_to_repository_with_permission(octokit_client, repository_full_name, user_login, new_permission)
         if octokit_client.nil? 
             Log.error "Nil Octokit client. Returns now." 
             return
         end
-        return octokit_client.add_collaborator(repository_full_name, user_login, permission: "push")
+        Log.debug "For repository '#{repository_full_name}' user named '#{user_login}' has now new permision '#{new_permission}'"
+        return octokit_client.add_collaborator(repository_full_name, user_login, permission: new_permission)
     end
 
     ##
@@ -567,6 +579,49 @@ module GitHubWrapper
             teams.each do |team|
                 Log.debug "For team '#{team.name}' with id '#{team.id}' set permission to '#{permission}' for repository '#{repo_full_name}'"
                 octokit_client.add_team_repository(team.id, repo_full_name, permission: permission)
+            end
+        end
+    end
+
+    ##
+    # For each repository for the given organization, for all users, if the user permission
+    # is "admin", downgrade to "maintain". Otherwise change nothing. 
+    # Do not change permission for teams and organisation admins.
+    # +octokit_client+:: The Octokit client to use to request the GitHub web API
+    # +organization_name+:: The name of the organization to retrieve from API 
+    # +old_permission+:: Must be "push" (write), "pull" (read), "maintain" (maintain) or "admin" (admin)
+    # +new_permission+:: Must be "push" (write), "pull" (read), "maintain" (maintain) or "admin" (admin)
+    def self.change_permissions_for_users(octokit_client, organization_name, old_permission, new_permission)
+        if octokit_client.nil? 
+            Log.error "Nil Octokit client. Returns now." 
+            return
+        end
+        if old_permission != "push" && old_permission != "pull" && old_permission != "maintain" && old_permission != "admin"
+            Log.warning "Old permission #{old_permission} is not managed. Returns now."
+            return
+        end
+        if new_permission != "push" && new_permission != "pull" && new_permission != "maintain" && new_permission != "admin"
+            Log.warning "New permission #{new_permission} is not managed. Returns now."
+            return
+        end
+        owners = organization_owners
+        Log.debug "Get all projects of organization '#{organization_name}'..."
+        all_repositories = get_all_repositories(octokit_client, organization_name)
+        Log.debug "Found #{all_repositories.length} projects!"
+        all_repositories.each do |repository|
+            repo_full_name = repository.full_name
+            Log.debug "Processing #{repo_full_name}..."
+            members = get_repository_collaborators(octokit_client, repo_full_name)
+            members.each do |member|
+                member_login = member.login
+                unless owners.include? member_login
+                    if member.role_name == "admin"
+                        Log.debug "Update permision from '#{old_permission}' to '#{new_permission} 'for user with login '#{member_login}' on project '#{repo_full_name}'"
+                        add_collaborator_to_repository_with_permission(octokit_client, repo_full_name, member_login, new_permission)
+                    end
+                else 
+                    Log.debug "User with login '#{member_login}' is organization owner, permissions are not changed for project #{repo_full_name}"
+                end
             end
         end
     end
