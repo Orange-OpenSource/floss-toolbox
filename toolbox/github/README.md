@@ -21,6 +21,7 @@ Table of Contents
          * [Downgrade users permissions for all projects from admin to maintain](#downgrade-users-permissions-for-all-projects-from-admin-to-maintain)
          * [Define teams permissions for all projects to "push"](#define-teams-permissions-for-all-projects-to-push)
          * [Make a year review of the GitHub organization](#make-a-year-review-of-the-github-organization)
+         * [Get projects using dependencies](#get-projects-using-dependencies)
    * [Play with GitHub CLI (GH)](#play-with-github-cli-gh)
       * [Prerequisites](#prerequisites-1)
       * [Prepare project](#prepare-project-1)
@@ -249,8 +250,34 @@ pip install -r requirements.txt
 # For year 2024
 python3.8 github-year-review.py --year 2024
 
-# For year 20°24 and commits counts computing (can be time expansive)
+# For year 2024 and commits counts computing (can be time expansive)
 python3.8 github-year-review.py --year 2024 --count-commits
+```
+
+### Get projects using dependencies
+
+_Keywords: #organisation #GitHub #dependencies #locks_
+
+We may need quickly to know which projects use some dependencies, because these dependencies can be compromised or because
+we just need to know who use it.
+
+The script *scan_github_organization_projects_for_dependencies.py* will request GitHub REST API to get public projects,
+then check if there are known package and locks files, and check inside if there are dependencies like the ones listed
+in a side file given as argument.
+
+This side file is just a text file with one dependency by line without expected format: the script will look for the text as is.
+
+Of course a GitHub Personal Access Token (PAT) must be defined as environment variable.
+
+```shell
+# Define the PAT
+export GITHUB_TOKEN=...
+
+# Do not forget to install dependencies
+pip install -r requirements.txt
+
+# For year 2024
+python3.8 scan_github_organization_projects_for_dependencies.py path/to/dependencies/file.txt
 ```
 
 # Play with GitHub CLI (GH)

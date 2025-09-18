@@ -8,6 +8,7 @@ Table of Contents
          * [Make a backup of organization repositories](#make-a-backup-of-organization-repositories)			
          * [Check if there are leaks in organisation repositories (using gitleaks)](#check-if-there-are-leaks-in-organisation-repositories-using-gitleaks)			
          * [Make a year review of the GitLab organization](#make-a-year-review-of-the-gitlab-organization)
+         * [Get projects using dependencies](#get-projects-using-dependencies)
 
 # Play with GitLab web API
 
@@ -99,4 +100,30 @@ pip install -r requirements.txt
 
 # For year 2024
 python3.8 gitlab-year-review.py --year 2024
+```
+
+### Get projects using dependencies
+
+_Keywords: #organisation #GitLab #dependencies #locks_
+
+We may need quickly to know which projects use some dependencies, because these dependencies can be compromised or because
+we just need to know who use it.
+
+The script *scan_gitab_organization_projects_for_dependencies.py* will request GitLab REST API to get public projects,
+then check if there are known package and locks files, and check inside if there are dependencies like the ones listed
+in a side file given as argument.
+
+This side file is just a text file with one dependency by line without expected format: the script will look for the text as is.
+
+Of course a GitLab Personal Access Token (PAT) must be defined as environment variable.
+
+```shell
+# Define the PAT
+export GITLAB_TOKEN=...
+
+# Do not forget to install dependencies
+pip install -r requirements.txt
+
+# For year 2024
+python3.8 scan_gitlab_organization_projects_for_dependencies.py path/to/dependencies/file.txt
 ```
