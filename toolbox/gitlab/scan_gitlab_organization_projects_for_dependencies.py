@@ -43,21 +43,21 @@ DEPENDENCY_FILES = [
     # JavaSript, Node.js (NPM, Yarn and PNPM)
     "package.json", "package-lock.json", "yarn.lock", "pnpm-lock.yaml",
     # Rust
-    #"Cargo.toml", "Cargo.lock",
+    "Cargo.toml", "Cargo.lock",
     # Go
-    #"go.mod", "go.sum",
+    "go.mod", "go.sum",
     # Java, Kotlin (Maven, Gradle)
-    #"pom.xml", "build.gradle", "build.gradle.kts", "gradle.lockfile",
-    #"settings.gradle.kts",
+    "pom.xml", "build.gradle", "build.gradle.kts", "gradle.lockfile",
+    "settings.gradle.kts",
     # Swift (Swift Package Manager, Cocoapods, Carthage)
-    #"Package.swift", "Podfile", "Cartfile",
-    #"Package.resolved", "Podfile.lock", "Cartfile.resolved",
+    "Package.swift", "Podfile", "Cartfile",
+    "Package.resolved", "Podfile.lock", "Cartfile.resolved",
     # Python
-    #"requirements.txt","pyproject.toml", "Pipfile.lock", "conda-lock.yml", "poetry.lock",
+    "requirements.txt","pyproject.toml", "Pipfile.lock", "conda-lock.yml", "poetry.lock",
     # Ruby
-    #"Gemfile", "Gemfile.lock"
+    "Gemfile", "Gemfile.lock"
     # Flutter / Dart
-    #"pubspec.yaml", "pubspec.lock"
+    "pubspec.yaml", "pubspec.lock"
 ]
 
 GITLAB_TOKEN = os.getenv("GITLAB_TOKEN")
