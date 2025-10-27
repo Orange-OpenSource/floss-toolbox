@@ -14,7 +14,7 @@
 # Description.........: Received from arguments a feature to launch.
 
 #set -euxo pipefail
-VERSION="1.0.0"
+VERSION="1.0.1"
 
 # Common files
 # ------------
@@ -40,7 +40,7 @@ UsageAndExit(){
     echo "USAGE:"
     echo "bash GitLabWizard.sh feature-to-launch"
     echo "with feature-to-launch:"
-    echo -e "\t backup-all-repositories-from-org...............: Dump all repositories in GitHub to a specific location in the disk"
+    echo -e "\t backup-all-repositories-from-org...............: Dump all repositories in GitLab to a specific location in the disk"
     echo -e "\t look-for-leaks.................................: Checks with gitleaks if there are leaks in all repositories"
     echo "About exit codes:"
     echo -e "\t 0................: Normal exit"
