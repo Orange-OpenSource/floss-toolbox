@@ -23,7 +23,7 @@ import time
 # Configuration - Tool
 # --------------------
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 ERROR_BAD_PREREQUISITES = 1
 
@@ -107,6 +107,40 @@ def check_prerequisites():
         print("❌ Error: TOP_N_REPOS_MOST_COMMITS name is not defined. Please set the TOP_N_REPOS_MOST_COMMITS variable.")
         sys.exit(ERROR_BAD_PREREQUISITES)
 
+def safe_api_request(url, headers, max_retries=3):
+    """Make a safe API request with cooldown and retry logic."""
+    for attempt in range(max_retries):
+        try:
+            time.sleep(1.0)
+                
+            response = requests.get(url, headers=headers)
+                
+            if response.status_code == 200:
+                return response
+            elif response.status_code == 403:
+                print(f"⚠️  Rate limit hit (403), waiting 60 seconds... (attempt {attempt + 1}/{max_retries})")
+                time.sleep(60)
+                continue
+            elif response.status_code == 404:
+                print(f"❌ Repository not found (404): {url}")
+                return None
+            else:
+                print(f"❌ API error {response.status_code}: {url}")
+                if attempt < max_retries - 1:
+                    print(f"⚠️  Retrying in 5 seconds... (attempt {attempt + 1}/{max_retries})")
+                    time.sleep(5)
+                continue
+                    
+        except requests.exceptions.RequestException as e:
+            print(f"❌ Network error: {e}")
+            if attempt < max_retries - 1:
+                print(f"⚠️  Retrying in 5 seconds... (attempt {attempt + 1}/{max_retries})")
+                time.sleep(5)
+            continue
+        
+    print(f"❌ Failed to fetch after {max_retries} attempts: {url}")
+    return None
+
 def get_repositories():
     """Fetch all repositories for the organization.
 
@@ -117,14 +151,17 @@ def get_repositories():
     repos = []
     page = 1
     while True:
-        response = requests.get(f"{GITHUB_API_URL}?page={page}&per_page=100", headers=HEADERS)
-        if response.status_code != 200:
-            print("❌ Failed to fetch repositories, status code:", response.status_code)
-            break  # Troubles with GitHub API maybe, exit
+
+        url = f"{GITHUB_API_URL}?page={page}&per_page=100"
+        response = safe_api_request(url, HEADERS)
+        if response is None:
+            break
+
         data = response.json()
         if not data:
             print("🔨 No more repositories to fetch.")
-            break  # No more data, exit.
+            break
+
         repos.extend(data)
         print(f"🔨 Fetched {len(data)} repositories from page {page}.")
         page += 1
@@ -151,14 +188,16 @@ def get_commits_count(repo_full_name, year):
     until = f"{year + 1}-01-01T00:00:00Z"
 
     while True:
-        response = requests.get(f"{commits_url}?page={page}&per_page=100&since={since}&until={until}", headers=HEADERS)
-        if response.status_code != 200:
-            print("❌ Failed to fetch commits, status code:", response.status_code)
-            break  # Troubles with GitHub API maybe, exit
+        url = f"{commits_url}?page={page}&per_page=100&since={since}&until={until}"
+        response = safe_api_request(url, HEADERS)
+        if response is None:
+            break
+
         data = response.json()
         if not data:
             print("🔨 No more commits to fetch for repository:", repo_full_name)
-            break  # No more data, exit
+            break
+
         commits_count += len(data)
         print(f"🔨 Fetched {len(data)} commits from page {page}.")
         page += 1
@@ -175,14 +214,16 @@ def get_members():
     members = []
     page = 1
     while True:
-        response = requests.get(f"{ORG_MEMBERS_URL}?page={page}&per_page=100", headers=HEADERS)
-        if response.status_code != 200:
-            print("❌ Failed to fetch members, status code:", response.status_code)
-            break  # Troubles with GitHub API maybe, exit
+        url = f"{ORG_MEMBERS_URL}?page={page}&per_page=100"
+        response = safe_api_request(url, HEADERS)
+        if response is None:
+            break
+
         data = response.json()
         if not data:
             print("🔨 No more members to fetch.")
-            break  # No more data, exit
+            break
+
         members.extend(data)  # Add the fetched members to the list
         print(f"🔨 Fetched {len(data)} members from page {page}.")
         page += 1  # Move to the next page
@@ -199,28 +240,32 @@ def get_outside_collaborators():
     collaborators = []
     page = 1
     while True:
-        response = requests.get(f"{OUTSIDE_COLLABORATORS_URL}?page={page}&per_page=100", headers=HEADERS)
-        if response.status_code != 200:
-            print("❌ Failed to fetch outside collaborators, status code:", response.status_code)
-            break  # Exit loop if the response is not successful
+        url = f"{OUTSIDE_COLLABORATORS_URL}?page={page}&per_page=100"
+        response = safe_api_request(url, HEADERS)
+        if response is None:
+            break
+
         data = response.json()
         if not data:
             print("🔨 No more outside collaborators to fetch.")
             break  # Exit loop if no more data is returned
+
         collaborators.extend(data)
         print(f"🔨 Fetched {len(data)} outside collaborators from page {page}.")
         page += 1
     print("🔨 Total outside collaborators fetched:", len(collaborators))
     return collaborators
 
-def analyze_repositories(repos, year, count_commits):
+def analyze_repositories(repos, year, count_commits, allowed_domains, forbidden_repos):
     """
     Analyze repositories to gather various statistics.
 
     Parameters:
     - repos (list): A list of repository dictionaries fetched from the GitHub API.
-    - year (int): The year for which to analyze contributions (e.g., 2024).
+    - year (int): The year for which to analyze contributions (e.g., 2025).
     - count_commits (bool): A flag indicating whether to count commits in the analysis.
+    - allowed_domains (list): List of allowed email domains (e.g., ["@orange.com", "@sofrecom.com"])
+    - forbidden_repos (list): List of repository names to ignore (because of too big, no contributions, etc.) (e.g., ["Orange-OpenSource/linux"])
 
     Returns:
     dict: A dictionary containing various statistics, including:
@@ -237,17 +282,35 @@ def analyze_repositories(repos, year, count_commits):
         - year_repos (int): Number of repositories created in the specified year.
         - organization_forks_year (int): Number of forks created by the organization the given year.
         - total_commits (int): Total number of commits across all repositories.
-        - top_repos (list): Top 3 repositories by commits.
-        - top_contributors_overall (list): Top 5 contributors overall.
-        - top_contributors_yearly (list): Top 10 contributors for the specified year.
-        - least_used_languages (list): 3 least used programming languages.
+        - top_repos (list): Top repositories by commits.
+        - top_contributors_overall (list): Top contributors overall (filtered by domain).
+        - top_contributors_yearly (list): Top contributors for the specified year (filtered by domain).
+        - least_used_languages (list): Least used programming languages.
         - largest_projects (dict): Largest project for each programming language.
+        - filtered_commits_yearly (int): Number of commits by allowed domain users for the year.
+        - filtered_commits_total (int): Total number of commits by allowed domain users.
+        - skipped_repos (list): List of repositories that were skipped.
     """
     print("🔨 Analyzing repositories...")
-    total_repos = len(repos)  # Total number of repositories
-    archived_repos = sum(1 for repo in repos if repo['archived'])  # Count archived repositories
-    forked_repos = sum(1 for repo in repos if repo['fork'])  # Count forked repositories
-    non_forked_repos = total_repos - forked_repos  # Count non-forked repositories
+    
+    print(f"🔨 Filtering contributors by domains: {allowed_domains}")
+    print(f"🔨 Ignoring forbidden repositories: {forbidden_repos}")
+    
+    def is_allowed_email(email):
+        """Check if an email belongs to allowed domains."""
+        if not email:
+            return False
+        return any(email.lower().endswith(domain.lower()) for domain in allowed_domains)
+    
+    def is_forbidden_repo(repo_full_name):
+        """Check if a repository is in the forbidden list."""
+        return repo_full_name in forbidden_repos
+        
+    # Basic repository statistics
+    total_repos = len(repos)
+    archived_repos = sum(1 for repo in repos if repo['archived'])
+    forked_repos = sum(1 for repo in repos if repo['fork'])
+    non_forked_repos = total_repos - forked_repos
 
     # Total forks count from all repositories
     total_forks = sum(repo['forks_count'] for repo in repos)
@@ -260,85 +323,144 @@ def analyze_repositories(repos, year, count_commits):
     most_stars_repo = max(repos, key=lambda r: r['stargazers_count'], default=None)
     most_forks_repo = max(repos, key=lambda r: r['forks_count'], default=None)
 
-    # Count programming languages used in the repositories
+    # Initialize data structures for language and contributor analysis
     languages = Counter()
-    largest_projects = {}  # To track the largest project for each language
-    total_contributor_commits = defaultdict(int)  # Total contributions
-    yearly_contributor_commits = defaultdict(int)  # Contributions for the specified year
+    largest_projects = {}
+    total_contributor_commits = defaultdict(int)  # Total contributions (filtered)
+    yearly_contributor_commits = defaultdict(int)  # Yearly contributions (filtered)
 
+    # Analyze programming language
     for repo in repos:
-        if repo['language'] and not repo['fork'] and not repo['archived']:  # Exclude forks and archived repos
+        if repo['language']:
             languages[repo['language']] += 1
-            # Track the largest project for each language
             if repo['language'] not in largest_projects or repo['size'] > largest_projects[repo['language']]['size']:
                 largest_projects[repo['language']] = {'name': repo['full_name'], 'size': repo['size']}
 
-    # Get the top 5 languages used
+    # Get the top programming languages used
     top_languages = languages.most_common(int(TOP_N_PROG_LANG))
     total_lines = {lang: 0 for lang, _ in top_languages}
     
     # Estimate total lines of code for top languages
     for repo in repos:
-        if repo['language'] in total_lines and not repo['fork'] and not repo['archived']:
+        if repo['language'] in total_lines:
             total_lines[repo['language']] += repo['size']
 
-    # Count repositories created in a specific year
+    # Count repositories created in the specified year
     year_repos = sum(1 for repo in repos if datetime.strptime(repo['created_at'], '%Y-%m-%dT%H:%M:%SZ').year == year)
 
-    # Count forks created by the organization (i.e., forks of other repositories)
+    # Count forks created by the organization
     organization_forks = sum(1 for repo in repos if repo['fork'])
 
     # Count licenses used in the repositories
     licenses = Counter(repo['license']['name'] for repo in repos if repo['license'])
     top_licenses = licenses.most_common(int(TOP_N_LICENSES))
 
-    # Calculate total commits across all repositories if enabled
-    total_commits = 0
-    commits_per_repo = {}
+    # Initialize commit-related variables
+    total_commits = 0  # Total commits (all contributors)
+    commits_per_repo = {}  # Commits per repo (all contributors)
+    filtered_commits_yearly = 0  # Commits by allowed domain users (yearly)
+    filtered_commits_total = 0   # Commits by allowed domain users (total)
+    skipped_repos = []  # List of skipped repositories
 
+    # Calculate commits and contributor statistics if enabled
     if count_commits:
         for index, repo in enumerate(repos, start=1):
-            # Only count commits for non-forked and non-archived repositories
-            # Some forks are for exmaple from linux project, to much noise in the data
-            if not repo['fork'] and not repo['archived']: 
-                # Get commits for the specified year
-                commits_count = get_commits_count(repo['full_name'], year)
-                total_commits += commits_count
-                commits_per_repo[repo['full_name']] = commits_count
+            # Ignore repos to ignore
+            if is_forbidden_repo(repo['full_name']):
+                print(f"🚫 SKIPPING forbidden repository {index}/{total_repos}: {repo['full_name']}")
+                skipped_repos.append(repo['full_name'])
+                continue
+            
+            print(f"🔨 Analyzing repository {index}/{total_repos}: {repo['full_name']} {'(FORK)' if repo['fork'] else ''} {'(ARCHIVED)' if repo['archived'] else ''}")
+            
+            # Define date range for the specified year
+            since = f"{year}-01-01T00:00:00Z"
+            until = f"{year + 1}-01-01T00:00:00Z"
+            
+            # Stats for specified year
+            yearly_commits_url = f"https://api.github.com/repos/{repo['full_name']}/commits"
+            page = 1
+            yearly_commits_count = 0
+            yearly_filtered_commits = 0
+
+            print(f"🔨 Fetching yearly commits and contributors for {repo['full_name']}...")
+            while True:
+                url = f"{yearly_commits_url}?page={page}&per_page=100&since={since}&until={until}"
+                response = safe_api_request(url, HEADERS)
+                if response is None:
+                    break
+
+                commits_data = response.json()
+                if not commits_data:
+                    break
                 
-                # Get all commits for total contributor calculation
-                all_commits_url = f"https://api.github.com/repos/{repo['full_name']}/commits"
-                page = 1
-                while True:
-                    response = requests.get(f"{all_commits_url}?page={page}&per_page=100", headers=HEADERS)
-                    if response.status_code != 200:
-                        break
-                    commits_data = response.json()
-                    if not commits_data:
-                        break
-                    for commit in commits_data:
-                        author = commit['commit']['author']['name']
-                        total_contributor_commits[author] += 1  # Total contributions
-                        # Check if the commit is in the specified year
-                        commit_date = commit['commit']['author']['date']
-                        if year == datetime.strptime(commit_date, '%Y-%m-%dT%H:%M:%SZ').year:
-                            yearly_contributor_commits[author] += 1  # Contributions for the specified year
-                    page += 1
-                print(f"🔨 Analyzing repository {index}/{total_repos}")
+                # Stats for all years
+                if author_email and is_allowed_email(author_email):
+                    yearly_filtered_commits += 1
+                
+                # Analyse contributions by year (with domain filtering)
+                for commit in commits_data:
+                    if commit.get('commit') and commit['commit'].get('author'):
+                        author_name = commit['commit']['author'].get('name')
+                        author_email = commit['commit']['author'].get('email')
+                        
+                        # Email domain filtering
+                        if author_email and is_allowed_email(author_email):
+                            if author_name:
+                                yearly_contributor_commits[f"{author_name} ({author_email})"] += 1
+                            yearly_filtered_commits += 1
+                page += 1
 
-    # Get the top N contributors overall
+            # Store only commits count for allowed domains
+            total_commits += yearly_filtered_commits
+            commits_per_repo[repo['full_name']] = yearly_filtered_commits
+
+            # Compute all commits for all contributors
+            print(f"🔨 Fetching all-time contributors for {repo['full_name']}...")
+            all_commits_url = f"https://api.github.com/repos/{repo['full_name']}/commits"
+            page = 1
+            
+            while True:
+                url = f"{all_commits_url}?page={page}&per_page=100"
+                response = safe_api_request(url, HEADERS)
+                
+                if response is None:
+                    break
+                
+                commits_data = response.json()
+                if not commits_data:
+                    break
+
+                # Analyse overall contributions (with domain filtering)
+                for commit in commits_data:
+                    if commit.get('commit') and commit['commit'].get('author'):
+                        author_name = commit['commit']['author'].get('name')
+                        author_email = commit['commit']['author'].get('email')
+                        
+                        # Filter by email domain
+                        if author_email and is_allowed_email(author_email):
+                            if author_name:
+                                total_contributor_commits[f"{author_name} ({author_email})"] += 1
+                page += 1
+
+    # Calculate top contributors (with filtering on domains)
     top_contributors_overall = sorted(total_contributor_commits.items(), key=lambda x: x[1], reverse=True)[:int(TOP_N_CONTRIBUTORS_OVERALL)]
-
-    # Get the top N contributors for the specified year
     top_contributors_yearly = sorted(yearly_contributor_commits.items(), key=lambda x: x[1], reverse=True)[:int(TOP_N_CONTRIBUTORS_FOR_YEAR)]
 
-    # Get the top N repositories with the most commits
-    top_repos = sorted(commits_per_repo.items(), key=lambda x: x[1], reverse=True)[:int(TOP_N_REPOS_MOST_COMMITS)]
+    # Get the top repositories with the most commits (only allowed commits)
+    # Filter repos with no commits from allowed domains
+    filtered_commits_per_repo = {repo: commits for repo, commits in commits_per_repo.items() if commits > 0}
+    top_repos = sorted(filtered_commits_per_repo.items(), key=lambda x: x[1], reverse=True)[:int(TOP_N_REPOS_MOST_COMMITS)]
 
-    # Get the N least used programming languages
+    # Get the least used programming languages
     least_used_languages = sorted(languages.items(), key=lambda x: x[1])[:int(TOP_N_LEAST_PROG_LANG)]
 
     print("🔨 Analysis complete.")
+    print(f"🔨 Total commits (all contributors): {total_commits}")
+    print(f"🔨 Filtered commits yearly (allowed domains): {filtered_commits_yearly}")
+    print(f"🔨 Filtered commits total (allowed domains): {filtered_commits_total}")
+    print(f"🔨 Skipped repositories: {len(skipped_repos)}")
+    
     return {
         "total_repos": total_repos,
         "archived_repos": archived_repos,
@@ -357,8 +479,12 @@ def analyze_repositories(repos, year, count_commits):
         "top_contributors_overall": top_contributors_overall,
         "top_contributors_yearly": top_contributors_yearly,
         "least_used_languages": least_used_languages,
-        "largest_projects": largest_projects
+        "largest_projects": largest_projects,
+        "filtered_commits_yearly": filtered_commits_yearly,
+        "filtered_commits_total": filtered_commits_total,
+        "skipped_repos": skipped_repos
     }
+
 
 def get_total_members():
     """Get the total number of members including outside collaborators.
@@ -397,7 +523,7 @@ def main():
 
     # Parse command-line arguments
     parser = argparse.ArgumentParser(description=f"Analyze GitHub organization repositories (Version: {VERSION}).")
-    parser.add_argument("--year", type=int, required=True, help="The year to analyze (e.g., 2024).")
+    parser.add_argument("--year", type=int, required=True, help="The year to analyze (e.g., 2025).")
     parser.add_argument("--count-commits", action='store_true', help="Enable commit counting in the analysis.")
     args = parser.parse_args()
 
@@ -407,8 +533,18 @@ def main():
     total_members = get_total_members()
     visible_members = len(get_members())
 
+    # Compute only employees / subscontractors / affiliate top domain of addresses:
+    # - Orange employees and external people are expected to have orange.com
+    # - Sofrecom affiliate employees and external people are expected to have sofrecom.com
+    # - Some interns from sciencespo.fr contributed to the project
+    # - Some subcontractors from groupeonepoint.com too
+    # - And also some partner from inria.fr
+    allowed_domains = ["@orange.com", "@sofrecom.com", "@groupeonepoint.com", "@sciencespo.fr", "@inria.fr"]    
+    # Exclude some repositories if they pollute results
+    forbidden_repos = [ "Orange-OpenSource/linux"]
+    
     # Analyze repositories for the specified year
-    analysis = analyze_repositories(repos, args.year, args.count_commits)
+    analysis = analyze_repositories(repos, args.year, args.count_commits, allowed_domains, forbidden_repos)
 
     # Estimate the number of private members
     private_members_count = estimate_private_members(total_members, visible_members)
